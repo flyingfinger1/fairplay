@@ -162,6 +162,18 @@ public class BlockOwnershipListener implements Listener {
             adv.grant(player, "harvest");
         }
 
+        // Underwater plants always live in water. Removing the DB entry would leave the
+        // water block that immediately refills the position without an owner.
+        // Return early so the entry is kept – the water inherits the ownership.
+        // TALL_SEAGRASS is Bisected: both halves refill with water, so we also skip
+        // the two-block cleanup below.
+        if (block.getType() == Material.SEAGRASS
+                || block.getType() == Material.TALL_SEAGRASS
+                || block.getType() == Material.KELP
+                || block.getType() == Material.KELP_PLANT) {
+            return;
+        }
+
         // Ice (not packed/blue ice) produces a water block at the same position when broken.
         // Instead of removing the entry immediately, wait 1 tick:
         //   - water appeared → entry stays, water inherits ownership
