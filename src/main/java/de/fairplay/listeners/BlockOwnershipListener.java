@@ -12,6 +12,7 @@ import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Bed;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -20,11 +21,15 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityRemoveEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -38,6 +43,9 @@ public class BlockOwnershipListener implements Listener {
     private final OwnershipStorage storage;
     private final AdvancementManager adv;
     private final boolean teamMode;
+
+    /** Tracks ownership of in-flight FallingBlock entities (entityUUID → ownerUUID). */
+    private final Map<UUID, UUID> fallingOwners = new HashMap<>();
 
     public BlockOwnershipListener(OwnershipStorage storage, AdvancementManager adv, boolean teamMode) {
         this.storage = storage;
@@ -270,6 +278,48 @@ public class BlockOwnershipListener implements Listener {
             player.sendActionBar(Lang.get(player, "msg.break"));
             adv.grant(player, "trespassing");
         }
+    }
+
+    /**
+     * Gravity block starts falling (sand, gravel, concrete powder, anvils, …).
+     * By the time EntitySpawnEvent fires, the source block is already AIR – but the
+     * DB entry is still there (we only remove it in onBlockBreak). Read the owner,
+     * store it keyed by entity UUID, and clean up the now-stale DB entry.
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onFallingBlockSpawn(EntitySpawnEvent event) {
+        if (!(event.getEntity() instanceof FallingBlock falling)) return;
+
+        Block source = falling.getLocation().getBlock();
+        UUID owner = storage.getBlockOwner(source);
+        if (owner == null) return;
+
+        fallingOwners.put(falling.getUniqueId(), owner);
+        storage.removeBlockOwner(source); // source is now AIR – remove stale entry
+    }
+
+    /**
+     * Gravity block lands and becomes a solid block again.
+     * Transfer the stored ownership to the landing position.
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onFallingBlockLand(EntityChangeBlockEvent event) {
+        if (!(event.getEntity() instanceof FallingBlock)) return;
+
+        UUID owner = fallingOwners.remove(event.getEntity().getUniqueId());
+        if (owner != null) {
+            storage.setBlockOwner(event.getBlock(), owner);
+        }
+    }
+
+    /**
+     * Falling block is removed without landing (void, lava, /kill, …).
+     * Clean up the map to avoid a memory leak.
+     */
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onFallingBlockRemove(EntityRemoveEvent event) {
+        if (!(event.getEntity() instanceof FallingBlock)) return;
+        fallingOwners.remove(event.getEntity().getUniqueId());
     }
 
     private boolean isCropMaterial(Material m) {
