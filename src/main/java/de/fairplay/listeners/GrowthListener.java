@@ -8,6 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import java.util.Set;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,9 +28,6 @@ public class GrowthListener implements Listener {
         BlockFace.UP, BlockFace.DOWN
     };
 
-    private static final BlockFace[] HORIZONTAL_FACES = {
-        BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST
-    };
 
     private final OwnershipStorage storage;
     private final JavaPlugin plugin;
@@ -122,21 +120,17 @@ public class GrowthListener implements Listener {
             return;
         }
 
-        // Melon / Pumpkin: the fruit grows at the same Y-level as the stem.
-        // onBlockGrow receives this as a BlockSpreadEvent (subtype), but the stem
-        // is a horizontal neighbour – not above/below – so we check all four sides.
-        // event.getBlock() is still AIR at this point; getNewState() tells us what
-        // will appear.
+        // Melon / Pumpkin: when the stem reaches full growth it changes to
+        // ATTACHED_*_STEM and the fruit block appears in the direction it faces.
+        // The stem's Directional BlockData tells us exactly where the fruit is –
+        // no need to scan all four neighbours.
         Material newType = event.getNewState().getType();
-        if (newType == Material.MELON || newType == Material.PUMPKIN) {
-            for (BlockFace face : HORIZONTAL_FACES) {
-                owner = storage.getBlockOwner(grownBlock.getRelative(face));
-                if (owner != null) {
-                    storage.setBlockOwner(grownBlock, owner);
-                    return;
-                }
+        if (newType == Material.ATTACHED_MELON_STEM || newType == Material.ATTACHED_PUMPKIN_STEM) {
+            owner = storage.getBlockOwner(grownBlock); // owner of the stem
+            if (owner != null && event.getNewState().getBlockData() instanceof Directional dir) {
+                storage.setBlockOwner(grownBlock.getRelative(dir.getFacing()), owner);
             }
-            return; // No owned stem adjacent → fruit stays unowned
+            return;
         }
 
         // Bamboo / Kelp: event fires on existing tip → new block appears after the event.
