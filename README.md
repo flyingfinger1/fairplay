@@ -10,6 +10,8 @@ A Paper plugin for Minecraft 1.21.8 that enforces one simple rule:
 
 Every block a player places is assigned to them in a database. Foreign blocks cannot be broken — not directly, and not indirectly. This creates a cooperative survival experience where resources and structures truly "belong" to a player.
 
+The plugin supports two modes: **solo** (strict ownership, default) and **team** (shared ownership, restrictions disabled).
+
 ## Features
 
 ### Block Ownership
@@ -17,6 +19,7 @@ Every block a player places is assigned to them in a database. Foreign blocks ca
 - Foreign blocks cannot be broken
 - **Creative mode** bypasses all checks automatically
 - Two-block structures (beds, doors, tall plants) are correctly treated as a unit
+- **Gravity blocks** (sand, gravel, concrete powder, anvils …) retain their ownership when they fall and land at a new position
 
 ### Fluids & Resources
 - Water and lava buckets can only be filled from the player's own sources
@@ -31,8 +34,17 @@ Every block a player places is assigned to them in a database. Foreign blocks ca
 - Sweet berries can only be harvested by the bush owner
 - Farmland cannot be trampled by other players
 
-### 27 Custom Advancements
-The plugin ships its own advancement tree explaining and rewarding FairPlay mechanics — from "Foundation" (first own block) to "Ignition" (using a Creeper as a tool).
+### 28 Custom Advancements
+The plugin ships its own advancement tree explaining and rewarding FairPlay mechanics — from "Foundation" (first own block) to "First Night" (surviving until dawn).
+
+### Team / Solo Mode
+Configure in `config.yml` whether players compete individually or share resources as a team:
+
+```yaml
+# solo  → each player only owns what they placed themselves (default)
+# team  → all players share ownership, no restrictions apply
+game-mode: solo
+```
 
 ### Multilingual Support
 All player messages and advancement texts are automatically displayed in the player's client language. Currently supported languages:
@@ -51,13 +63,13 @@ Adding a new language only requires adding a file to `src/main/resources/lang/` 
 
 ### Build
 ```bash
-./gradlew build
+gradle build
 ```
 The finished JAR is located in `build/libs/FairPlay-1.0.0.jar`.
 
 ### Deploy
 ```bash
-./gradlew deploy
+gradle deploy
 ```
 Copies the JAR directly into `server/plugins/` (local development environment).
 
@@ -65,6 +77,10 @@ Copies the JAR directly into `server/plugins/` (local development environment).
 After the first start, `plugins/FairPlay/config.yml` is created:
 
 ```yaml
+# solo  → each player only owns what they placed themselves (default)
+# team  → all players share ownership, no restrictions apply
+game-mode: solo
+
 # Address that clients can reach for the resource pack download
 resource-pack-host: localhost   # For a dedicated server: external IP or domain
 resource-pack-port: 8765
@@ -89,7 +105,7 @@ src/main/
 │   ├── advancements/
 │   │   └── AdvancementManager.java  # Data pack installation & advancement granting
 │   ├── listeners/
-│   │   ├── BlockOwnershipListener.java  # Core mechanic: block ownership
+│   │   ├── BlockOwnershipListener.java  # Core mechanic: block ownership + falling blocks
 │   │   ├── GrowthListener.java          # Growth & spread
 │   │   ├── CauldronListener.java        # Cauldron ownership
 │   │   ├── CombatListener.java          # Combat rules
