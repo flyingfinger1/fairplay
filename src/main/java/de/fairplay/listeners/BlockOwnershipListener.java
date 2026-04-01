@@ -123,6 +123,34 @@ public class BlockOwnershipListener implements Listener {
             }
         }
 
+        // Dripstone fallback: a grown tip may have no DB entry if BlockGrowEvent fired
+        // before ownership was assigned. Walk the dripstone column up (stalactite)
+        // and down (stalagmite) to find an owned piece in the same column.
+        if (owner == null && block.getType() == Material.POINTED_DRIPSTONE) {
+            // Scan upward – finds the owned piece of a stalactite or stalagmite source above
+            Block scan = block.getRelative(BlockFace.UP);
+            for (int i = 0; i < 24 && owner == null; i++) {
+                Material t = scan.getType();
+                if (t == Material.POINTED_DRIPSTONE || t == Material.DRIPSTONE_BLOCK) {
+                    owner = storage.getBlockOwner(scan);
+                } else if (t != Material.AIR && t != Material.CAVE_AIR) {
+                    break;
+                }
+                scan = scan.getRelative(BlockFace.UP);
+            }
+            // Scan downward – finds the owned base of a stalagmite
+            scan = block.getRelative(BlockFace.DOWN);
+            for (int i = 0; i < 24 && owner == null; i++) {
+                Material t = scan.getType();
+                if (t == Material.POINTED_DRIPSTONE || t == Material.DRIPSTONE_BLOCK) {
+                    owner = storage.getBlockOwner(scan);
+                } else {
+                    break;
+                }
+                scan = scan.getRelative(BlockFace.DOWN);
+            }
+        }
+
         // Melon / Pumpkin fallback: the fruit block may have appeared without a
         // reliable ownership event firing. Check all four horizontal neighbours for
         // an owned stem and use its owner (the main check below still decides

@@ -11,10 +11,12 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFertilizeEvent;
 import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.event.block.BlockGrowEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -132,30 +134,7 @@ public class GrowthListener implements Listener {
             return;
         }
 
-        // Case: new POINTED_DRIPSTONE tip formed by a stalactite dripping onto a DRIPSTONE_BLOCK floor.
-        // The UP/DOWN neighbour checks above won't find the owner: DOWN is an unowned DRIPSTONE_BLOCK,
-        // and UP is air. Scan upward through the air gap to locate the owned stalactite.
-        if (event.getNewState().getType() == Material.POINTED_DRIPSTONE) {
-            // Depending on Paper version the event fires either on the DRIPSTONE_BLOCK (base)
-            // or on the air block where the new tip will appear – handle both.
-            Block tip = (grownBlock.getType() == Material.DRIPSTONE_BLOCK)
-                    ? grownBlock.getRelative(BlockFace.UP) : grownBlock;
-
-            if (storage.getBlockOwner(tip) == null) {
-                Block scan = tip.getRelative(BlockFace.UP);
-                for (int i = 0; i < 24; i++) {
-                    Material t = scan.getType();
-                    if (t == Material.POINTED_DRIPSTONE || t == Material.DRIPSTONE_BLOCK) {
-                        UUID stalOwner = storage.getBlockOwner(scan);
-                        if (stalOwner != null) storage.setBlockOwner(tip, stalOwner);
-                        break;
-                    }
-                    if (t != Material.AIR && t != Material.CAVE_AIR) break;
-                    scan = scan.getRelative(BlockFace.UP);
-                }
-            }
-            return;
-        }
+        // Dripstone growth is handled in onBlockForm (BlockGrowEvent does not fire in Paper 1.21.8).
 
         // Bamboo / Kelp: event fires on existing tip → new block appears after the event.
         // Wait 1 tick, then register the block above.
@@ -201,6 +180,9 @@ public class GrowthListener implements Listener {
         Block formed = event.getBlock();
         String world = formed.getWorld().getName();
 
+        // Dripstone is handled via BlockPhysicsEvent (BlockGrowEvent/BlockFormEvent do not
+        // fire for pointed dripstone growth in Paper 1.21.8).
+
         for (BlockFace face : ALL_FACES) {
             Block neighbor = formed.getRelative(face);
             UUID owner = storage.getBlockOwner(world, neighbor.getX(), neighbor.getY(), neighbor.getZ());
@@ -225,6 +207,53 @@ public class GrowthListener implements Listener {
 
                 return;
             }
+        }
+    }
+
+    /**
+     * BlockGrowEvent and BlockFormEvent do not fire for dripstone growth in Paper 1.21.8.
+     * BlockPhysicsEvent fires on every block update – including when a new dripstone tip
+     * appears. We filter aggressively (type + already-owned check) so the cost is minimal.
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onDripstonePhysics(BlockPhysicsEvent event) {
+        if (event.getBlock().getType() != Material.POINTED_DRIPSTONE) return;
+        if (storage.getBlockOwner(event.getBlock()) != null) return; // already owned – skip
+        assignDripstoneOwnership(event.getBlock());
+    }
+
+    /**
+     * Assigns ownership to a newly grown POINTED_DRIPSTONE tip by scanning the
+     * dripstone column up (stalactite growing down / new stalagmite from drip)
+     * and down (stalagmite growing up) for the nearest owned piece.
+     */
+    private void assignDripstoneOwnership(Block tip) {
+        if (storage.getBlockOwner(tip) != null) return;
+
+        // Scan upward – covers stalactites growing down and the new stalagmite case
+        Block scan = tip.getRelative(BlockFace.UP);
+        for (int i = 0; i < 24; i++) {
+            Material t = scan.getType();
+            if (t == Material.POINTED_DRIPSTONE || t == Material.DRIPSTONE_BLOCK) {
+                UUID owner = storage.getBlockOwner(scan);
+                if (owner != null) { storage.setBlockOwner(tip, owner); return; }
+            } else if (t != Material.AIR && t != Material.CAVE_AIR) {
+                break;
+            }
+            scan = scan.getRelative(BlockFace.UP);
+        }
+
+        // Scan downward – covers stalagmites growing upward
+        scan = tip.getRelative(BlockFace.DOWN);
+        for (int i = 0; i < 24; i++) {
+            Material t = scan.getType();
+            if (t == Material.POINTED_DRIPSTONE || t == Material.DRIPSTONE_BLOCK) {
+                UUID owner = storage.getBlockOwner(scan);
+                if (owner != null) { storage.setBlockOwner(tip, owner); return; }
+            } else {
+                break;
+            }
+            scan = scan.getRelative(BlockFace.DOWN);
         }
     }
 
