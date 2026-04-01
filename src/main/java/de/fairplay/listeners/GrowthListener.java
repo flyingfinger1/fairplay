@@ -198,27 +198,6 @@ public class GrowthListener implements Listener {
                     if (player != null) adv.grant(player, "endless_stone");
                 }
 
-                // Unendlich: new water source block forms with 2+ adjacent owned water sources
-                if (event.getNewState().getType() == Material.WATER) {
-                    Player player = plugin.getServer().getPlayer(owner);
-                    if (player != null) {
-                        int ownedWaterNeighbors = 0;
-                        for (BlockFace checkFace : ALL_FACES) {
-                            Block checkNeighbor = formed.getRelative(checkFace);
-                            if (checkNeighbor.getType() == Material.WATER) {
-                                UUID neighborOwner = storage.getBlockOwner(world,
-                                    checkNeighbor.getX(), checkNeighbor.getY(), checkNeighbor.getZ());
-                                if (owner.equals(neighborOwner)) {
-                                    ownedWaterNeighbors++;
-                                }
-                            }
-                        }
-                        if (ownedWaterNeighbors >= 2) {
-                            adv.grant(player, "infinite");
-                        }
-                    }
-                }
-
                 return;
             }
         }

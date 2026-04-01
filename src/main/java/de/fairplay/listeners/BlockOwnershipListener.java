@@ -10,6 +10,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Levelled;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.FallingBlock;
@@ -30,6 +31,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -216,7 +218,65 @@ public class BlockOwnershipListener implements Listener {
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         Material bucket = event.getBucket();
         if (bucket != Material.WATER_BUCKET && bucket != Material.LAVA_BUCKET) return;
-        storage.setBlockOwner(event.getBlock(), event.getPlayer().getUniqueId());
+
+        Block placed = event.getBlock();
+        UUID playerUUID = event.getPlayer().getUniqueId();
+        storage.setBlockOwner(placed, playerUUID);
+
+        // BlockFormEvent does NOT fire for infinite water source creation in Paper.
+        // Instead, scan neighbours 1 tick after placement: any unowned water source
+        // that has 2+ of this player's water sources adjacent to it is the newly
+        // formed infinite source and gets assigned to this player.
+        if (bucket == Material.WATER_BUCKET) {
+            plugin.getServer().getScheduler().runTaskLater(plugin,
+                () -> claimInfiniteWaterSources(placed, playerUUID, event.getPlayer()), 10L);
+        }
+    }
+
+    private static final BlockFace[] HORIZ_FACES = {
+        BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST
+    };
+
+    /**
+     * Called 1 tick after a water source is placed.
+     * Finds any adjacent unowned water source that is flanked by 2+ owned sources
+     * (the classic infinite-water scenario) and assigns it to the player.
+     */
+    private void claimInfiniteWaterSources(Block origin, UUID owner, Player player) {
+        // Collect candidate positions: all blocks within 2 horizontal steps of origin
+        Set<Block> candidates = new HashSet<>();
+        for (BlockFace f1 : HORIZ_FACES) {
+            Block n1 = origin.getRelative(f1);
+            candidates.add(n1);
+            for (BlockFace f2 : HORIZ_FACES) {
+                candidates.add(n1.getRelative(f2));
+            }
+        }
+
+        for (Block candidate : candidates) {
+            if (candidate.getType() != Material.WATER) continue;
+            // Must be a source block (level 0), not flowing water
+            if (!(candidate.getBlockData() instanceof Levelled lv) || lv.getLevel() != 0) continue;
+            // Must not already be owned
+            if (storage.getBlockOwner(candidate) != null) continue;
+
+            // Count adjacent owned source blocks belonging to this player
+            int ownedSources = 0;
+            for (BlockFace face : HORIZ_FACES) {
+                Block adj = candidate.getRelative(face);
+                if (adj.getType() == Material.WATER
+                        && adj.getBlockData() instanceof Levelled adjLv
+                        && adjLv.getLevel() == 0
+                        && owner.equals(storage.getBlockOwner(adj))) {
+                    ownedSources++;
+                }
+            }
+
+            if (ownedSources >= 2) {
+                storage.setBlockOwner(candidate, owner);
+                adv.grant(player, "infinite");
+            }
+        }
     }
 
     private static final BlockFace[] WATER_CHECK_FACES = {
