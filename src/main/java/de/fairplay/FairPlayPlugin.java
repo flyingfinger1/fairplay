@@ -50,7 +50,7 @@ public class FairPlayPlugin extends JavaPlugin {
         boolean teamMode = getConfig().getString("game-mode", "solo").equalsIgnoreCase("team");
         getLogger().info("Game mode: " + (teamMode ? "team" : "solo"));
 
-        getServer().getPluginManager().registerEvents(new BlockOwnershipListener(storage, advManager, teamMode), this);
+        getServer().getPluginManager().registerEvents(new BlockOwnershipListener(storage, advManager, teamMode, this), this);
         getServer().getPluginManager().registerEvents(new CauldronListener(storage, this, advManager, teamMode), this);
         getServer().getPluginManager().registerEvents(new GrowthListener(this, storage, advManager, teamMode), this);
         getServer().getPluginManager().registerEvents(new CombatListener(storage, advManager), this);

@@ -14,6 +14,7 @@ import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -43,14 +44,16 @@ public class BlockOwnershipListener implements Listener {
     private final OwnershipStorage storage;
     private final AdvancementManager adv;
     private final boolean teamMode;
+    private final JavaPlugin plugin;
 
     /** Tracks ownership of in-flight FallingBlock entities (entityUUID → ownerUUID). */
     private final Map<UUID, UUID> fallingOwners = new HashMap<>();
 
-    public BlockOwnershipListener(OwnershipStorage storage, AdvancementManager adv, boolean teamMode) {
+    public BlockOwnershipListener(OwnershipStorage storage, AdvancementManager adv, boolean teamMode, JavaPlugin plugin) {
         this.storage = storage;
         this.adv = adv;
         this.teamMode = teamMode;
+        this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -131,6 +134,20 @@ public class BlockOwnershipListener implements Listener {
         if (block.getBlockData() instanceof Ageable ageable
                 && ageable.getAge() == ageable.getMaximumAge()) {
             adv.grant(player, "harvest");
+        }
+
+        // Ice (not packed/blue ice) produces a water block at the same position when broken.
+        // Instead of removing the entry immediately, wait 1 tick:
+        //   - water appeared → entry stays, water inherits ownership
+        //   - no water (e.g. no solid block below) → entry is cleaned up
+        if (block.getType() == Material.ICE || block.getType() == Material.FROSTED_ICE) {
+            final Block iceBlock = block;
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+                if (iceBlock.getType() != Material.WATER) {
+                    storage.removeBlockOwner(iceBlock);
+                }
+            }, 1L);
+            return;
         }
 
         storage.removeBlockOwner(block);
