@@ -44,7 +44,7 @@ public class CombatListener implements Listener {
 
         // Keine Gewalt: direct attack on a mob (not a vehicle) was blocked
         if (!(target instanceof Player) && !isVehicle(target)) {
-            adv.grant(attacker, "keine_gewalt");
+            adv.grant(attacker, "no_violence");
         }
     }
 

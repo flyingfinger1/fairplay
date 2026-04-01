@@ -52,7 +52,7 @@ public class GrowthListener implements Listener {
         }
 
         Player player = plugin.getServer().getPlayer(owner);
-        if (player != null) adv.grant(player, "mein_wald");
+        if (player != null) adv.grant(player, "my_forest");
     }
 
     /**
@@ -167,7 +167,7 @@ public class GrowthListener implements Listener {
                         || event.getNewState().getType() == Material.STONE
                         || event.getNewState().getType() == Material.COBBLED_DEEPSLATE) {
                     Player player = plugin.getServer().getPlayer(owner);
-                    if (player != null) adv.grant(player, "stein_ohne_ende");
+                    if (player != null) adv.grant(player, "endless_stone");
                 }
 
                 // Unendlich: new water source block forms with 2+ adjacent owned water sources
@@ -186,7 +186,7 @@ public class GrowthListener implements Listener {
                             }
                         }
                         if (ownedWaterNeighbors >= 2) {
-                            adv.grant(player, "unendlich");
+                            adv.grant(player, "infinite");
                         }
                     }
                 }

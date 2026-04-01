@@ -7,7 +7,7 @@
     "show_toast": true,
     "announce_to_chat": false
   },
-  "parent": "fairplay:des_menschen_bester_freund",
+  "parent": "fairplay:mans_best_friend",
   "criteria": {
     "trigger": { "trigger": "minecraft:impossible" }
   }

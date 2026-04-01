@@ -65,11 +65,11 @@ public class AdvancementListener implements Listener {
         if (!(event.getEntity() instanceof Player player)) return;
         Material type = event.getItem().getItemStack().getType();
 
-        adv.grant(player, "sammler");
+        adv.grant(player, "collector");
 
-        if (SOLID_BLOCKS.contains(type)) adv.grant(player, "grundstein");
-        if (SAPLINGS.contains(type))     adv.grant(player, "gruener_daumen");
-        if (BEDS.contains(type))         adv.grant(player, "bett_to_go");
+        if (SOLID_BLOCKS.contains(type)) adv.grant(player, "foundation");
+        if (SAPLINGS.contains(type))     adv.grant(player, "green_thumb");
+        if (BEDS.contains(type))         adv.grant(player, "bed_to_go");
     }
 
     // ── Selbst ist der Mann ───────────────────────────────────────────────────
@@ -77,7 +77,7 @@ public class AdvancementListener implements Listener {
     @EventHandler
     public void onCraft(CraftItemEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
-        adv.grant(player, "selbst_ist_der_mann");
+        adv.grant(player, "diy");
     }
 
     // ── Eisen ohne Ende? / Einfallsreichtum / Bodyguard ──────────────────────
@@ -89,7 +89,7 @@ public class AdvancementListener implements Listener {
             golem.getWorld().getPlayers().stream()
                 .filter(p -> p.getLocation().distanceSquared(golem.getLocation()) < 256)
                 .findFirst()
-                .ifPresent(p -> adv.grant(p, "eisen_ohne_ende"));
+                .ifPresent(p -> adv.grant(p, "endless_iron"));
         }
 
         // Einfallsreichtum: hostile mob killed, not by direct player attack
@@ -105,7 +105,7 @@ public class AdvancementListener implements Listener {
                 entity.getWorld().getPlayers().stream()
                     .filter(p -> p.getLocation().distanceSquared(entity.getLocation()) < 256)
                     .findFirst()
-                    .ifPresent(p -> adv.grant(p, "einfallsreichtum"));
+                    .ifPresent(p -> adv.grant(p, "resourcefulness"));
             }
         }
 
@@ -123,7 +123,7 @@ public class AdvancementListener implements Listener {
     @EventHandler
     public void onTame(EntityTameEvent event) {
         if (event.getEntity() instanceof Wolf && event.getOwner() instanceof Player player) {
-            adv.grant(player, "des_menschen_bester_freund");
+            adv.grant(player, "mans_best_friend");
         }
     }
 
@@ -132,7 +132,7 @@ public class AdvancementListener implements Listener {
     @EventHandler
     public void onBedEnter(PlayerBedEnterEvent event) {
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
-            adv.grant(event.getPlayer(), "gute_nacht");
+            adv.grant(event.getPlayer(), "good_night");
         }
     }
 
@@ -142,7 +142,7 @@ public class AdvancementListener implements Listener {
     public void onInventoryClick(org.bukkit.event.inventory.InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
         if (event.getInventory() instanceof MerchantInventory) {
-            adv.grant(player, "fairer_handel");
+            adv.grant(player, "fair_trade");
         }
     }
 
@@ -152,8 +152,8 @@ public class AdvancementListener implements Listener {
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
         Material bucket = event.getBucket();
-        if (bucket == Material.WATER_BUCKET) adv.grant(player, "wasserwirtschaft");
-        if (bucket == Material.LAVA_BUCKET)  adv.grant(player, "heisse_lava");
+        if (bucket == Material.WATER_BUCKET) adv.grant(player, "water_management");
+        if (bucket == Material.LAVA_BUCKET)  adv.grant(player, "hot_lava");
     }
 
     // ── Züüündung ─────────────────────────────────────────────────────────────
@@ -167,7 +167,7 @@ public class AdvancementListener implements Listener {
         event.getLocation().getWorld().getPlayers().stream()
             .filter(p -> p.getLocation().distanceSquared(event.getLocation()) <= 400)
             .min(Comparator.comparingDouble(p -> p.getLocation().distanceSquared(event.getLocation())))
-            .ifPresent(p -> adv.grant(p, "zuendung"));
+            .ifPresent(p -> adv.grant(p, "ignition"));
     }
 
     // ── Vanilla Advancements deaktivieren ─────────────────────────────────────

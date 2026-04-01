@@ -56,7 +56,7 @@ public class CauldronListener implements Listener {
                 if (owner != null) {
                     storage.setBlockOwner(cauldron, owner);
                     Player player = plugin.getServer().getPlayer(owner);
-                    if (player != null) adv.grant(player, "tropfstein_trick");
+                    if (player != null) adv.grant(player, "dripstone_trick");
                 }
                 return;
             }

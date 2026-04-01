@@ -25,7 +25,7 @@ public class VehicleListener implements Listener {
         Entity entity = event.getEntity();
         if (entity instanceof Boat || entity instanceof Minecart) {
             storage.setEntityOwner(entity.getUniqueId(), event.getPlayer().getUniqueId());
-            adv.grant(event.getPlayer(), "eigene_flotte");
+            adv.grant(event.getPlayer(), "own_fleet");
         }
     }
 

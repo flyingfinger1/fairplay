@@ -22,7 +22,7 @@ public class LootListener implements Listener {
         event.setLoot(Collections.emptyList());
 
         if (event.getEntity() instanceof Player player) {
-            adv.grant(player, "leere_haende");
+            adv.grant(player, "empty_hands");
         }
     }
 }

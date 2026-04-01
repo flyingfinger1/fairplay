@@ -64,12 +64,12 @@ public class BlockOwnershipListener implements Listener {
         if (placed.getType() == Material.FURNACE
                 || placed.getType() == Material.BLAST_FURNACE
                 || placed.getType() == Material.SMOKER) {
-            adv.grant(event.getPlayer(), "koch");
+            adv.grant(event.getPlayer(), "chef");
         }
 
         // Sowing: crop blocks
         if (placed.getBlockData() instanceof Ageable && isCropMaterial(placed.getType())) {
-            adv.grant(event.getPlayer(), "aussaat");
+            adv.grant(event.getPlayer(), "sowing");
         }
     }
 
@@ -111,16 +111,16 @@ public class BlockOwnershipListener implements Listener {
         if (owner == null || !owner.equals(player.getUniqueId())) {
             event.setCancelled(true);
             player.sendActionBar(Lang.get(player, "msg.break"));
-            adv.grant(player, "fremdes_eigentum");
+            adv.grant(player, "trespassing");
             return;
         }
 
-        adv.grant(player, "eigene_haende");
+        adv.grant(player, "own_hands");
 
         // Ernte: fully grown crop
         if (block.getBlockData() instanceof Ageable ageable
                 && ageable.getAge() == ageable.getMaximumAge()) {
-            adv.grant(player, "ernte");
+            adv.grant(player, "harvest");
         }
 
         storage.removeBlockOwner(block);
@@ -241,7 +241,7 @@ public class BlockOwnershipListener implements Listener {
         if (owner == null || !owner.equals(player.getUniqueId())) {
             event.setCancelled(true);
             player.sendActionBar(Lang.get(player, "msg.break"));
-            adv.grant(player, "fremdes_eigentum");
+            adv.grant(player, "trespassing");
         }
     }
 
@@ -259,7 +259,7 @@ public class BlockOwnershipListener implements Listener {
         if (owner == null || !owner.equals(player.getUniqueId())) {
             event.setCancelled(true);
             player.sendActionBar(Lang.get(player, "msg.break"));
-            adv.grant(player, "fremdes_eigentum");
+            adv.grant(player, "trespassing");
         }
     }
 
