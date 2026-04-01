@@ -120,15 +120,26 @@ public class GrowthListener implements Listener {
             return;
         }
 
-        // Melon / Pumpkin: when the stem reaches full growth it changes to
-        // ATTACHED_*_STEM and the fruit block appears in the direction it faces.
-        // The stem's Directional BlockData tells us exactly where the fruit is –
-        // no need to scan all four neighbours.
         Material newType = event.getNewState().getType();
+
+        // Case A – stem-side event: stem changes to ATTACHED_*_STEM.
+        // Its Directional BlockData tells us exactly which block the fruit grew into.
         if (newType == Material.ATTACHED_MELON_STEM || newType == Material.ATTACHED_PUMPKIN_STEM) {
-            owner = storage.getBlockOwner(grownBlock); // owner of the stem
+            owner = storage.getBlockOwner(grownBlock); // grownBlock = stem position
             if (owner != null && event.getNewState().getBlockData() instanceof Directional dir) {
                 storage.setBlockOwner(grownBlock.getRelative(dir.getFacing()), owner);
+            }
+            return;
+        }
+
+        // Case B – fruit-side event: BlockSpreadEvent (subtype of BlockGrowEvent) fires
+        // with event.getBlock() = the fruit position and getSource() = the stem.
+        // event.getNewState().getType() == MELON / PUMPKIN here, not the stem type.
+        if ((newType == Material.MELON || newType == Material.PUMPKIN)
+                && event instanceof BlockSpreadEvent spread) {
+            owner = storage.getBlockOwner(spread.getSource()); // stem owner
+            if (owner != null) {
+                storage.setBlockOwner(grownBlock, owner);
             }
             return;
         }
