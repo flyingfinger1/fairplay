@@ -1,0 +1,14 @@
+﻿{
+  "display": {
+    "icon": { "id": "minecraft:stick" },
+    "title": { "translate": "advancement.fairplay.keine_gewalt.title" },
+    "description": { "translate": "advancement.fairplay.keine_gewalt.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  },
+  "parent": "fairplay:root",
+  "criteria": {
+    "trigger": { "trigger": "minecraft:impossible" }
+  }
+}

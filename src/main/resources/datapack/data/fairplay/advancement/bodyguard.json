@@ -1,0 +1,14 @@
+﻿{
+  "display": {
+    "icon": { "id": "minecraft:wolf_armor" },
+    "title": { "translate": "advancement.fairplay.bodyguard.title" },
+    "description": { "translate": "advancement.fairplay.bodyguard.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false
+  },
+  "parent": "fairplay:des_menschen_bester_freund",
+  "criteria": {
+    "trigger": { "trigger": "minecraft:impossible" }
+  }
+}

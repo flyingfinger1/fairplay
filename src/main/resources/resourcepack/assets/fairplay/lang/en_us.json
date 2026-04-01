@@ -1,0 +1,82 @@
+{
+  "advancement.fairplay.root.title": "Fair Minecraft",
+  "advancement.fairplay.root.description": "Only what you build yourself truly belongs to you.",
+
+  "advancement.fairplay.fremdes_eigentum.title": "Trespassing",
+  "advancement.fairplay.fremdes_eigentum.description": "You cannot break blocks you did not place yourself.",
+
+  "advancement.fairplay.eigene_haende.title": "Your Own Hands",
+  "advancement.fairplay.eigene_haende.description": "What you build is yours. And yours alone.",
+
+  "advancement.fairplay.stein_ohne_ende.title": "Endless Stone",
+  "advancement.fairplay.stein_ohne_ende.description": "Lava + water = infinite cobblestone. And it is yours.",
+
+  "advancement.fairplay.sammler.title": "Collector",
+  "advancement.fairplay.sammler.description": "The first item lands in your hands.",
+
+  "advancement.fairplay.grundstein.title": "Foundation",
+  "advancement.fairplay.grundstein.description": "Your first block. Something great begins here.",
+
+  "advancement.fairplay.koch.title": "Chef",
+  "advancement.fairplay.koch.description": "With fire and patience you process your resources.",
+
+  "advancement.fairplay.eisen_ohne_ende.title": "Endless Iron?",
+  "advancement.fairplay.eisen_ohne_ende.description": "An iron golem has fallen and left iron behind.",
+
+  "advancement.fairplay.leere_haende.title": "Empty Hands",
+  "advancement.fairplay.leere_haende.description": "The chest was empty. Nothing to steal here.",
+
+  "advancement.fairplay.selbst_ist_der_mann.title": "DIY",
+  "advancement.fairplay.selbst_ist_der_mann.description": "Your first crafted item. The beginning of everything.",
+
+  "advancement.fairplay.gruener_daumen.title": "Green Thumb",
+  "advancement.fairplay.gruener_daumen.description": "A sapling – the beginning of your forest.",
+
+  "advancement.fairplay.mein_wald.title": "My Forest",
+  "advancement.fairplay.mein_wald.description": "Your sapling became a whole tree. It belongs to you.",
+
+  "advancement.fairplay.aussaat.title": "Sowing",
+  "advancement.fairplay.aussaat.description": "The soil is ready. Your own food is growing.",
+
+  "advancement.fairplay.ernte.title": "Harvest",
+  "advancement.fairplay.ernte.description": "You reap what you sow.",
+
+  "advancement.fairplay.tropfstein_trick.title": "Dripstone Trick",
+  "advancement.fairplay.tropfstein_trick.description": "Your dripstone collects what the earth provides.",
+
+  "advancement.fairplay.wasserwirtschaft.title": "Water Management",
+  "advancement.fairplay.wasserwirtschaft.description": "Your own water source – fresh and rightfully yours.",
+
+  "advancement.fairplay.unendlich.title": "Infinite",
+  "advancement.fairplay.unendlich.description": "Two sources, infinite water. Clever.",
+
+  "advancement.fairplay.heisse_lava.title": "Hot Lava",
+  "advancement.fairplay.heisse_lava.description": "Lava – the liquid gold of the underworld.",
+
+  "advancement.fairplay.keine_gewalt.title": "No Violence",
+  "advancement.fairplay.keine_gewalt.description": "Direct attacks are forbidden. Be creative.",
+
+  "advancement.fairplay.einfallsreichtum.title": "Resourcefulness",
+  "advancement.fairplay.einfallsreichtum.description": "Sometimes the long way around is the better path.",
+
+  "advancement.fairplay.des_menschen_bester_freund.title": "Man's Best Friend",
+  "advancement.fairplay.des_menschen_bester_freund.description": "A loyal companion for all time.",
+
+  "advancement.fairplay.bodyguard.title": "Bodyguard",
+  "advancement.fairplay.bodyguard.description": "Your dog handles what you are not allowed to do yourself.",
+
+  "advancement.fairplay.eigene_flotte.title": "Own Fleet",
+  "advancement.fairplay.eigene_flotte.description": "By water or on rails – you travel in style.",
+
+  "advancement.fairplay.gute_nacht.title": "Good Night",
+  "advancement.fairplay.gute_nacht.description": "Sleeping is easy. Bringing your own bed is not.",
+
+  "advancement.fairplay.bett_to_go.title": "Bed To Go",
+  "advancement.fairplay.bett_to_go.description": "Now you sleep safely wherever you are.",
+
+  "advancement.fairplay.fairer_handel.title": "Fair Trade",
+  "advancement.fairplay.fairer_handel.description": "Barter and trade – the honest path to progress.",
+
+  "advancement.fairplay.zuendung.title": "Ignition",
+  "advancement.fairplay.zuendung.description": "Let a Creeper explode to clear blocks."
+}

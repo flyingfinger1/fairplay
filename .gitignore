@@ -1,0 +1,19 @@
+# Gradle
+.gradle/
+build/
+
+# Server-Laufzeitdateien (kein Teil des Quellcodes)
+server/
+
+# Extrahierte Minecraft-Server-Dateien (zum Nachschlagen, nicht zum Committen)
+META-INF/
+data/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Betriebssystem
+.DS_Store
+Thumbs.db

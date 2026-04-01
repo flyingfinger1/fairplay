@@ -1,0 +1,14 @@
+﻿{
+  "display": {
+    "icon": { "id": "minecraft:red_bed" },
+    "title": { "translate": "advancement.fairplay.gute_nacht.title" },
+    "description": { "translate": "advancement.fairplay.gute_nacht.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  },
+  "parent": "fairplay:root",
+  "criteria": {
+    "trigger": { "trigger": "minecraft:impossible" }
+  }
+}

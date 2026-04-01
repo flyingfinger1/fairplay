@@ -1,0 +1,14 @@
+﻿{
+  "display": {
+    "icon": { "id": "minecraft:water_bucket" },
+    "title": { "translate": "advancement.fairplay.wasserwirtschaft.title" },
+    "description": { "translate": "advancement.fairplay.wasserwirtschaft.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  },
+  "parent": "fairplay:tropfstein_trick",
+  "criteria": {
+    "trigger": { "trigger": "minecraft:impossible" }
+  }
+}

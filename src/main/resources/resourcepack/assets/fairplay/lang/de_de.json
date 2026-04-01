@@ -1,0 +1,82 @@
+{
+  "advancement.fairplay.root.title": "Faires Minecraft",
+  "advancement.fairplay.root.description": "Hier gehört nur dir, was du selbst erschaffen hast.",
+
+  "advancement.fairplay.fremdes_eigentum.title": "Fremdes Eigentum",
+  "advancement.fairplay.fremdes_eigentum.description": "Blöcke die du nicht platziert hast, kannst du nicht abbauen.",
+
+  "advancement.fairplay.eigene_haende.title": "Eigene Hände",
+  "advancement.fairplay.eigene_haende.description": "Was du baust, gehört dir. Und nur dir.",
+
+  "advancement.fairplay.stein_ohne_ende.title": "Stein ohne Ende",
+  "advancement.fairplay.stein_ohne_ende.description": "Lava + Wasser = unendlich Bruchstein. Und der gehört dir.",
+
+  "advancement.fairplay.sammler.title": "Sammler",
+  "advancement.fairplay.sammler.description": "Das erste Item landet in deinen Händen.",
+
+  "advancement.fairplay.grundstein.title": "Grundstein",
+  "advancement.fairplay.grundstein.description": "Dein erster eigener Block. Daraus wird etwas Großes.",
+
+  "advancement.fairplay.koch.title": "Koch",
+  "advancement.fairplay.koch.description": "Mit Feuer und Geduld verarbeitest du deine Rohstoffe.",
+
+  "advancement.fairplay.eisen_ohne_ende.title": "Eisen ohne Ende?",
+  "advancement.fairplay.eisen_ohne_ende.description": "Ein Eisengolem ist gefallen und hat Eisen hinterlassen.",
+
+  "advancement.fairplay.leere_haende.title": "Leere Hände",
+  "advancement.fairplay.leere_haende.description": "Die Truhe war leer. Hier gibt es nichts zu stehlen.",
+
+  "advancement.fairplay.selbst_ist_der_mann.title": "Selbst ist der Mann",
+  "advancement.fairplay.selbst_ist_der_mann.description": "Dein erstes selbst hergestelltes Item. Der Anfang von allem.",
+
+  "advancement.fairplay.gruener_daumen.title": "Grüner Daumen",
+  "advancement.fairplay.gruener_daumen.description": "Ein Setzling – der Anfang deines Waldes.",
+
+  "advancement.fairplay.mein_wald.title": "Mein Wald",
+  "advancement.fairplay.mein_wald.description": "Aus deinem Setzling wurde ein ganzer Baum. Er gehört dir.",
+
+  "advancement.fairplay.aussaat.title": "Aussaat",
+  "advancement.fairplay.aussaat.description": "Die Erde ist bereitet. Dein eigenes Essen wächst heran.",
+
+  "advancement.fairplay.ernte.title": "Ernte",
+  "advancement.fairplay.ernte.description": "Was du gesät hast, kannst du ernten.",
+
+  "advancement.fairplay.tropfstein_trick.title": "Tropfstein-Trick",
+  "advancement.fairplay.tropfstein_trick.description": "Dein Tropfstein sammelt, was die Erde dir bietet.",
+
+  "advancement.fairplay.wasserwirtschaft.title": "Wasserwirtschaft",
+  "advancement.fairplay.wasserwirtschaft.description": "Deine eigene Wasserquelle – frisch und rechtmäßig.",
+
+  "advancement.fairplay.unendlich.title": "Unendlich",
+  "advancement.fairplay.unendlich.description": "Zwei Quellen, unendlich viel Wasser. Clever.",
+
+  "advancement.fairplay.heisse_lava.title": "Heiße Lava",
+  "advancement.fairplay.heisse_lava.description": "Lava – das flüssige Gold der Unterwelt.",
+
+  "advancement.fairplay.keine_gewalt.title": "Keine Gewalt",
+  "advancement.fairplay.keine_gewalt.description": "Direkte Angriffe sind verboten. Sei kreativ.",
+
+  "advancement.fairplay.einfallsreichtum.title": "Einfallsreichtum",
+  "advancement.fairplay.einfallsreichtum.description": "Manchmal ist der Umweg der bessere Weg.",
+
+  "advancement.fairplay.des_menschen_bester_freund.title": "Des Menschen bester Freund",
+  "advancement.fairplay.des_menschen_bester_freund.description": "Ein treuer Begleiter für alle Zeiten.",
+
+  "advancement.fairplay.bodyguard.title": "Bodyguard",
+  "advancement.fairplay.bodyguard.description": "Dein Hund erledigt, was du selbst nicht darfst.",
+
+  "advancement.fairplay.eigene_flotte.title": "Eigene Flotte",
+  "advancement.fairplay.eigene_flotte.description": "Zu Wasser oder auf Schienen – du reist in Stil.",
+
+  "advancement.fairplay.gute_nacht.title": "Gute Nacht",
+  "advancement.fairplay.gute_nacht.description": "Schlafen ist einfach. Dein eigenes Bett mitzunehmen nicht.",
+
+  "advancement.fairplay.bett_to_go.title": "Bett-To-Go",
+  "advancement.fairplay.bett_to_go.description": "Jetzt schläfst du sicher, egal wo du bist.",
+
+  "advancement.fairplay.fairer_handel.title": "Fairer Handel",
+  "advancement.fairplay.fairer_handel.description": "Tausch und Handel – der ehrliche Weg zum Fortschritt.",
+
+  "advancement.fairplay.zuendung.title": "Züüündung",
+  "advancement.fairplay.zuendung.description": "Lass einen Creeper explodieren, um Blöcke zu beseitigen."
+}

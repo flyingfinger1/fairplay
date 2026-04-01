@@ -1,0 +1,46 @@
+plugins {
+    id 'java'
+}
+
+group = 'de.fairplay'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+compileJava.options.compilerArgs += ['-Xlint:deprecation']
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'papermc'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+}
+
+dependencies {
+    compileOnly 'io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT'
+    // SQLite JDBC wird in die JAR gebundelt
+    implementation 'org.xerial:sqlite-jdbc:3.45.1.0'
+}
+
+jar {
+    // Alle Abhängigkeiten in die Plugin-JAR einbetten (Fat JAR ohne Shadow)
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.register('deploy') {
+    dependsOn build
+    doLast {
+        copy {
+            from jar.archiveFile
+            into 'server/plugins'
+        }
+        println ">> FairPlay-${version}.jar nach server/plugins kopiert."
+    }
+}

@@ -1,0 +1,14 @@
+﻿{
+  "display": {
+    "icon": { "id": "minecraft:furnace" },
+    "title": { "translate": "advancement.fairplay.koch.title" },
+    "description": { "translate": "advancement.fairplay.koch.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  },
+  "parent": "fairplay:grundstein",
+  "criteria": {
+    "trigger": { "trigger": "minecraft:impossible" }
+  }
+}

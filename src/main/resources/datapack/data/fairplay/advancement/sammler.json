@@ -1,0 +1,14 @@
+﻿{
+  "display": {
+    "icon": { "id": "minecraft:bundle" },
+    "title": { "translate": "advancement.fairplay.sammler.title" },
+    "description": { "translate": "advancement.fairplay.sammler.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false
+  },
+  "parent": "fairplay:root",
+  "criteria": {
+    "trigger": { "trigger": "minecraft:impossible" }
+  }
+}

@@ -1,0 +1,14 @@
+# FairPlay Plugin Konfiguration
+
+# Eingebetteter HTTP-Server für das Resource Pack (Übersetzungen).
+# Der Client lädt das Pack beim Einloggen automatisch herunter.
+#
+# resource-pack-host: Adresse die Clients erreichen können.
+#   Lokaler Server:    localhost
+#   LAN / Dedicated:   z.B. 192.168.1.100 oder deine-domain.de
+resource-pack-host: localhost
+resource-pack-port: 8765
+
+# true  → Clients MÜSSEN das Pack akzeptieren (sonst Kick)
+# false → Clients können ablehnen (bekommen dann nur Englisch)
+resource-pack-required: false

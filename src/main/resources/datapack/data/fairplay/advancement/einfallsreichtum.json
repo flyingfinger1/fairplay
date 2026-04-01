@@ -1,0 +1,14 @@
+﻿{
+  "display": {
+    "icon": { "id": "minecraft:tnt" },
+    "title": { "translate": "advancement.fairplay.einfallsreichtum.title" },
+    "description": { "translate": "advancement.fairplay.einfallsreichtum.description" },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false
+  },
+  "parent": "fairplay:keine_gewalt",
+  "criteria": {
+    "trigger": { "trigger": "minecraft:impossible" }
+  }
+}
