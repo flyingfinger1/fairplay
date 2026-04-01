@@ -121,6 +121,27 @@ public class BlockOwnershipListener implements Listener {
             }
         }
 
+        // Melon / Pumpkin fallback: the fruit block may have appeared without a
+        // reliable ownership event firing. Check all four horizontal neighbours for
+        // an owned stem and use its owner (the main check below still decides
+        // whether that owner matches the breaking player).
+        if (owner == null && (block.getType() == Material.MELON
+                || block.getType() == Material.PUMPKIN)) {
+            for (BlockFace face : new BlockFace[]{
+                    BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST}) {
+                Block stem = block.getRelative(face);
+                Material stemType = stem.getType();
+                if (stemType == Material.MELON_STEM || stemType == Material.ATTACHED_MELON_STEM
+                        || stemType == Material.PUMPKIN_STEM || stemType == Material.ATTACHED_PUMPKIN_STEM) {
+                    UUID stemOwner = storage.getBlockOwner(stem);
+                    if (stemOwner != null) {
+                        owner = stemOwner;
+                        break;
+                    }
+                }
+            }
+        }
+
         if (!teamMode && (owner == null || !owner.equals(player.getUniqueId()))) {
             event.setCancelled(true);
             player.sendActionBar(Lang.get(player, "msg.break"));

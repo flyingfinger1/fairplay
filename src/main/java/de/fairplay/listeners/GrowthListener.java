@@ -132,18 +132,6 @@ public class GrowthListener implements Listener {
             return;
         }
 
-        // Case B – fruit-side event: BlockSpreadEvent (subtype of BlockGrowEvent) fires
-        // with event.getBlock() = the fruit position and getSource() = the stem.
-        // event.getNewState().getType() == MELON / PUMPKIN here, not the stem type.
-        if ((newType == Material.MELON || newType == Material.PUMPKIN)
-                && event instanceof BlockSpreadEvent spread) {
-            owner = storage.getBlockOwner(spread.getSource()); // stem owner
-            if (owner != null) {
-                storage.setBlockOwner(grownBlock, owner);
-            }
-            return;
-        }
-
         // Bamboo / Kelp: event fires on existing tip → new block appears after the event.
         // Wait 1 tick, then register the block above.
         if (DELAYED_GROW_PLANTS.contains(grownBlock.getType())) {
