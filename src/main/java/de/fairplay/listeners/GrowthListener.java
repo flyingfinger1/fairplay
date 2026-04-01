@@ -106,16 +106,16 @@ public class GrowthListener implements Listener {
     public void onBlockGrow(BlockGrowEvent event) {
         Block grownBlock = event.getBlock();
 
-        // New block appears above (sugar cane, cactus, ...)
+        // New block appears above (sugar cane, cactus, …) – only if not already owned.
         UUID owner = storage.getBlockOwner(grownBlock.getRelative(BlockFace.DOWN));
-        if (owner != null) {
+        if (owner != null && storage.getBlockOwner(grownBlock) == null) {
             storage.setBlockOwner(grownBlock, owner);
             return;
         }
 
-        // New block appears below (cave vines, weeping vines)
+        // New block appears below (cave vines, weeping vines) – only if not already owned.
         owner = storage.getBlockOwner(grownBlock.getRelative(BlockFace.UP));
-        if (owner != null) {
+        if (owner != null && storage.getBlockOwner(grownBlock) == null) {
             storage.setBlockOwner(grownBlock, owner);
             return;
         }
@@ -158,6 +158,8 @@ public class GrowthListener implements Listener {
     @EventHandler
     public void onBlockSpread(BlockSpreadEvent event) {
         if (!transfersOwnership(event.getSource().getType())) return;
+        // Never overwrite a block that already has an owner.
+        if (storage.getBlockOwner(event.getBlock()) != null) return;
 
         UUID owner = storage.getBlockOwner(event.getSource());
         if (owner != null) {
@@ -178,7 +180,15 @@ public class GrowthListener implements Listener {
             Block neighbor = formed.getRelative(face);
             UUID owner = storage.getBlockOwner(world, neighbor.getX(), neighbor.getY(), neighbor.getZ());
             if (owner != null) {
-                storage.setBlockOwner(formed, owner);
+                // Never overwrite an already-owned block (e.g. a waterlogged placed block).
+                if (storage.getBlockOwner(formed) == null) {
+                    storage.setBlockOwner(formed, owner);
+                } else if (!owner.equals(storage.getBlockOwner(formed))) {
+                    plugin.getLogger().warning("[FairPlay] BlockFormEvent tried to overwrite owner"
+                        + " at " + formed.getType() + " " + formed.getX() + "," + formed.getY() + "," + formed.getZ()
+                        + " newState=" + event.getNewState().getType()
+                        + " – keeping existing owner. (source neighbour: " + neighbor.getType() + ")");
+                }
 
                 // Stein ohne Ende: cobblestone/stone forms from lava+water
                 if (event.getNewState().getType() == Material.COBBLESTONE

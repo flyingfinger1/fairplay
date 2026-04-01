@@ -146,6 +146,11 @@ public class BlockOwnershipListener implements Listener {
             event.setCancelled(true);
             player.sendActionBar(Lang.get(player, "msg.break"));
             adv.grant(player, "trespassing");
+            plugin.getLogger().warning("[FairPlay] Break blocked: player=" + player.getName()
+                + " (" + player.getUniqueId() + ")"
+                + " block=" + block.getType()
+                + " at " + block.getX() + "," + block.getY() + "," + block.getZ()
+                + " stored_owner=" + owner);
             return;
         }
 
