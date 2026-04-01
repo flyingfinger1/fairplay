@@ -2,6 +2,7 @@ package de.fairplay.listeners;
 
 import de.fairplay.advancements.AdvancementManager;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -10,7 +11,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.entity.Creeper;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.MerchantInventory;
 
@@ -18,7 +23,7 @@ import java.util.Set;
 
 public class AdvancementListener implements Listener {
 
-    // Materials that count as "solid blocks" for the Grundstein advancement
+    // Materials that count as "solid blocks" for the Foundation advancement
     private static final Set<Material> SOLID_BLOCKS = Set.of(
         Material.STONE, Material.COBBLESTONE, Material.DIRT, Material.GRASS_BLOCK,
         Material.OAK_LOG, Material.OAK_PLANKS, Material.SAND, Material.GRAVEL,
@@ -28,7 +33,7 @@ public class AdvancementListener implements Listener {
         Material.SMOOTH_STONE, Material.COBBLED_DEEPSLATE
     );
 
-    // Sapling materials for Grüner Daumen
+    // Sapling materials for Green Thumb
     private static final Set<Material> SAPLINGS = Set.of(
         Material.OAK_SAPLING, Material.SPRUCE_SAPLING, Material.BIRCH_SAPLING,
         Material.JUNGLE_SAPLING, Material.ACACIA_SAPLING, Material.DARK_OAK_SAPLING,
@@ -36,7 +41,7 @@ public class AdvancementListener implements Listener {
         Material.FLOWERING_AZALEA, Material.PALE_OAK_SAPLING
     );
 
-    // Bed materials for Bett-To-Go
+    // Bed materials for Bed To Go
     private static final Set<Material> BEDS = Set.of(
         Material.WHITE_BED, Material.ORANGE_BED, Material.MAGENTA_BED,
         Material.LIGHT_BLUE_BED, Material.YELLOW_BED, Material.LIME_BED,
@@ -47,8 +52,41 @@ public class AdvancementListener implements Listener {
 
     private final AdvancementManager adv;
 
-    public AdvancementListener(AdvancementManager adv) {
+    public AdvancementListener(AdvancementManager adv, JavaPlugin plugin) {
         this.adv = adv;
+        startDawnDetector(plugin);
+    }
+
+    // ── First Night ──────────────────────────────────────────────────────────
+
+    /**
+     * Detects dawn by tracking the world time every second.
+     * Grants "first_night" when the time transitions from night (>12000) to
+     * morning (<1000) — covers both natural survival and sleeping.
+     */
+    private void startDawnDetector(JavaPlugin plugin) {
+        final Map<World, Long> lastTime = new HashMap<>();
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (World world : plugin.getServer().getWorlds()) {
+                    if (world.getEnvironment() != World.Environment.NORMAL) continue;
+                    long time = world.getTime();
+                    long prev = lastTime.getOrDefault(world, time);
+                    lastTime.put(world, time);
+
+                    // Transition from night (>12000) to dawn (<1000): grant to all alive players
+                    if (prev > 12000 && time < 1000) {
+                        for (Player p : world.getPlayers()) {
+                            if (p.isOnline() && !p.isDead()) {
+                                adv.grant(p, "first_night");
+                            }
+                        }
+                    }
+                }
+            }
+        }.runTaskTimer(plugin, 20L, 20L);
     }
 
     // ── Root ─────────────────────────────────────────────────────────────────
@@ -58,7 +96,7 @@ public class AdvancementListener implements Listener {
         adv.grant(event.getPlayer(), "root");
     }
 
-    // ── Sammler / Grundstein / Grüner Daumen / Bett-To-Go ────────────────────
+    // ── Collector / Foundation / Green Thumb / Bed To Go ─────────────────────
 
     @EventHandler
     public void onPickup(EntityPickupItemEvent event) {
@@ -72,7 +110,7 @@ public class AdvancementListener implements Listener {
         if (BEDS.contains(type))         adv.grant(player, "bed_to_go");
     }
 
-    // ── Selbst ist der Mann ───────────────────────────────────────────────────
+    // ── DIY ──────────────────────────────────────────────────────────────────
 
     @EventHandler
     public void onCraft(CraftItemEvent event) {
@@ -80,11 +118,11 @@ public class AdvancementListener implements Listener {
         adv.grant(player, "diy");
     }
 
-    // ── Eisen ohne Ende? / Einfallsreichtum / Bodyguard ──────────────────────
+    // ── Endless Iron / Resourcefulness / Bodyguard ───────────────────────────
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        // Eisen ohne Ende: wild iron golem dies near a player
+        // Endless Iron: wild iron golem dies near a player
         if (event.getEntity() instanceof IronGolem golem && !golem.isPlayerCreated()) {
             golem.getWorld().getPlayers().stream()
                 .filter(p -> p.getLocation().distanceSquared(golem.getLocation()) < 256)
@@ -92,7 +130,7 @@ public class AdvancementListener implements Listener {
                 .ifPresent(p -> adv.grant(p, "endless_iron"));
         }
 
-        // Einfallsreichtum: hostile mob killed, not by direct player attack
+        // Resourcefulness: hostile mob killed, not by direct player attack
         LivingEntity entity = event.getEntity();
         if (entity instanceof Monster) {
             EntityDamageEvent lastDamage = entity.getLastDamageCause();
@@ -118,7 +156,7 @@ public class AdvancementListener implements Listener {
         }
     }
 
-    // ── Des Menschen bester Freund ────────────────────────────────────────────
+    // ── Man's Best Friend ────────────────────────────────────────────────────
 
     @EventHandler
     public void onTame(EntityTameEvent event) {
@@ -127,7 +165,7 @@ public class AdvancementListener implements Listener {
         }
     }
 
-    // ── Gute Nacht ────────────────────────────────────────────────────────────
+    // ── Good Night ───────────────────────────────────────────────────────────
 
     @EventHandler
     public void onBedEnter(PlayerBedEnterEvent event) {
@@ -136,7 +174,7 @@ public class AdvancementListener implements Listener {
         }
     }
 
-    // ── Fairer Handel ─────────────────────────────────────────────────────────
+    // ── Fair Trade ───────────────────────────────────────────────────────────
 
     @EventHandler
     public void onInventoryClick(org.bukkit.event.inventory.InventoryClickEvent event) {
@@ -146,7 +184,7 @@ public class AdvancementListener implements Listener {
         }
     }
 
-    // ── Wasserwirtschaft / Heiße Lava ─────────────────────────────────────────
+    // ── Water Management / Hot Lava ──────────────────────────────────────────
 
     @EventHandler
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
@@ -156,24 +194,23 @@ public class AdvancementListener implements Listener {
         if (bucket == Material.LAVA_BUCKET)  adv.grant(player, "hot_lava");
     }
 
-    // ── Züüündung ─────────────────────────────────────────────────────────────
+    // ── Ignition ──────────────────────────────────────────────────────────────
 
     @EventHandler
     public void onCreeperExplode(EntityExplodeEvent event) {
         if (!(event.getEntity() instanceof Creeper)) return;
         if (event.blockList().isEmpty()) return;
 
-        // Dem nächsten Spieler in Reichweite (20 Blöcke) das Advancement vergeben
+        // Grant to the nearest player within 20 blocks
         event.getLocation().getWorld().getPlayers().stream()
             .filter(p -> p.getLocation().distanceSquared(event.getLocation()) <= 400)
             .min(Comparator.comparingDouble(p -> p.getLocation().distanceSquared(event.getLocation())))
             .ifPresent(p -> adv.grant(p, "ignition"));
     }
 
-    // ── Vanilla Advancements deaktivieren ─────────────────────────────────────
-    // Kriterien NICHT revoken – das würde einen Infinite-Loop erzeugen:
-    // revoke → Advancement resettet → nächste Aktion triggert es erneut → etc.
-    // Stattdessen: announceAdvancements=false (Gamerule in FairPlayPlugin) verhindert
-    // Chat-Nachrichten. Vanilla-Advancements werden einmalig abgeschlossen und nie wieder
-    // angezeigt.
+    // ── Vanilla Advancements ──────────────────────────────────────────────────
+    // Criteria are NOT revoked – doing so would cause an infinite loop:
+    // revoke → advancement resets → next action triggers it again → etc.
+    // Instead: announceAdvancements=false (gamerule in FairPlayPlugin) suppresses
+    // chat messages. Vanilla advancements complete once and are never shown again.
 }

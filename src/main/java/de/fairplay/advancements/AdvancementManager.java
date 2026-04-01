@@ -45,7 +45,8 @@ public class AdvancementManager {
         "data/fairplay/advancement/good_night.json",
         "data/fairplay/advancement/bed_to_go.json",
         "data/fairplay/advancement/fair_trade.json",
-        "data/fairplay/advancement/ignition.json"
+        "data/fairplay/advancement/ignition.json",
+        "data/fairplay/advancement/first_night.json"
     );
 
     private final FairPlayPlugin plugin;

@@ -53,7 +53,7 @@ public class FairPlayPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CombatListener(storage, advManager), this);
         getServer().getPluginManager().registerEvents(new LootListener(advManager), this);
         getServer().getPluginManager().registerEvents(new VehicleListener(storage, advManager), this);
-        getServer().getPluginManager().registerEvents(new AdvancementListener(advManager), this);
+        getServer().getPluginManager().registerEvents(new AdvancementListener(advManager, this), this);
 
         // Disable vanilla advancement announcements globally
         getServer().getWorlds().forEach(w -> w.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false));
