@@ -132,6 +132,31 @@ public class GrowthListener implements Listener {
             return;
         }
 
+        // Case: new POINTED_DRIPSTONE tip formed by a stalactite dripping onto a DRIPSTONE_BLOCK floor.
+        // The UP/DOWN neighbour checks above won't find the owner: DOWN is an unowned DRIPSTONE_BLOCK,
+        // and UP is air. Scan upward through the air gap to locate the owned stalactite.
+        if (event.getNewState().getType() == Material.POINTED_DRIPSTONE) {
+            // Depending on Paper version the event fires either on the DRIPSTONE_BLOCK (base)
+            // or on the air block where the new tip will appear – handle both.
+            Block tip = (grownBlock.getType() == Material.DRIPSTONE_BLOCK)
+                    ? grownBlock.getRelative(BlockFace.UP) : grownBlock;
+
+            if (storage.getBlockOwner(tip) == null) {
+                Block scan = tip.getRelative(BlockFace.UP);
+                for (int i = 0; i < 24; i++) {
+                    Material t = scan.getType();
+                    if (t == Material.POINTED_DRIPSTONE || t == Material.DRIPSTONE_BLOCK) {
+                        UUID stalOwner = storage.getBlockOwner(scan);
+                        if (stalOwner != null) storage.setBlockOwner(tip, stalOwner);
+                        break;
+                    }
+                    if (t != Material.AIR && t != Material.CAVE_AIR) break;
+                    scan = scan.getRelative(BlockFace.UP);
+                }
+            }
+            return;
+        }
+
         // Bamboo / Kelp: event fires on existing tip → new block appears after the event.
         // Wait 1 tick, then register the block above.
         if (DELAYED_GROW_PLANTS.contains(grownBlock.getType())) {
