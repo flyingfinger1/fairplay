@@ -75,7 +75,7 @@ public class CauldronListener implements Listener {
     /**
      * Player draws water (bottle) or lava (bucket) from the cauldron.
      * Only allowed if the player owns the cauldron.
-     * If the cauldron is fully emptied, the ownership entry is removed.
+     * The cauldron block stays owned by the player even after it is emptied.
      */
     private void handleTakeFromCauldron(CauldronLevelChangeEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
@@ -88,8 +88,5 @@ public class CauldronListener implements Listener {
             return;
         }
 
-        if (event.getNewState().getType() == Material.CAULDRON) {
-            storage.removeBlockOwner(event.getBlock());
-        }
     }
 }
