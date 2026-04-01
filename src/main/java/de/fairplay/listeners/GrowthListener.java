@@ -38,8 +38,8 @@ public class GrowthListener implements Listener {
     }
 
     /**
-     * Baum, Pilz, Bambus usw. wächst aus einem platzierten Setzling/Spore.
-     * Alle neu generierten Blöcke erhalten die Ownership des Setzlings.
+     * Tree, mushroom, bamboo etc. grows from a placed sapling/spore.
+     * All newly generated blocks receive the ownership of the sapling.
      */
     @EventHandler
     public void onStructureGrow(StructureGrowEvent event) {
@@ -56,15 +56,15 @@ public class GrowthListener implements Listener {
     }
 
     /**
-     * Knochenmehr auf einem eigenen Block:
-     *  - Nicht eigener Block → Aktion wird blockiert
-     *  - Eigener Block → alle generierten Blöcke werden dem Spieler zugewiesen
-     * Gilt für Moos, PaleMoos, Gras, Getreide, Seerose usw.
+     * Bone meal on a block:
+     *  - Not owned block → action is blocked
+     *  - Owned block → all generated blocks are assigned to the player
+     * Applies to moss, pale moss, grass, crops, lily pad etc.
      */
     @EventHandler
     public void onBlockFertilize(BlockFertilizeEvent event) {
         Player player = event.getPlayer();
-        if (player == null) return; // Werfer – kein Ownership-Check
+        if (player == null) return; // Dispenser – no ownership check
 
         UUID owner = storage.getBlockOwner(event.getBlock());
         if (owner == null || !owner.equals(player.getUniqueId())) {
@@ -79,43 +79,43 @@ public class GrowthListener implements Listener {
         }
     }
 
-    // Pflanzen bei denen BlockGrowEvent auf dem bestehenden Tip feuert,
-    // der neue Block aber erst einen Tick später erscheint.
+    // Plants where BlockGrowEvent fires on the existing tip block,
+    // but the new block only appears one tick later.
     private static final Set<Material> DELAYED_GROW_PLANTS = Set.of(
         Material.BAMBOO, Material.BAMBOO_SAPLING,
         Material.KELP,   Material.KELP_PLANT
     );
 
     /**
-     * Wächst ein Block nach oben oder unten:
-     *  - Nach oben (Zuckerrohr, Kaktus, Twisting Vines): Ownership vom Block darunter
-     *  - Nach unten (Cave Vines, Weeping Vines): Ownership vom Block darüber
-     * Getreide/Kartoffeln wachsen an derselben Koordinate – DB-Eintrag bleibt automatisch.
+     * A block grows upward or downward:
+     *  - Upward (sugar cane, cactus, twisting vines): ownership from the block below
+     *  - Downward (cave vines, weeping vines): ownership from the block above
+     * Crops/potatoes grow at the same coordinate – DB entry persists automatically.
      *
-     * Bambus/Kelp-Sonderfall: BlockGrowEvent feuert für die bestehende Spitze
-     * (Altersänderung), bevor der neue Block darüber erscheint.
-     * Lösung: 1 Tick warten, dann den Block darüber registrieren.
+     * Bamboo/kelp special case: BlockGrowEvent fires on the existing tip (age change)
+     * before the new block appears above.
+     * Fix: wait 1 tick, then register the block above.
      */
     @EventHandler
     public void onBlockGrow(BlockGrowEvent event) {
         Block grownBlock = event.getBlock();
 
-        // Neuer Block erscheint oben (Zuckerrohr, Kaktus, ...)
+        // New block appears above (sugar cane, cactus, ...)
         UUID owner = storage.getBlockOwner(grownBlock.getRelative(BlockFace.DOWN));
         if (owner != null) {
             storage.setBlockOwner(grownBlock, owner);
             return;
         }
 
-        // Neuer Block erscheint unten (Cave Vines, Weeping Vines)
+        // New block appears below (cave vines, weeping vines)
         owner = storage.getBlockOwner(grownBlock.getRelative(BlockFace.UP));
         if (owner != null) {
             storage.setBlockOwner(grownBlock, owner);
             return;
         }
 
-        // Bambus / Kelp: Event feuert auf bestehende Spitze → neuer Block erscheint
-        // erst nach dem Event. 1 Tick warten, dann den Block darüber registrieren.
+        // Bamboo / Kelp: event fires on existing tip → new block appears after the event.
+        // Wait 1 tick, then register the block above.
         if (DELAYED_GROW_PLANTS.contains(grownBlock.getType())) {
             UUID tipOwner = storage.getBlockOwner(grownBlock);
             if (tipOwner != null) {
@@ -132,10 +132,10 @@ public class GrowthListener implements Listener {
     }
 
     /**
-     * Ausbreitung von Organismen auf benachbarte Blöcke.
-     * Übertragung nur für Pflanzen/Organismen bei denen das inhaltlich sinnvoll ist.
-     * Gras/Myzel werden bewusst ausgeschlossen (der Spieler besitzt den Ziel-Dirt-Block
-     * bereits, falls er ihn selbst platziert hat).
+     * Spread of organisms to adjacent blocks.
+     * Ownership is only transferred for plants/organisms where it makes sense.
+     * Grass/mycelium are intentionally excluded (the player already owns the target
+     * dirt block if they placed it).
      */
     @EventHandler
     public void onBlockSpread(BlockSpreadEvent event) {
@@ -148,8 +148,8 @@ public class GrowthListener implements Listener {
     }
 
     /**
-     * Cobblestone-/Obsidian-/Stein-Generator: mindestens eine der beteiligten
-     * Quellen (Lava oder Wasser) muss vom Spieler platziert worden sein.
+     * Cobblestone/obsidian/stone generator: at least one of the involved
+     * sources (lava or water) must have been placed by the player.
      */
     @EventHandler
     public void onBlockForm(BlockFormEvent event) {
@@ -197,7 +197,7 @@ public class GrowthListener implements Listener {
     }
 
     /**
-     * Materialien, deren Ausbreitung Ownership überträgt.
+     * Materials whose spread transfers ownership.
      */
     private boolean transfersOwnership(Material material) {
         return switch (material) {
@@ -205,14 +205,14 @@ public class GrowthListener implements Listener {
                  MELON_STEM, ATTACHED_MELON_STEM,
                  // Sculk
                  SCULK, SCULK_CATALYST, SCULK_SENSOR, SCULK_SHRIEKER, SCULK_VEIN,
-                 // Ranken
+                 // Vines
                  VINE,
                  CAVE_VINES, CAVE_VINES_PLANT,
                  WEEPING_VINES, WEEPING_VINES_PLANT,
                  TWISTING_VINES, TWISTING_VINES_PLANT,
-                 // Moos
+                 // Moss
                  MOSS_BLOCK, PALE_MOSS_BLOCK,
-                 // Beeren-Büsche
+                 // Berry bushes
                  SWEET_BERRY_BUSH,
                  // Kelp
                  KELP, KELP_PLANT -> true;

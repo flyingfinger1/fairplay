@@ -14,45 +14,45 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Lädt Sprachdateien aus resources/lang/ und liefert übersetzte Meldungen
- * basierend auf der Client-Sprache des Spielers (player.locale()).
+ * Loads language files from resources/lang/ and provides translated messages
+ * based on the player's client language (player.locale()).
  *
- * Fallback-Reihenfolge: Spieler-Locale → Sprache ohne Region → de_de
+ * Fallback order: player locale → language only → en_us
  */
 public class Lang {
 
-    private static final String FALLBACK_LANG = "de_de";
+    private static final String FALLBACK_LANG = "en_us";
     private static final Map<String, Properties> CACHE = new ConcurrentHashMap<>();
 
     private Lang() {}
 
     /**
-     * Gibt eine übersetzte Meldung als rotes Component zurück.
-     * Automatischer Fallback auf de_de wenn Sprache nicht verfügbar.
+     * Returns a translated message as a red Component.
+     * Automatically falls back to en_us if the language is not available.
      */
     public static Component get(Player player, String key) {
         return Component.text(getString(player, key), NamedTextColor.RED);
     }
 
     /**
-     * Gibt die rohe übersetzte Zeichenkette zurück (ohne Component-Wrapper).
+     * Returns the raw translated string (without a Component wrapper).
      */
     public static String getString(Player player, String key) {
         Locale locale = player.locale();
         String lang = (locale.getLanguage() + "_" + locale.getCountry()).toLowerCase();
 
-        // Versuch 1: exakter Match (z.B. "en_us")
+        // Attempt 1: exact match (e.g. "en_us")
         String value = load(lang).getProperty(key);
         if (value != null) return value;
 
-        // Versuch 2: nur Sprache (z.B. "en" → "en_us" o.ä.)
+        // Attempt 2: language only (e.g. "en" → "en_us")
         String langOnly = locale.getLanguage().toLowerCase();
         if (!langOnly.equals(lang)) {
             value = load(langOnly).getProperty(key);
             if (value != null) return value;
         }
 
-        // Fallback: de_de
+        // Fallback: en_us
         return load(FALLBACK_LANG).getProperty(key, key);
     }
 
@@ -65,7 +65,7 @@ public class Lang {
                     props.load(new InputStreamReader(is, StandardCharsets.UTF_8));
                 }
             } catch (IOException e) {
-                // Unbekannte Sprache → leere Properties → Fallback greift
+                // Unknown language → empty Properties → fallback applies
             }
             return props;
         });

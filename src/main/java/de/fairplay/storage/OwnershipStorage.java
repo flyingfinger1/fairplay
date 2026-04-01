@@ -41,7 +41,7 @@ public class OwnershipStorage {
                     """);
             }
         } catch (SQLException e) {
-            plugin.getLogger().severe("Datenbank-Initialisierung fehlgeschlagen: " + e.getMessage());
+            plugin.getLogger().severe("Database initialization failed: " + e.getMessage());
         }
     }
 
@@ -61,7 +61,7 @@ public class OwnershipStorage {
             stmt.setString(5, owner.toString());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            plugin.getLogger().warning("setBlockOwner fehlgeschlagen: " + e.getMessage());
+            plugin.getLogger().warning("setBlockOwner failed: " + e.getMessage());
         }
     }
 
@@ -81,7 +81,7 @@ public class OwnershipStorage {
                 return UUID.fromString(rs.getString("owner"));
             }
         } catch (SQLException e) {
-            plugin.getLogger().warning("getBlockOwner fehlgeschlagen: " + e.getMessage());
+            plugin.getLogger().warning("getBlockOwner failed: " + e.getMessage());
         }
         return null;
     }
@@ -99,7 +99,7 @@ public class OwnershipStorage {
             stmt.setInt(4, z);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            plugin.getLogger().warning("removeBlockOwner fehlgeschlagen: " + e.getMessage());
+            plugin.getLogger().warning("removeBlockOwner failed: " + e.getMessage());
         }
     }
 
@@ -112,7 +112,7 @@ public class OwnershipStorage {
             stmt.setString(2, owner.toString());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            plugin.getLogger().warning("setEntityOwner fehlgeschlagen: " + e.getMessage());
+            plugin.getLogger().warning("setEntityOwner failed: " + e.getMessage());
         }
     }
 
@@ -125,7 +125,7 @@ public class OwnershipStorage {
                 return UUID.fromString(rs.getString("owner"));
             }
         } catch (SQLException e) {
-            plugin.getLogger().warning("getEntityOwner fehlgeschlagen: " + e.getMessage());
+            plugin.getLogger().warning("getEntityOwner failed: " + e.getMessage());
         }
         return null;
     }
@@ -136,7 +136,7 @@ public class OwnershipStorage {
             stmt.setString(1, entityUUID.toString());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            plugin.getLogger().warning("removeEntityOwner fehlgeschlagen: " + e.getMessage());
+            plugin.getLogger().warning("removeEntityOwner failed: " + e.getMessage());
         }
     }
 
@@ -148,7 +148,7 @@ public class OwnershipStorage {
                 connection.close();
             }
         } catch (SQLException e) {
-            plugin.getLogger().warning("Datenbankverbindung konnte nicht geschlossen werden: " + e.getMessage());
+            plugin.getLogger().warning("Failed to close database connection: " + e.getMessage());
         }
     }
 }

@@ -29,15 +29,14 @@ public class FairPlayPlugin extends JavaPlugin {
         advManager = new AdvancementManager(this);
         boolean dataPackChanged = advManager.install();
 
-        // Data Pack hat sich geändert → reloadData() damit die neuen Dateien
-        // noch in dieser Server-Session wirksam werden (1 Tick warten bis
-        // alle Plugins vollständig geladen sind).
+        // Data pack changed → call reloadData() so the new files take effect in the same server session
+        // (wait 1 tick until all plugins are fully loaded).
         if (dataPackChanged) {
             getServer().getScheduler().runTaskLater(this,
                 () -> getServer().reloadData(), 1L);
         }
 
-        // Resource Pack starten (Übersetzungen für Advancements)
+        // Start resource pack server (translations for advancements)
         resourcePackServer = new ResourcePackServer();
         try {
             resourcePackServer.start(this);
@@ -45,7 +44,7 @@ public class FairPlayPlugin extends JavaPlugin {
             getServer().getPluginManager().registerEvents(
                 new ResourcePackListener(resourcePackServer, required), this);
         } catch (Exception e) {
-            getLogger().warning("Resource Pack Server konnte nicht gestartet werden: " + e.getMessage());
+            getLogger().warning("Failed to start resource pack server: " + e.getMessage());
         }
 
         getServer().getPluginManager().registerEvents(new BlockOwnershipListener(storage, advManager), this);
@@ -56,10 +55,10 @@ public class FairPlayPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new VehicleListener(storage, advManager), this);
         getServer().getPluginManager().registerEvents(new AdvancementListener(advManager), this);
 
-        // Vanilla-Advancement-Announcements global deaktivieren
+        // Disable vanilla advancement announcements globally
         getServer().getWorlds().forEach(w -> w.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false));
 
-        getLogger().info("FairPlay aktiviert.");
+        getLogger().info("FairPlay enabled.");
     }
 
     @Override
@@ -70,7 +69,7 @@ public class FairPlayPlugin extends JavaPlugin {
         if (storage != null) {
             storage.close();
         }
-        getLogger().info("FairPlay deaktiviert.");
+        getLogger().info("FairPlay disabled.");
     }
 
     public OwnershipStorage getStorage() {

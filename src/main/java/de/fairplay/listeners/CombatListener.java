@@ -31,7 +31,7 @@ public class CombatListener implements Listener {
 
         Entity target = event.getEntity();
 
-        // Eigenes Fahrzeug darf der Spieler zerstören
+        // Players may destroy their own vehicles
         if (isVehicle(target)) {
             UUID owner = storage.getEntityOwner(target.getUniqueId());
             if (owner != null && owner.equals(attacker.getUniqueId())) {
@@ -39,7 +39,7 @@ public class CombatListener implements Listener {
             }
         }
 
-        // Alle anderen direkten Angriffe blocken
+        // Block all other direct attacks
         event.setCancelled(true);
 
         // Keine Gewalt: direct attack on a mob (not a vehicle) was blocked

@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class CauldronListener implements Listener {
 
-    // Vanilla-Maximum für Dripstone-Reichweite
+    // Vanilla maximum search depth for dripstone
     private static final int MAX_DRIPSTONE_SEARCH = 12;
 
     private final OwnershipStorage storage;
@@ -40,9 +40,9 @@ public class CauldronListener implements Listener {
     }
 
     /**
-     * Dripstone tropft in den Kessel: den Tropfstein selbst suchen.
-     * Hat der Spieler den Tropfstein platziert, bekommt der Kessel seine Ownership –
-     * unabhängig davon woher die Flüssigkeit über dem Tropfstein stammt.
+     * Dripstone drips into the cauldron: locate the dripstone block.
+     * If the player placed the dripstone, the cauldron receives their ownership –
+     * regardless of where the liquid above the dripstone comes from.
      */
     private void handleDripstoneFill(CauldronLevelChangeEvent event) {
         Block cauldron = event.getBlock();
@@ -61,9 +61,9 @@ public class CauldronListener implements Listener {
                 return;
             }
 
-            // Weiter nach oben falls es Luft oder Höhlenluft ist
+            // Continue upward if air or cave air
             if (type != Material.AIR && type != Material.CAVE_AIR) {
-                return; // Irgendetwas anderes blockiert den Pfad
+                return; // Something else is blocking the path
             }
 
             search = search.getRelative(BlockFace.UP);
@@ -71,9 +71,9 @@ public class CauldronListener implements Listener {
     }
 
     /**
-     * Spieler entnimmt Wasser (Flasche) oder Lava (Eimer) aus dem Kessel.
-     * Nur erlaubt wenn der Kessel dem Spieler gehört.
-     * Wird der Kessel vollständig geleert, wird der Ownership-Eintrag entfernt.
+     * Player draws water (bottle) or lava (bucket) from the cauldron.
+     * Only allowed if the player owns the cauldron.
+     * If the cauldron is fully emptied, the ownership entry is removed.
      */
     private void handleTakeFromCauldron(CauldronLevelChangeEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;

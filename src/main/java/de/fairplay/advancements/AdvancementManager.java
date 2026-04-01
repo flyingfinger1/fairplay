@@ -55,9 +55,9 @@ public class AdvancementManager {
     }
 
     /**
-     * Installiert das Data Pack und gibt zurück ob sich Dateien geändert haben.
-     * Bei Änderungen muss der Aufrufer server.reloadData() triggern damit
-     * die neuen Dateien noch in derselben Server-Session wirksam werden.
+     * Installs the data pack and returns whether any files changed.
+     * If files changed, the caller must trigger server.reloadData() so the new files
+     * take effect in the same server session.
      */
     public boolean install() {
         File worldFolder = plugin.getServer().getWorlds().get(0).getWorldFolder();
@@ -74,9 +74,9 @@ public class AdvancementManager {
 
                     byte[] newBytes = in.readAllBytes();
 
-                    // Nur überschreiben wenn Inhalt sich geändert hat
+                    // Only overwrite if content has changed
                     if (target.exists() && Arrays.equals(newBytes, Files.readAllBytes(target.toPath()))) {
-                        continue; // unverändert
+                        continue; // unchanged
                     }
 
                     Files.write(target.toPath(), newBytes, StandardOpenOption.CREATE,
@@ -85,14 +85,14 @@ public class AdvancementManager {
                 }
             }
         } catch (IOException e) {
-            plugin.getLogger().severe("Data Pack Installation fehlgeschlagen: " + e.getMessage());
+            plugin.getLogger().severe("Data pack installation failed: " + e.getMessage());
             return false;
         }
 
         if (freshInstall) {
-            plugin.getLogger().info("Data Pack installiert.");
+            plugin.getLogger().info("Data pack installed.");
         } else if (anyChanged) {
-            plugin.getLogger().info("Data Pack aktualisiert – lade Daten neu…");
+            plugin.getLogger().info("Data pack updated – reloading data…");
         }
         return anyChanged;
     }

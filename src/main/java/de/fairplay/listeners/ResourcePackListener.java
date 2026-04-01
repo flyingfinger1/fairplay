@@ -8,13 +8,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 /**
- * Schickt das FairPlay-Resource-Pack beim Einloggen an jeden Spieler.
- * Das Pack enthält die Übersetzungen für Advancement-Titel und -Beschreibungen.
+ * Sends the FairPlay resource pack to each player on login.
+ * The pack contains translations for advancement titles and descriptions.
  */
 public class ResourcePackListener implements Listener {
 
     private static final Component PROMPT =
-        Component.text("FairPlay Ressourcenpaket (Übersetzungen für Advancements)");
+        Component.text("FairPlay Resource Pack (advancement translations)");
 
     private final ResourcePackServer packServer;
     private final boolean required;

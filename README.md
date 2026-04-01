@@ -1,51 +1,51 @@
-# FairPlay – Faires Minecraft
+# FairPlay – Fair Minecraft
 
-Ein Paper-Plugin für Minecraft 1.21.8, das eine einzige Regel durchsetzt:
+A Paper plugin for Minecraft 1.21.8 that enforces one simple rule:
 
-> **Du darfst nur abbauen, was du selbst gebaut hast.**
+> **You may only break blocks that you placed yourself.**
 
 ---
 
-## Spielprinzip
+## Concept
 
-Jeder Block den ein Spieler platziert, wird ihm zugewiesen. Fremde Blöcke können nicht abgebaut werden – auch nicht indirekt. Das schafft ein kooperatives Survival-Erlebnis, bei dem Ressourcen und Strukturen wirklich einem Spieler „gehören".
+Every block a player places is assigned to them in a database. Foreign blocks cannot be broken — not directly, and not indirectly. This creates a cooperative survival experience where resources and structures truly "belong" to a player.
 
 ## Features
 
-### Block-Ownership
-- Jeder platzierte Block wird dem Spieler zugewiesen (SQLite-Datenbank)
-- Fremde Blöcke können nicht abgebaut werden
-- **Creative-Modus** bypassed alle Checks automatisch
-- Zweiblock-Strukturen (Betten, Türen, große Pflanzen) werden korrekt als Einheit behandelt
+### Block Ownership
+- Every placed block is registered to the player (SQLite database)
+- Foreign blocks cannot be broken
+- **Creative mode** bypasses all checks automatically
+- Two-block structures (beds, doors, tall plants) are correctly treated as a unit
 
-### Flüssigkeiten & Ressourcen
-- Wasser- und Lava-Eimer können nur aus eigenen Quellen gefüllt werden
-- Waterlogged-Blöcke (z. B. Zaun im Wasser) prüfen angrenzende eigene Wasserquellen
-- Glasflaschen können nur an eigenen Wasserquellen gefüllt werden
-- Kessel können nur vom Eigentümer geleert werden
-- Felder dürfen nur vom Eigentümer gedüngt werden
+### Fluids & Resources
+- Water and lava buckets can only be filled from the player's own sources
+- Waterlogged blocks (e.g. fence in water) check for adjacent owned water sources
+- Glass bottles can only be filled from the player's own water sources
+- Cauldrons can only be emptied by the owner
+- Crops can only be fertilised by the owner
 
-### Pflanzen & Wachstum
-- Natürlich gewachsene Blöcke (Zuckerrohr, Kaktus, Bambus, Kelp …) erben die Ownership des Stammes
-- Bäume aus eigenen Setzlingen gehören dem Pflanzer
-- Süßbeeren können nur vom Eigentümer des Busches geerntet werden
-- Felder können nicht von Fremden zertrampelt werden
+### Plants & Growth
+- Naturally grown blocks (sugar cane, cactus, bamboo, kelp …) inherit ownership from the base block
+- Trees grown from the player's own saplings belong to the planter
+- Sweet berries can only be harvested by the bush owner
+- Farmland cannot be trampled by other players
 
 ### 27 Custom Advancements
-Das Plugin bringt einen eigenen Advancement-Baum mit, der die FairPlay-Mechaniken erklärt und belohnt – von „Grundstein" (erster eigener Block) bis „Züüündung" (Creeper als Werkzeug).
+The plugin ships its own advancement tree explaining and rewarding FairPlay mechanics — from "Foundation" (first own block) to "Ignition" (using a Creeper as a tool).
 
-### Mehrsprachigkeit
-Alle Spieler-Meldungen und Advancement-Texte werden automatisch in der Client-Sprache angezeigt. Aktuell unterstützte Sprachen:
-- 🇩🇪 Deutsch (`de_de`)
-- 🇺🇸 Englisch (`en_us`)
+### Multilingual Support
+All player messages and advancement texts are automatically displayed in the player's client language. Currently supported languages:
+- 🇩🇪 German (`de_de`)
+- 🇺🇸 English (`en_us`)
 
-Neue Sprachen können durch Hinzufügen einer Datei in `src/main/resources/lang/` und `src/main/resources/resourcepack/assets/fairplay/lang/` ergänzt werden.
+Adding a new language only requires adding a file to `src/main/resources/lang/` and `src/main/resources/resourcepack/assets/fairplay/lang/`.
 
 ---
 
 ## Installation
 
-### Voraussetzungen
+### Requirements
 - Paper 1.21.8
 - Java 21
 
@@ -53,74 +53,75 @@ Neue Sprachen können durch Hinzufügen einer Datei in `src/main/resources/lang/
 ```bash
 ./gradlew build
 ```
-Die fertige JAR liegt in `build/libs/FairPlay-1.0.0.jar`.
+The finished JAR is located in `build/libs/FairPlay-1.0.0.jar`.
 
 ### Deploy
 ```bash
 ./gradlew deploy
 ```
-Kopiert die JAR direkt in `server/plugins/` (lokale Entwicklungsumgebung).
+Copies the JAR directly into `server/plugins/` (local development environment).
 
-### Konfiguration
-Nach dem ersten Start wird `plugins/FairPlay/config.yml` erstellt:
+### Configuration
+After the first start, `plugins/FairPlay/config.yml` is created:
 
 ```yaml
-# Adresse die Clients für das Resource Pack erreichen können
-resource-pack-host: localhost   # Bei Dedicated Server: externe IP oder Domain
+# Address that clients can reach for the resource pack download
+resource-pack-host: localhost   # For a dedicated server: external IP or domain
 resource-pack-port: 8765
 
-# true = Clients müssen das Pack akzeptieren (sonst Kick)
+# true  = clients must accept the pack (otherwise kicked)
+# false = clients may decline (they will only see raw translation keys)
 resource-pack-required: false
 ```
 
-> **Hinweis:** Das Resource Pack wird automatisch beim Einloggen an Spieler gesendet und enthält die Übersetzungen für die Advancement-Texte. Ohne das Pack werden rohe Übersetzungsschlüssel angezeigt.
+> **Note:** The resource pack is automatically sent to players on login and contains the translations for advancement texts. Without the pack, raw translation keys are displayed.
 
 ---
 
-## Projektstruktur
+## Project Structure
 
 ```
 src/main/
 ├── java/de/fairplay/
-│   ├── FairPlayPlugin.java          # Plugin-Hauptklasse
-│   ├── Lang.java                    # Mehrsprachigkeit (player.locale())
-│   ├── ResourcePackServer.java      # Eingebetteter HTTP-Server
+│   ├── FairPlayPlugin.java          # Plugin main class
+│   ├── Lang.java                    # Multilingual support (player.locale())
+│   ├── ResourcePackServer.java      # Embedded HTTP server
 │   ├── advancements/
-│   │   └── AdvancementManager.java  # Data Pack Installation & Advancement-Vergabe
+│   │   └── AdvancementManager.java  # Data pack installation & advancement granting
 │   ├── listeners/
-│   │   ├── BlockOwnershipListener.java  # Kern-Mechanic: Block-Ownership
-│   │   ├── GrowthListener.java          # Wachstum & Ausbreitung
-│   │   ├── CauldronListener.java        # Kessel-Ownership
-│   │   ├── CombatListener.java          # Kampfregeln
-│   │   ├── LootListener.java            # Loot & Items
-│   │   ├── VehicleListener.java         # Boote & Loren
-│   │   ├── AdvancementListener.java     # Custom Advancement Trigger
-│   │   └── ResourcePackListener.java    # Resource Pack bei Login
+│   │   ├── BlockOwnershipListener.java  # Core mechanic: block ownership
+│   │   ├── GrowthListener.java          # Growth & spread
+│   │   ├── CauldronListener.java        # Cauldron ownership
+│   │   ├── CombatListener.java          # Combat rules
+│   │   ├── LootListener.java            # Loot & items
+│   │   ├── VehicleListener.java         # Boats & minecarts
+│   │   ├── AdvancementListener.java     # Custom advancement triggers
+│   │   └── ResourcePackListener.java    # Resource pack on login
 │   └── storage/
-│       └── OwnershipStorage.java        # SQLite-Datenbankzugriff
+│       └── OwnershipStorage.java        # SQLite database access
 └── resources/
     ├── config.yml
     ├── plugin.yml
-    ├── lang/                        # Server-seitige Übersetzungen (ActionBar)
-    │   ├── de_de.properties
-    │   └── en_us.properties
-    ├── datapack/                    # Custom Advancements (Data Pack)
+    ├── lang/                        # Server-side translations (action bar messages)
+    │   ├── en_us.properties
+    │   └── de_de.properties
+    ├── datapack/                    # Custom advancements (data pack)
     │   └── data/fairplay/advancement/
-    └── resourcepack/                # Client-seitige Übersetzungen
+    └── resourcepack/                # Client-side translations
         └── assets/fairplay/lang/
-            ├── de_de.json
-            └── en_us.json
+            ├── en_us.json
+            └── de_de.json
 ```
 
 ---
 
-## Technische Details
+## Technical Details
 
-| Komponente | Technologie |
+| Component | Technology |
 |---|---|
-| Server-API | Paper 1.21.8 (`paper-api:1.21.8-R0.1-SNAPSHOT`) |
-| Datenbank | SQLite via `sqlite-jdbc:3.45.1.0` (gebundelt) |
-| Build | Gradle (Fat JAR) |
+| Server API | Paper 1.21.8 (`paper-api:1.21.8-R0.1-SNAPSHOT`) |
+| Database | SQLite via `sqlite-jdbc:3.45.1.0` (bundled) |
+| Build | Gradle (fat JAR) |
 | Java | 21 |
-| Data Pack Format | 81 |
-| Resource Pack Format | 46 (kompatibel mit 32–9999) |
+| Data pack format | 81 |
+| Resource pack format | 46 (compatible with 32–9999) |

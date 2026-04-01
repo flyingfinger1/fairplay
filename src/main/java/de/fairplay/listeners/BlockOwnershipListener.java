@@ -51,23 +51,23 @@ public class BlockOwnershipListener implements Listener {
 
         BlockData data = placed.getBlockData();
 
-        // Bett: Kopfteil mitregistrieren
+        // Bed: also register the head part
         if (data instanceof Bed bed && bed.getPart() == Bed.Part.FOOT) {
             storage.setBlockOwner(placed.getRelative(bed.getFacing()), playerUUID);
 
-        // Türen & hohe Pflanzen (Bisected): obere Hälfte mitregistrieren
+        // Doors & tall plants (Bisected): also register the upper half
         } else if (data instanceof Bisected bisected && bisected.getHalf() == Bisected.Half.BOTTOM) {
             storage.setBlockOwner(placed.getRelative(BlockFace.UP), playerUUID);
         }
 
-        // Koch: furnace types
+        // Chef: furnace types
         if (placed.getType() == Material.FURNACE
                 || placed.getType() == Material.BLAST_FURNACE
                 || placed.getType() == Material.SMOKER) {
             adv.grant(event.getPlayer(), "koch");
         }
 
-        // Aussaat: crop blocks
+        // Sowing: crop blocks
         if (placed.getBlockData() instanceof Ageable && isCropMaterial(placed.getType())) {
             adv.grant(event.getPlayer(), "aussaat");
         }
@@ -78,7 +78,7 @@ public class BlockOwnershipListener implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlock();
 
-        // Creative-Spieler dürfen alles abbauen
+        // Creative players may break anything
         if (player.getGameMode() == GameMode.CREATIVE) {
             storage.removeBlockOwner(block);
             BlockData creativeData = block.getBlockData();
@@ -97,7 +97,7 @@ public class BlockOwnershipListener implements Listener {
 
         UUID owner = storage.getBlockOwner(block);
 
-        // Bambus-Fallback: gewachsene Blöcke ohne Owner-Eintrag → Stamm abwärts absuchen
+        // Bamboo fallback: grown blocks with no owner entry → walk down the stalk to find one
         if (owner == null && (block.getType() == Material.BAMBOO
                 || block.getType() == Material.BAMBOO_SAPLING)) {
             Block check = block.getRelative(BlockFace.DOWN);
@@ -125,7 +125,7 @@ public class BlockOwnershipListener implements Listener {
 
         storage.removeBlockOwner(block);
 
-        // Zweiblock-Strukturen: auch den jeweils anderen Teil aus der DB entfernen
+        // Two-block structures: also remove the other half from the DB
         BlockData data = block.getBlockData();
         if (data instanceof Bed bed) {
             BlockFace other = bed.getPart() == Bed.Part.FOOT
@@ -142,10 +142,10 @@ public class BlockOwnershipListener implements Listener {
     }
 
     /**
-     * Wasser- und Lava-Eimer registrieren Ownership des platzierten Quellblocks.
-     * BlockPlaceEvent feuert für Eimer-Platzierungen nicht zuverlässig, daher
-     * wird die Ownership hier explizit beim Leeren des Eimers gespeichert.
-     * MONITOR-Priorität: läuft nach allen anderen Listenern, nur wenn nicht gecancelt.
+     * Registers ownership of the placed water/lava source block.
+     * BlockPlaceEvent does not fire reliably for bucket placements, so ownership
+     * is registered explicitly here when the bucket is emptied.
+     * MONITOR priority: runs after all other listeners, only if not cancelled.
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
@@ -160,10 +160,9 @@ public class BlockOwnershipListener implements Listener {
     };
 
     /**
-     * Wasser- und Lavaeimer dürfen nur aus eigenen Quellen gefüllt werden.
-     * Gilt sowohl für reine Wasser-/Lavablöcke als auch für Waterlogged-Blöcke
-     * (z.B. Zaun im Wasser): dort wird geprüft ob ein eigener Wasser-Quellblock
-     * angrenzt.
+     * Water and lava buckets may only be filled from the player's own sources.
+     * Applies to both pure water/lava blocks and waterlogged blocks
+     * (e.g. fence in water): checks whether an adjacent owned water source exists.
      */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBucketFill(PlayerBucketFillEvent event) {
@@ -171,7 +170,7 @@ public class BlockOwnershipListener implements Listener {
         Player player = event.getPlayer();
         Material filled = block.getType();
 
-        // Direkter Wasser- oder Lavaquellblock
+        // Direct water or lava source block
         if (filled == Material.WATER || filled == Material.LAVA) {
             UUID owner = storage.getBlockOwner(block);
             if (owner == null || !owner.equals(player.getUniqueId())) {
@@ -181,15 +180,15 @@ public class BlockOwnershipListener implements Listener {
             return;
         }
 
-        // Waterlogged-Block (z.B. Zaun, Treppe, Slab im Wasser):
-        // Erlaubt wenn mindestens ein angrenzender eigener Wasser-Quellblock existiert.
+        // Waterlogged block (e.g. fence, stair, slab in water):
+        // Allowed if at least one adjacent owned water source exists.
         if (block.getBlockData() instanceof Waterlogged wl && wl.isWaterlogged()) {
             UUID playerId = player.getUniqueId();
             for (BlockFace face : WATER_CHECK_FACES) {
                 Block neighbor = block.getRelative(face);
                 if (neighbor.getType() == Material.WATER
                         && playerId.equals(storage.getBlockOwner(neighbor))) {
-                    return; // eigenes Wasser angrenzt → erlaubt
+                    return; // own water adjacent → allowed
                 }
             }
             event.setCancelled(true);
@@ -198,9 +197,9 @@ public class BlockOwnershipListener implements Listener {
     }
 
     /**
-     * Glasflaschen dürfen nur an eigenen Wasser-Quellblöcken gefüllt werden.
-     * Der Kessel-Fall (BOTTLE_FILL) ist bereits im CauldronListener abgedeckt.
-     * OffHand-Events werden ignoriert um Doppelverarbeitung zu vermeiden.
+     * Glass bottles may only be filled from the player's own water source blocks.
+     * The cauldron case (BOTTLE_FILL) is already handled in CauldronListener.
+     * Off-hand events are ignored to prevent double-processing.
      */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBottleFill(PlayerInteractEvent event) {
@@ -223,8 +222,8 @@ public class BlockOwnershipListener implements Listener {
     }
 
     /**
-     * Süßbeeren-Ernte: Right-Click auf fremden Beerenbusch blockieren.
-     * Der Busch bleibt stehen, aber die Beeren gehören dem Eigentümer.
+     * Sweet berry harvest: block right-clicking on another player's berry bush.
+     * The bush stays, but the berries belong to the owner.
      */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBerryPick(PlayerInteractEvent event) {
@@ -234,7 +233,7 @@ public class BlockOwnershipListener implements Listener {
         Block block = event.getClickedBlock();
         if (block == null || block.getType() != Material.SWEET_BERRY_BUSH) return;
 
-        // Busch mit age < 2 trägt keine Beeren → kein Item, kein Check nötig
+        // Bush with age < 2 has no berries → no item drop, no check needed
         if (!(block.getBlockData() instanceof Ageable ageable) || ageable.getAge() < 2) return;
 
         Player player = event.getPlayer();
@@ -247,8 +246,8 @@ public class BlockOwnershipListener implements Listener {
     }
 
     /**
-     * Felder zertrampeln: EntityChangeBlockEvent feuert wenn FARMLAND → DIRT wird.
-     * Nur Spieler werden geprüft; andere Entities (Tiere etc.) werden ignoriert.
+     * Farmland trampling: EntityChangeBlockEvent fires when FARMLAND → DIRT.
+     * Only players are checked; other entities (animals etc.) are ignored.
      */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onFarmlandTrample(EntityChangeBlockEvent event) {

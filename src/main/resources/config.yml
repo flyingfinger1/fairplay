@@ -1,14 +1,14 @@
-# FairPlay Plugin Konfiguration
+# FairPlay Plugin Configuration
 
-# Eingebetteter HTTP-Server für das Resource Pack (Übersetzungen).
-# Der Client lädt das Pack beim Einloggen automatisch herunter.
+# Embedded HTTP server for the resource pack (translations).
+# Clients automatically download the pack on login.
 #
-# resource-pack-host: Adresse die Clients erreichen können.
-#   Lokaler Server:    localhost
-#   LAN / Dedicated:   z.B. 192.168.1.100 oder deine-domain.de
+# resource-pack-host: Address that clients can reach.
+#   Local server:      localhost
+#   LAN / Dedicated:   e.g. 192.168.1.100 or your-domain.com
 resource-pack-host: localhost
 resource-pack-port: 8765
 
-# true  → Clients MÜSSEN das Pack akzeptieren (sonst Kick)
-# false → Clients können ablehnen (bekommen dann nur Englisch)
+# true  → Clients MUST accept the pack (otherwise kicked)
+# false → Clients may decline (they will only see raw translation keys)
 resource-pack-required: false

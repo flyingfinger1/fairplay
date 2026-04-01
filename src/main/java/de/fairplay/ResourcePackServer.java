@@ -14,13 +14,13 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * Baut das FairPlay-Resource-Pack als ZIP aus den eingebetteten Ressourcen,
- * berechnet den SHA-1-Hash und stellt es über einen eingebetteten HTTP-Server
- * zum Download bereit. Clients laden das Pack automatisch beim Einloggen herunter.
+ * Builds the FairPlay resource pack as a ZIP from embedded resources,
+ * computes the SHA-1 hash, and serves it via an embedded HTTP server.
+ * Clients download the pack automatically on login.
  */
 public class ResourcePackServer {
 
-    /** Alle Dateien die ins Resource-Pack-ZIP eingebettet werden. */
+    /** All files to be included in the resource pack ZIP. */
     private static final String[] PACK_FILES = {
         "pack.mcmeta",
         "assets/fairplay/lang/de_de.json",
@@ -33,8 +33,8 @@ public class ResourcePackServer {
     private String url;
 
     /**
-     * Baut das ZIP, startet den HTTP-Server und merkt sich URL + Hash.
-     * Muss vor der Listener-Registrierung aufgerufen werden.
+     * Builds the ZIP, starts the HTTP server and stores the URL and hash.
+     * Must be called before registering the resource pack listener.
      */
     public void start(JavaPlugin plugin) throws IOException {
         packBytes = buildZip(plugin);
@@ -51,14 +51,14 @@ public class ResourcePackServer {
                 out.write(packBytes);
             }
         });
-        httpServer.setExecutor(null); // Standard-Thread-Pool
+        httpServer.setExecutor(null); // Default thread pool
         httpServer.start();
 
         url = "http://" + host + ":" + port + "/fairplay.zip";
-        plugin.getLogger().info("Resource Pack verfügbar: " + url + "  (SHA-1: " + sha1Hex + ")");
+        plugin.getLogger().info("Resource pack available: " + url + "  (SHA-1: " + sha1Hex + ")");
     }
 
-    /** Stoppt den HTTP-Server beim Plugin-Shutdown. */
+    /** Stops the HTTP server on plugin shutdown. */
     public void stop() {
         if (httpServer != null) {
             httpServer.stop(0);
@@ -68,7 +68,7 @@ public class ResourcePackServer {
     public String getUrl()     { return url; }
     public String getSha1Hex() { return sha1Hex; }
 
-    // ── Interne Hilfsmethoden ────────────────────────────────────────────────
+    // ── Internal helpers ─────────────────────────────────────────────────────
 
     private byte[] buildZip(JavaPlugin plugin) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -76,7 +76,7 @@ public class ResourcePackServer {
             for (String file : PACK_FILES) {
                 try (InputStream is = plugin.getResource("resourcepack/" + file)) {
                     if (is == null) {
-                        plugin.getLogger().warning("Resource Pack: Datei nicht gefunden: " + file);
+                        plugin.getLogger().warning("Resource pack: file not found: " + file);
                         continue;
                     }
                     zos.putNextEntry(new ZipEntry(file));
@@ -93,7 +93,7 @@ public class ResourcePackServer {
             byte[] hash = MessageDigest.getInstance("SHA-1").digest(data);
             return HexFormat.of().formatHex(hash);
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("SHA-1 nicht verfügbar", e);
+            throw new RuntimeException("SHA-1 not available", e);
         }
     }
 }
