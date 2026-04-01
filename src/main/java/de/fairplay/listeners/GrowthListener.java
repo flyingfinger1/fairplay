@@ -27,6 +27,10 @@ public class GrowthListener implements Listener {
         BlockFace.UP, BlockFace.DOWN
     };
 
+    private static final BlockFace[] HORIZONTAL_FACES = {
+        BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST
+    };
+
     private final OwnershipStorage storage;
     private final JavaPlugin plugin;
     private final AdvancementManager adv;
@@ -116,6 +120,23 @@ public class GrowthListener implements Listener {
         if (owner != null) {
             storage.setBlockOwner(grownBlock, owner);
             return;
+        }
+
+        // Melon / Pumpkin: the fruit grows at the same Y-level as the stem.
+        // onBlockGrow receives this as a BlockSpreadEvent (subtype), but the stem
+        // is a horizontal neighbour – not above/below – so we check all four sides.
+        // event.getBlock() is still AIR at this point; getNewState() tells us what
+        // will appear.
+        Material newType = event.getNewState().getType();
+        if (newType == Material.MELON || newType == Material.PUMPKIN) {
+            for (BlockFace face : HORIZONTAL_FACES) {
+                owner = storage.getBlockOwner(grownBlock.getRelative(face));
+                if (owner != null) {
+                    storage.setBlockOwner(grownBlock, owner);
+                    return;
+                }
+            }
+            return; // No owned stem adjacent → fruit stays unowned
         }
 
         // Bamboo / Kelp: event fires on existing tip → new block appears after the event.
