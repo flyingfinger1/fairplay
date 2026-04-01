@@ -23,11 +23,13 @@ public class CauldronListener implements Listener {
     private final OwnershipStorage storage;
     private final FairPlayPlugin plugin;
     private final AdvancementManager adv;
+    private final boolean teamMode;
 
-    public CauldronListener(OwnershipStorage storage, FairPlayPlugin plugin, AdvancementManager adv) {
+    public CauldronListener(OwnershipStorage storage, FairPlayPlugin plugin, AdvancementManager adv, boolean teamMode) {
         this.storage = storage;
         this.plugin = plugin;
         this.adv = adv;
+        this.teamMode = teamMode;
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -77,6 +79,7 @@ public class CauldronListener implements Listener {
      */
     private void handleTakeFromCauldron(CauldronLevelChangeEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
+        if (teamMode) return;
 
         UUID owner = storage.getBlockOwner(event.getBlock());
         if (owner == null || !owner.equals(player.getUniqueId())) {

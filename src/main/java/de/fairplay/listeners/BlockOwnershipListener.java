@@ -37,10 +37,12 @@ public class BlockOwnershipListener implements Listener {
 
     private final OwnershipStorage storage;
     private final AdvancementManager adv;
+    private final boolean teamMode;
 
-    public BlockOwnershipListener(OwnershipStorage storage, AdvancementManager adv) {
+    public BlockOwnershipListener(OwnershipStorage storage, AdvancementManager adv, boolean teamMode) {
         this.storage = storage;
         this.adv = adv;
+        this.teamMode = teamMode;
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -108,7 +110,7 @@ public class BlockOwnershipListener implements Listener {
             }
         }
 
-        if (owner == null || !owner.equals(player.getUniqueId())) {
+        if (!teamMode && (owner == null || !owner.equals(player.getUniqueId()))) {
             event.setCancelled(true);
             player.sendActionBar(Lang.get(player, "msg.break"));
             adv.grant(player, "trespassing");
@@ -170,6 +172,8 @@ public class BlockOwnershipListener implements Listener {
         Player player = event.getPlayer();
         Material filled = block.getType();
 
+        if (teamMode) return;
+
         // Direct water or lava source block
         if (filled == Material.WATER || filled == Material.LAVA) {
             UUID owner = storage.getBlockOwner(block);
@@ -212,6 +216,8 @@ public class BlockOwnershipListener implements Listener {
         Block block = event.getClickedBlock();
         if (block == null || block.getType() != Material.WATER) return;
 
+        if (teamMode) return;
+
         Player player = event.getPlayer();
         UUID owner = storage.getBlockOwner(block);
 
@@ -236,6 +242,8 @@ public class BlockOwnershipListener implements Listener {
         // Bush with age < 2 has no berries → no item drop, no check needed
         if (!(block.getBlockData() instanceof Ageable ageable) || ageable.getAge() < 2) return;
 
+        if (teamMode) return;
+
         Player player = event.getPlayer();
         UUID owner = storage.getBlockOwner(block);
         if (owner == null || !owner.equals(player.getUniqueId())) {
@@ -254,6 +262,7 @@ public class BlockOwnershipListener implements Listener {
         if (!(event.getEntity() instanceof Player player)) return;
         if (event.getBlock().getType() != Material.FARMLAND) return;
         if (player.getGameMode() == GameMode.CREATIVE) return;
+        if (teamMode) return;
 
         UUID owner = storage.getBlockOwner(event.getBlock());
         if (owner == null || !owner.equals(player.getUniqueId())) {

@@ -30,11 +30,13 @@ public class GrowthListener implements Listener {
     private final OwnershipStorage storage;
     private final JavaPlugin plugin;
     private final AdvancementManager adv;
+    private final boolean teamMode;
 
-    public GrowthListener(JavaPlugin plugin, OwnershipStorage storage, AdvancementManager adv) {
+    public GrowthListener(JavaPlugin plugin, OwnershipStorage storage, AdvancementManager adv, boolean teamMode) {
         this.plugin = plugin;
         this.storage = storage;
         this.adv = adv;
+        this.teamMode = teamMode;
     }
 
     /**
@@ -65,6 +67,8 @@ public class GrowthListener implements Listener {
     public void onBlockFertilize(BlockFertilizeEvent event) {
         Player player = event.getPlayer();
         if (player == null) return; // Dispenser – no ownership check
+
+        if (teamMode) return;
 
         UUID owner = storage.getBlockOwner(event.getBlock());
         if (owner == null || !owner.equals(player.getUniqueId())) {

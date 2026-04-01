@@ -1,5 +1,11 @@
 # FairPlay Plugin Configuration
 
+# Game mode
+# team  → All players share ownership; everyone can use each other's blocks.
+# solo  → Each player only owns what they placed themselves (default).
+game-mode: solo
+
+
 # Embedded HTTP server for the resource pack (translations).
 # Clients automatically download the pack on login.
 #

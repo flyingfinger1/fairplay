@@ -47,9 +47,12 @@ public class FairPlayPlugin extends JavaPlugin {
             getLogger().warning("Failed to start resource pack server: " + e.getMessage());
         }
 
-        getServer().getPluginManager().registerEvents(new BlockOwnershipListener(storage, advManager), this);
-        getServer().getPluginManager().registerEvents(new CauldronListener(storage, this, advManager), this);
-        getServer().getPluginManager().registerEvents(new GrowthListener(this, storage, advManager), this);
+        boolean teamMode = getConfig().getString("game-mode", "solo").equalsIgnoreCase("team");
+        getLogger().info("Game mode: " + (teamMode ? "team" : "solo"));
+
+        getServer().getPluginManager().registerEvents(new BlockOwnershipListener(storage, advManager, teamMode), this);
+        getServer().getPluginManager().registerEvents(new CauldronListener(storage, this, advManager, teamMode), this);
+        getServer().getPluginManager().registerEvents(new GrowthListener(this, storage, advManager, teamMode), this);
         getServer().getPluginManager().registerEvents(new CombatListener(storage, advManager), this);
         getServer().getPluginManager().registerEvents(new LootListener(advManager), this);
         getServer().getPluginManager().registerEvents(new VehicleListener(storage, advManager), this);
