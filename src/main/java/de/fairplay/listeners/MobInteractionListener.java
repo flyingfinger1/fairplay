@@ -125,11 +125,11 @@ public class MobInteractionListener implements Listener {
     // ── Helper ────────────────────────────────────────────────────────────────
 
     /**
-     * Returns true if the entity is unowned (wild / naturally spawned)
-     * OR is owned by this specific player.
+     * Returns true only if the entity is owned by this specific player.
+     * Wild/unowned animals cannot be interacted with.
      */
     private boolean checkOwnership(Player player, Entity entity) {
         UUID owner = storage.getEntityOwner(entity.getUniqueId());
-        return owner == null || owner.equals(player.getUniqueId());
+        return owner != null && owner.equals(player.getUniqueId());
     }
 }
