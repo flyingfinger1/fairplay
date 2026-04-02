@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command' | grep -q 'git push' && cd \"C:/Users/teign/WebLerning/FairPlay\" && gradle deploy 2>&1 || true",
+            "statusMessage": "Deploying JAR to server/plugins..."
+          }
+        ]
+      }
+    ]
+  }
+}

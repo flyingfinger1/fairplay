@@ -7,6 +7,7 @@ import de.fairplay.listeners.CauldronListener;
 import de.fairplay.listeners.CombatListener;
 import de.fairplay.listeners.GrowthListener;
 import de.fairplay.listeners.LootListener;
+import de.fairplay.listeners.MobInteractionListener;
 import de.fairplay.listeners.ResourcePackListener;
 import de.fairplay.listeners.VehicleListener;
 import de.fairplay.storage.OwnershipStorage;
@@ -54,6 +55,7 @@ public class FairPlayPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CauldronListener(storage, this, advManager, teamMode), this);
         getServer().getPluginManager().registerEvents(new GrowthListener(this, storage, advManager, teamMode), this);
         getServer().getPluginManager().registerEvents(new CombatListener(storage, advManager), this);
+        getServer().getPluginManager().registerEvents(new MobInteractionListener(storage, advManager, teamMode), this);
         getServer().getPluginManager().registerEvents(new LootListener(advManager), this);
         getServer().getPluginManager().registerEvents(new VehicleListener(storage, advManager), this);
         getServer().getPluginManager().registerEvents(new AdvancementListener(advManager, this), this);
