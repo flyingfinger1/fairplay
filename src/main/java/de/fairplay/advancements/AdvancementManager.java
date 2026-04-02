@@ -66,7 +66,12 @@ public class AdvancementManager {
         boolean freshInstall = !datapackDir.exists();
         boolean anyChanged  = freshInstall;
 
+        // Build a set of canonical paths that belong to the current version
+        java.util.Set<File> knownFiles = new java.util.HashSet<>();
+        for (String file : FILES) knownFiles.add(new File(datapackDir, file).getAbsoluteFile());
+
         try {
+            // Copy / update all files that are part of the current version
             for (String file : FILES) {
                 File target = new File(datapackDir, file);
                 target.getParentFile().mkdirs();
@@ -85,6 +90,23 @@ public class AdvancementManager {
                     anyChanged = true;
                 }
             }
+
+            // Remove advancement JSON files that are no longer part of this version
+            // (e.g. old German-named files left over from a previous release).
+            File advDir = new File(datapackDir, "data/" + NAMESPACE + "/advancement");
+            if (advDir.isDirectory()) {
+                File[] obsolete = advDir.listFiles(
+                    f -> f.getName().endsWith(".json") && !knownFiles.contains(f.getAbsoluteFile()));
+                if (obsolete != null) {
+                    for (File f : obsolete) {
+                        if (f.delete()) {
+                            plugin.getLogger().info("Data pack: removed obsolete advancement " + f.getName());
+                            anyChanged = true;
+                        }
+                    }
+                }
+            }
+
         } catch (IOException e) {
             plugin.getLogger().severe("Data pack installation failed: " + e.getMessage());
             return false;
