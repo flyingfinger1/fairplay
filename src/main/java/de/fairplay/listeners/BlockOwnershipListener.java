@@ -240,15 +240,28 @@ public class BlockOwnershipListener implements Listener {
      * Registers ownership of the placed water/lava source block.
      * BlockPlaceEvent does not fire reliably for bucket placements, so ownership
      * is registered explicitly here when the bucket is emptied.
-     * MONITOR priority: runs after all other listeners, only if not cancelled.
+     * NORMAL priority so we can cancel before the bucket is consumed.
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         Material bucket = event.getBucket();
         if (bucket != Material.WATER_BUCKET && bucket != Material.LAVA_BUCKET) return;
 
         Block placed = event.getBlock();
-        UUID playerUUID = event.getPlayer().getUniqueId();
+        Player player = event.getPlayer();
+        UUID playerUUID = player.getUniqueId();
+
+        // Block placing into/onto blocks that already belong to another player
+        // (e.g. waterlogging a foreign fence).
+        if (!teamMode) {
+            UUID existingOwner = storage.getBlockOwner(placed);
+            if (existingOwner != null && !existingOwner.equals(playerUUID)) {
+                event.setCancelled(true);
+                player.sendActionBar(Lang.get(player, "msg.bucket"));
+                return;
+            }
+        }
+
         storage.setBlockOwner(placed, playerUUID);
 
         // BlockFormEvent does NOT fire for infinite water source creation in Paper.
@@ -257,7 +270,7 @@ public class BlockOwnershipListener implements Listener {
         // formed infinite source and gets assigned to this player.
         if (bucket == Material.WATER_BUCKET) {
             plugin.getServer().getScheduler().runTaskLater(plugin,
-                () -> claimInfiniteWaterSources(placed, playerUUID, event.getPlayer()), 10L);
+                () -> claimInfiniteWaterSources(placed, playerUUID, player), 10L);
         }
     }
 
