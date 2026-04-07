@@ -22,12 +22,12 @@ repositories {
 
 dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT'
-    // SQLite JDBC wird in die JAR gebundelt
+    // SQLite JDBC bundled into the JAR (no external dependency required)
     implementation 'org.xerial:sqlite-jdbc:3.45.1.0'
 }
 
 jar {
-    // Alle Abhängigkeiten in die Plugin-JAR einbetten (Fat JAR ohne Shadow)
+    // Bundle all dependencies into the plugin JAR (fat JAR without Shadow plugin)
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
@@ -41,6 +41,6 @@ tasks.register('deploy') {
             from jar.archiveFile
             into 'server/plugins'
         }
-        println ">> FairPlay-${version}.jar nach server/plugins kopiert."
+        println ">> FairPlay-${version}.jar copied to server/plugins."
     }
 }

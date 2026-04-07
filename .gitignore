@@ -2,18 +2,21 @@
 .gradle/
 build/
 
-# Server-Laufzeitdateien (kein Teil des Quellcodes)
+# Local test server (not part of the source code)
 server/
 
-# Extrahierte Minecraft-Server-Dateien (zum Nachschlagen, nicht zum Committen)
+# Extracted Minecraft server files (for reference only, not to be committed)
 META-INF/
 data/
+
+# Local Claude Code hooks (personal, not part of the project)
+.claude/
 
 # IDE
 .idea/
 *.iml
 .vscode/
 
-# Betriebssystem
+# OS
 .DS_Store
 Thumbs.db
