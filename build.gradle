@@ -22,16 +22,9 @@ repositories {
 
 dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT'
-    // SQLite JDBC bundled into the JAR (no external dependency required)
-    implementation 'org.xerial:sqlite-jdbc:3.45.1.0'
-}
-
-jar {
-    // Bundle all dependencies into the plugin JAR (fat JAR without Shadow plugin)
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    // SQLite JDBC is declared in plugin.yml `libraries` — Paper downloads it automatically.
+    // Listed as compileOnly here so the IDE and compiler can resolve the classes.
+    compileOnly 'org.xerial:sqlite-jdbc:3.45.1.0'
 }
 
 // Local-only tasks (deploy etc.) live in local.gradle — not committed to git
