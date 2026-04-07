@@ -1,0 +1,85 @@
+{
+  "advancement.fairplay.root.title": "Uczciwy Minecraft",
+  "advancement.fairplay.root.description": "Tylko to, co sam zbudujesz, naprawdę do ciebie należy.",
+
+  "advancement.fairplay.trespassing.title": "Naruszenie własności",
+  "advancement.fairplay.trespassing.description": "Nie możesz niszczyć bloków, których sam nie postawiłeś.",
+
+  "advancement.fairplay.own_hands.title": "Własne ręce",
+  "advancement.fairplay.own_hands.description": "To, co budujesz, jest twoje. I tylko twoje.",
+
+  "advancement.fairplay.endless_stone.title": "Nieskończony kamień",
+  "advancement.fairplay.endless_stone.description": "Lawa + woda = nieskończony brukowiec. I jest twój.",
+
+  "advancement.fairplay.collector.title": "Kolekcjoner",
+  "advancement.fairplay.collector.description": "Pierwszy przedmiot ląduje w twoich rękach.",
+
+  "advancement.fairplay.foundation.title": "Fundament",
+  "advancement.fairplay.foundation.description": "Twój pierwszy blok. Tutaj zaczyna się coś wielkiego.",
+
+  "advancement.fairplay.chef.title": "Kucharz",
+  "advancement.fairplay.chef.description": "Z ogniem i cierpliwością przetwarzasz swoje zasoby.",
+
+  "advancement.fairplay.endless_iron.title": "Nieskończone żelazo?",
+  "advancement.fairplay.endless_iron.description": "Żelazny golem padł i zostawił po sobie żelazo.",
+
+  "advancement.fairplay.empty_hands.title": "Puste ręce",
+  "advancement.fairplay.empty_hands.description": "Skrzynia była pusta. Nie ma tu nic do kradzieży.",
+
+  "advancement.fairplay.diy.title": "Zrób to sam",
+  "advancement.fairplay.diy.description": "Twój pierwszy stworzony przedmiot. Początek wszystkiego.",
+
+  "advancement.fairplay.green_thumb.title": "Zielony kciuk",
+  "advancement.fairplay.green_thumb.description": "Sadzonka – początek twojego lasu.",
+
+  "advancement.fairplay.my_forest.title": "Mój las",
+  "advancement.fairplay.my_forest.description": "Twoja sadzonka stała się całym drzewem. Należy do ciebie.",
+
+  "advancement.fairplay.sowing.title": "Siew",
+  "advancement.fairplay.sowing.description": "Gleba jest gotowa. Twoje własne jedzenie rośnie.",
+
+  "advancement.fairplay.harvest.title": "Żniwa",
+  "advancement.fairplay.harvest.description": "Zbierasz to, co siałeś.",
+
+  "advancement.fairplay.dripstone_trick.title": "Sztuczka ze stalaktytem",
+  "advancement.fairplay.dripstone_trick.description": "Twój stalaktyt zbiera to, co daje ziemia.",
+
+  "advancement.fairplay.water_management.title": "Gospodarka wodna",
+  "advancement.fairplay.water_management.description": "Twoje własne źródło wody – świeże i prawomocnie twoje.",
+
+  "advancement.fairplay.infinite.title": "Nieskończoność",
+  "advancement.fairplay.infinite.description": "Dwa źródła, nieskończona woda. Sprytne.",
+
+  "advancement.fairplay.hot_lava.title": "Gorąca lawa",
+  "advancement.fairplay.hot_lava.description": "Lawa – płynne złoto podziemi.",
+
+  "advancement.fairplay.no_violence.title": "Bez przemocy",
+  "advancement.fairplay.no_violence.description": "Bezpośrednie ataki są zabronione. Bądź kreatywny.",
+
+  "advancement.fairplay.resourcefulness.title": "Zaradność",
+  "advancement.fairplay.resourcefulness.description": "Czasem dłuższa droga jest lepszą drogą.",
+
+  "advancement.fairplay.mans_best_friend.title": "Najlepszy przyjaciel człowieka",
+  "advancement.fairplay.mans_best_friend.description": "Wierny towarzysz na zawsze.",
+
+  "advancement.fairplay.bodyguard.title": "Ochroniarz",
+  "advancement.fairplay.bodyguard.description": "Twój pies robi to, czego ty nie możesz.",
+
+  "advancement.fairplay.own_fleet.title": "Moja flota",
+  "advancement.fairplay.own_fleet.description": "Po wodzie lub po szynach – podróżujesz z klasą.",
+
+  "advancement.fairplay.good_night.title": "Dobranoc",
+  "advancement.fairplay.good_night.description": "Spanie jest łatwe. Zabranie własnego łóżka nie.",
+
+  "advancement.fairplay.bed_to_go.title": "Łóżko w podróży",
+  "advancement.fairplay.bed_to_go.description": "Teraz śpisz bezpiecznie gdziekolwiek jesteś.",
+
+  "advancement.fairplay.fair_trade.title": "Uczciwy handel",
+  "advancement.fairplay.fair_trade.description": "Handel i wymiana – uczciwa droga do postępu.",
+
+  "advancement.fairplay.ignition.title": "Zapłon",
+  "advancement.fairplay.ignition.description": "Pozwól wybuchnąć Creeperowi, by oczyścić bloki.",
+
+  "advancement.fairplay.first_night.title": "Pierwsza noc",
+  "advancement.fairplay.first_night.description": "Przeżyłeś swoją pierwszą noc. Świat jest twój."
+}

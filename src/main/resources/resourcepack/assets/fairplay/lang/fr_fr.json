@@ -1,0 +1,85 @@
+{
+  "advancement.fairplay.root.title": "Minecraft équitable",
+  "advancement.fairplay.root.description": "Seul ce que tu construis toi-même t'appartient vraiment.",
+
+  "advancement.fairplay.trespassing.title": "Violation",
+  "advancement.fairplay.trespassing.description": "Tu ne peux pas casser des blocs que tu n'as pas posés.",
+
+  "advancement.fairplay.own_hands.title": "De tes propres mains",
+  "advancement.fairplay.own_hands.description": "Ce que tu construis t'appartient. Et à toi seul.",
+
+  "advancement.fairplay.endless_stone.title": "Pierre sans fin",
+  "advancement.fairplay.endless_stone.description": "Lave + eau = cobblestone infini. Et il t'appartient.",
+
+  "advancement.fairplay.collector.title": "Collecteur",
+  "advancement.fairplay.collector.description": "Le premier objet atterrit dans tes mains.",
+
+  "advancement.fairplay.foundation.title": "Fondation",
+  "advancement.fairplay.foundation.description": "Ton premier bloc. Quelque chose de grand commence ici.",
+
+  "advancement.fairplay.chef.title": "Chef cuisinier",
+  "advancement.fairplay.chef.description": "Avec du feu et de la patience, tu transformes tes ressources.",
+
+  "advancement.fairplay.endless_iron.title": "Fer sans fin ?",
+  "advancement.fairplay.endless_iron.description": "Un golem de fer est tombé et a laissé du fer derrière lui.",
+
+  "advancement.fairplay.empty_hands.title": "Mains vides",
+  "advancement.fairplay.empty_hands.description": "Le coffre était vide. Rien à voler ici.",
+
+  "advancement.fairplay.diy.title": "Fait main",
+  "advancement.fairplay.diy.description": "Ton premier objet fabriqué. Le début de tout.",
+
+  "advancement.fairplay.green_thumb.title": "Pouce vert",
+  "advancement.fairplay.green_thumb.description": "Un plant – le début de ta forêt.",
+
+  "advancement.fairplay.my_forest.title": "Ma forêt",
+  "advancement.fairplay.my_forest.description": "Ton plant est devenu un arbre entier. Il t'appartient.",
+
+  "advancement.fairplay.sowing.title": "Semailles",
+  "advancement.fairplay.sowing.description": "Le sol est prêt. Ta propre nourriture pousse.",
+
+  "advancement.fairplay.harvest.title": "Récolte",
+  "advancement.fairplay.harvest.description": "Tu récoltes ce que tu sèmes.",
+
+  "advancement.fairplay.dripstone_trick.title": "Tour de stalactite",
+  "advancement.fairplay.dripstone_trick.description": "Ta stalactite collecte ce que la terre fournit.",
+
+  "advancement.fairplay.water_management.title": "Gestion de l'eau",
+  "advancement.fairplay.water_management.description": "Ta propre source d'eau – fraîche et légitimement tienne.",
+
+  "advancement.fairplay.infinite.title": "Infini",
+  "advancement.fairplay.infinite.description": "Deux sources, eau infinie. Ingénieux.",
+
+  "advancement.fairplay.hot_lava.title": "Lave brûlante",
+  "advancement.fairplay.hot_lava.description": "La lave – l'or liquide des profondeurs.",
+
+  "advancement.fairplay.no_violence.title": "Non-violence",
+  "advancement.fairplay.no_violence.description": "Les attaques directes sont interdites. Sois créatif.",
+
+  "advancement.fairplay.resourcefulness.title": "Ingéniosité",
+  "advancement.fairplay.resourcefulness.description": "Parfois le chemin le plus long est le meilleur.",
+
+  "advancement.fairplay.mans_best_friend.title": "Le meilleur ami de l'homme",
+  "advancement.fairplay.mans_best_friend.description": "Un compagnon fidèle pour toujours.",
+
+  "advancement.fairplay.bodyguard.title": "Garde du corps",
+  "advancement.fairplay.bodyguard.description": "Ton chien fait ce que tu ne peux pas faire toi-même.",
+
+  "advancement.fairplay.own_fleet.title": "Ma flotte",
+  "advancement.fairplay.own_fleet.description": "Par l'eau ou sur les rails – tu voyages avec style.",
+
+  "advancement.fairplay.good_night.title": "Bonne nuit",
+  "advancement.fairplay.good_night.description": "Dormir est facile. Apporter son propre lit ne l'est pas.",
+
+  "advancement.fairplay.bed_to_go.title": "Lit portable",
+  "advancement.fairplay.bed_to_go.description": "Tu dors maintenant en sécurité où que tu sois.",
+
+  "advancement.fairplay.fair_trade.title": "Commerce équitable",
+  "advancement.fairplay.fair_trade.description": "Troc et commerce – la voie honnête vers le progrès.",
+
+  "advancement.fairplay.ignition.title": "Mise à feu",
+  "advancement.fairplay.ignition.description": "Laisse un Creeper exploser pour dégager des blocs.",
+
+  "advancement.fairplay.first_night.title": "Première nuit",
+  "advancement.fairplay.first_night.description": "Tu as survécu à ta première nuit. Le monde t'appartient."
+}

@@ -1,0 +1,85 @@
+{
+  "advancement.fairplay.root.title": "공정한 Minecraft",
+  "advancement.fairplay.root.description": "직접 만든 것만이 진정으로 당신의 것입니다.",
+
+  "advancement.fairplay.trespassing.title": "불법 침입",
+  "advancement.fairplay.trespassing.description": "자신이 설치하지 않은 블록은 부술 수 없습니다.",
+
+  "advancement.fairplay.own_hands.title": "나만의 손으로",
+  "advancement.fairplay.own_hands.description": "당신이 만든 것은 당신의 것. 오직 당신만의 것.",
+
+  "advancement.fairplay.endless_stone.title": "끝없는 돌",
+  "advancement.fairplay.endless_stone.description": "용암 + 물 = 무한 자갈. 그리고 그것은 당신의 것.",
+
+  "advancement.fairplay.collector.title": "수집가",
+  "advancement.fairplay.collector.description": "첫 번째 아이템이 당신의 손에 들어왔습니다.",
+
+  "advancement.fairplay.foundation.title": "기초",
+  "advancement.fairplay.foundation.description": "당신의 첫 번째 블록. 여기서 위대한 것이 시작됩니다.",
+
+  "advancement.fairplay.chef.title": "요리사",
+  "advancement.fairplay.chef.description": "불과 인내로 자원을 가공합니다.",
+
+  "advancement.fairplay.endless_iron.title": "끝없는 철?",
+  "advancement.fairplay.endless_iron.description": "철 골렘이 쓰러지고 철을 남겼습니다.",
+
+  "advancement.fairplay.empty_hands.title": "빈 손",
+  "advancement.fairplay.empty_hands.description": "상자는 비어 있었습니다. 훔칠 것이 없습니다.",
+
+  "advancement.fairplay.diy.title": "직접 만들기",
+  "advancement.fairplay.diy.description": "당신의 첫 번째 제작 아이템. 모든 것의 시작.",
+
+  "advancement.fairplay.green_thumb.title": "초록 손가락",
+  "advancement.fairplay.green_thumb.description": "묘목 하나——당신의 숲의 시작.",
+
+  "advancement.fairplay.my_forest.title": "나의 숲",
+  "advancement.fairplay.my_forest.description": "당신의 묘목이 온전한 나무가 되었습니다. 그것은 당신의 것입니다.",
+
+  "advancement.fairplay.sowing.title": "씨뿌리기",
+  "advancement.fairplay.sowing.description": "땅이 준비되었습니다. 당신만의 식량이 자라고 있습니다.",
+
+  "advancement.fairplay.harvest.title": "수확",
+  "advancement.fairplay.harvest.description": "뿌린 대로 거둡니다.",
+
+  "advancement.fairplay.dripstone_trick.title": "종유석 트릭",
+  "advancement.fairplay.dripstone_trick.description": "당신의 종유석이 대지가 주는 것을 모읍니다.",
+
+  "advancement.fairplay.water_management.title": "물 관리",
+  "advancement.fairplay.water_management.description": "당신만의 수원——신선하고 당연히 당신의 것.",
+
+  "advancement.fairplay.infinite.title": "무한",
+  "advancement.fairplay.infinite.description": "두 개의 수원, 무한한 물. 영리하네요.",
+
+  "advancement.fairplay.hot_lava.title": "뜨거운 용암",
+  "advancement.fairplay.hot_lava.description": "용암——지하 세계의 액체 황금.",
+
+  "advancement.fairplay.no_violence.title": "비폭력",
+  "advancement.fairplay.no_violence.description": "직접 공격은 금지되어 있습니다. 창의적으로 생각하세요.",
+
+  "advancement.fairplay.resourcefulness.title": "기지",
+  "advancement.fairplay.resourcefulness.description": "때로는 돌아가는 길이 더 나은 길입니다.",
+
+  "advancement.fairplay.mans_best_friend.title": "인간의 가장 친한 친구",
+  "advancement.fairplay.mans_best_friend.description": "영원한 충실한 동반자.",
+
+  "advancement.fairplay.bodyguard.title": "보디가드",
+  "advancement.fairplay.bodyguard.description": "당신의 개가 당신이 할 수 없는 것을 해줍니다.",
+
+  "advancement.fairplay.own_fleet.title": "나의 함대",
+  "advancement.fairplay.own_fleet.description": "물 위나 레일 위에서——스타일리시하게 여행합니다.",
+
+  "advancement.fairplay.good_night.title": "잘 자요",
+  "advancement.fairplay.good_night.description": "자는 건 쉽습니다. 자신의 침대를 가져오는 건 그렇지 않습니다.",
+
+  "advancement.fairplay.bed_to_go.title": "휴대용 침대",
+  "advancement.fairplay.bed_to_go.description": "이제 어디서든 안전하게 잠들 수 있습니다.",
+
+  "advancement.fairplay.fair_trade.title": "공정 거래",
+  "advancement.fairplay.fair_trade.description": "물물교환과 거래——진보를 향한 정직한 길.",
+
+  "advancement.fairplay.ignition.title": "점화",
+  "advancement.fairplay.ignition.description": "크리퍼를 폭발시켜 블록을 치우세요.",
+
+  "advancement.fairplay.first_night.title": "첫 번째 밤",
+  "advancement.fairplay.first_night.description": "첫 번째 밤을 살아남았습니다. 세상은 당신의 것입니다."
+}

@@ -1,0 +1,85 @@
+{
+  "advancement.fairplay.root.title": "Честный Minecraft",
+  "advancement.fairplay.root.description": "Только то, что ты построил сам, по-настоящему принадлежит тебе.",
+
+  "advancement.fairplay.trespassing.title": "Нарушение",
+  "advancement.fairplay.trespassing.description": "Ты не можешь ломать блоки, которые не ставил сам.",
+
+  "advancement.fairplay.own_hands.title": "Своими руками",
+  "advancement.fairplay.own_hands.description": "Что строишь — то твоё. И только твоё.",
+
+  "advancement.fairplay.endless_stone.title": "Бесконечный камень",
+  "advancement.fairplay.endless_stone.description": "Лава + вода = бесконечный булыжник. И он твой.",
+
+  "advancement.fairplay.collector.title": "Коллекционер",
+  "advancement.fairplay.collector.description": "Первый предмет оказывается в твоих руках.",
+
+  "advancement.fairplay.foundation.title": "Фундамент",
+  "advancement.fairplay.foundation.description": "Твой первый блок. Здесь начинается что-то великое.",
+
+  "advancement.fairplay.chef.title": "Повар",
+  "advancement.fairplay.chef.description": "С огнём и терпением ты перерабатываешь свои ресурсы.",
+
+  "advancement.fairplay.endless_iron.title": "Бесконечное железо?",
+  "advancement.fairplay.endless_iron.description": "Железный голем пал и оставил после себя железо.",
+
+  "advancement.fairplay.empty_hands.title": "Пустые руки",
+  "advancement.fairplay.empty_hands.description": "Сундук был пуст. Красть нечего.",
+
+  "advancement.fairplay.diy.title": "Сделай сам",
+  "advancement.fairplay.diy.description": "Твой первый скрафченный предмет. Начало всего.",
+
+  "advancement.fairplay.green_thumb.title": "Зелёный большой палец",
+  "advancement.fairplay.green_thumb.description": "Саженец – начало твоего леса.",
+
+  "advancement.fairplay.my_forest.title": "Мой лес",
+  "advancement.fairplay.my_forest.description": "Твой саженец вырос в целое дерево. Оно твоё.",
+
+  "advancement.fairplay.sowing.title": "Сев",
+  "advancement.fairplay.sowing.description": "Почва готова. Твоя собственная еда растёт.",
+
+  "advancement.fairplay.harvest.title": "Урожай",
+  "advancement.fairplay.harvest.description": "Пожинаешь то, что посеял.",
+
+  "advancement.fairplay.dripstone_trick.title": "Трюк со сталактитом",
+  "advancement.fairplay.dripstone_trick.description": "Твой сталактит собирает то, что даёт земля.",
+
+  "advancement.fairplay.water_management.title": "Управление водой",
+  "advancement.fairplay.water_management.description": "Твой собственный источник воды – свежий и по праву твой.",
+
+  "advancement.fairplay.infinite.title": "Бесконечность",
+  "advancement.fairplay.infinite.description": "Два источника, бесконечная вода. Умно.",
+
+  "advancement.fairplay.hot_lava.title": "Горячая лава",
+  "advancement.fairplay.hot_lava.description": "Лава – жидкое золото подземного мира.",
+
+  "advancement.fairplay.no_violence.title": "Ненасилие",
+  "advancement.fairplay.no_violence.description": "Прямые атаки запрещены. Будь изобретателен.",
+
+  "advancement.fairplay.resourcefulness.title": "Находчивость",
+  "advancement.fairplay.resourcefulness.description": "Иногда длинный путь — лучший путь.",
+
+  "advancement.fairplay.mans_best_friend.title": "Лучший друг человека",
+  "advancement.fairplay.mans_best_friend.description": "Верный спутник на все времена.",
+
+  "advancement.fairplay.bodyguard.title": "Телохранитель",
+  "advancement.fairplay.bodyguard.description": "Твой пёс делает то, что сам ты не можешь.",
+
+  "advancement.fairplay.own_fleet.title": "Моя флотилия",
+  "advancement.fairplay.own_fleet.description": "По воде или по рельсам – ты путешествуешь со стилем.",
+
+  "advancement.fairplay.good_night.title": "Спокойной ночи",
+  "advancement.fairplay.good_night.description": "Спать легко. Принести своя кровать — не очень.",
+
+  "advancement.fairplay.bed_to_go.title": "Кровать с собой",
+  "advancement.fairplay.bed_to_go.description": "Теперь ты спишь спокойно где угодно.",
+
+  "advancement.fairplay.fair_trade.title": "Честная торговля",
+  "advancement.fairplay.fair_trade.description": "Обмен и торговля – честный путь к прогрессу.",
+
+  "advancement.fairplay.ignition.title": "Поджиг",
+  "advancement.fairplay.ignition.description": "Пусть Крипер взорвётся и расчистит блоки.",
+
+  "advancement.fairplay.first_night.title": "Первая ночь",
+  "advancement.fairplay.first_night.description": "Ты пережил свою первую ночь. Мир принадлежит тебе."
+}

@@ -26,7 +26,17 @@ public class ResourcePackServer {
     private static final String[] PACK_FILES = {
         "pack.mcmeta",
         "assets/fairplay/lang/de_de.json",
-        "assets/fairplay/lang/en_us.json"
+        "assets/fairplay/lang/en_us.json",
+        "assets/fairplay/lang/fr_fr.json",
+        "assets/fairplay/lang/es_es.json",
+        "assets/fairplay/lang/pt_br.json",
+        "assets/fairplay/lang/it_it.json",
+        "assets/fairplay/lang/nl_nl.json",
+        "assets/fairplay/lang/pl_pl.json",
+        "assets/fairplay/lang/ru_ru.json",
+        "assets/fairplay/lang/zh_cn.json",
+        "assets/fairplay/lang/ja_jp.json",
+        "assets/fairplay/lang/ko_kr.json"
     };
 
     private HttpServer httpServer;

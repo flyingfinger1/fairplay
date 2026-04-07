@@ -54,8 +54,18 @@ game-mode: solo
 
 ### Multilingual Support
 All player messages and advancement texts are automatically displayed in the player's client language. Currently supported languages:
-- 🇩🇪 German (`de_de`)
 - 🇺🇸 English (`en_us`)
+- 🇩🇪 German (`de_de`)
+- 🇫🇷 French (`fr_fr`)
+- 🇪🇸 Spanish (`es_es`)
+- 🇧🇷 Portuguese Brazil (`pt_br`)
+- 🇮🇹 Italian (`it_it`)
+- 🇳🇱 Dutch (`nl_nl`)
+- 🇵🇱 Polish (`pl_pl`)
+- 🇷🇺 Russian (`ru_ru`)
+- 🇨🇳 Chinese Simplified (`zh_cn`)
+- 🇯🇵 Japanese (`ja_jp`)
+- 🇰🇷 Korean (`ko_kr`)
 
 Adding a new language only requires adding a file to `src/main/resources/lang/` and `src/main/resources/resourcepack/assets/fairplay/lang/`.
 

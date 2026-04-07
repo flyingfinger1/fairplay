@@ -1,0 +1,85 @@
+{
+  "advancement.fairplay.root.title": "公平的Minecraft",
+  "advancement.fairplay.root.description": "只有自己建造的东西才真正属于你。",
+
+  "advancement.fairplay.trespassing.title": "非法闯入",
+  "advancement.fairplay.trespassing.description": "你无法破坏非自己放置的方块。",
+
+  "advancement.fairplay.own_hands.title": "亲手建造",
+  "advancement.fairplay.own_hands.description": "你所建造的一切都属于你，只属于你。",
+
+  "advancement.fairplay.endless_stone.title": "无尽的石头",
+  "advancement.fairplay.endless_stone.description": "熔岩+水=无限圆石，而且是你的。",
+
+  "advancement.fairplay.collector.title": "收藏家",
+  "advancement.fairplay.collector.description": "第一件物品落入你的手中。",
+
+  "advancement.fairplay.foundation.title": "基础",
+  "advancement.fairplay.foundation.description": "你的第一个方块。伟大的事情从这里开始。",
+
+  "advancement.fairplay.chef.title": "厨师",
+  "advancement.fairplay.chef.description": "用火与耐心加工你的资源。",
+
+  "advancement.fairplay.endless_iron.title": "无尽的铁？",
+  "advancement.fairplay.endless_iron.description": "一个铁傀儡倒下，留下了铁锭。",
+
+  "advancement.fairplay.empty_hands.title": "空手而归",
+  "advancement.fairplay.empty_hands.description": "箱子是空的，这里没什么可偷的。",
+
+  "advancement.fairplay.diy.title": "自己动手",
+  "advancement.fairplay.diy.description": "你的第一件合成物品，万物的起点。",
+
+  "advancement.fairplay.green_thumb.title": "绿拇指",
+  "advancement.fairplay.green_thumb.description": "一棵树苗——你的森林的起点。",
+
+  "advancement.fairplay.my_forest.title": "我的森林",
+  "advancement.fairplay.my_forest.description": "你的树苗长成了一棵大树，它属于你。",
+
+  "advancement.fairplay.sowing.title": "播种",
+  "advancement.fairplay.sowing.description": "土地已经准备好了，你自己的食物正在生长。",
+
+  "advancement.fairplay.harvest.title": "收获",
+  "advancement.fairplay.harvest.description": "你收获了你所播种的。",
+
+  "advancement.fairplay.dripstone_trick.title": "滴水石技巧",
+  "advancement.fairplay.dripstone_trick.description": "你的钟乳石收集大地所赐予的液体。",
+
+  "advancement.fairplay.water_management.title": "水资源管理",
+  "advancement.fairplay.water_management.description": "你自己的水源——清新而理所当然地属于你。",
+
+  "advancement.fairplay.infinite.title": "无限",
+  "advancement.fairplay.infinite.description": "两个水源，无限的水。真聪明。",
+
+  "advancement.fairplay.hot_lava.title": "炽热熔岩",
+  "advancement.fairplay.hot_lava.description": "熔岩——地下世界的液态黄金。",
+
+  "advancement.fairplay.no_violence.title": "非暴力",
+  "advancement.fairplay.no_violence.description": "直接攻击是被禁止的，发挥你的创意吧。",
+
+  "advancement.fairplay.resourcefulness.title": "足智多谋",
+  "advancement.fairplay.resourcefulness.description": "有时候绕远路才是最好的路。",
+
+  "advancement.fairplay.mans_best_friend.title": "人类最好的朋友",
+  "advancement.fairplay.mans_best_friend.description": "永远忠诚的伙伴。",
+
+  "advancement.fairplay.bodyguard.title": "保镖",
+  "advancement.fairplay.bodyguard.description": "你的狗帮你做了你自己不能做的事。",
+
+  "advancement.fairplay.own_fleet.title": "我的船队",
+  "advancement.fairplay.own_fleet.description": "乘船或乘矿车——你以风格旅行。",
+
+  "advancement.fairplay.good_night.title": "晚安",
+  "advancement.fairplay.good_night.description": "睡觉很容易，带上自己的床就没那么容易了。",
+
+  "advancement.fairplay.bed_to_go.title": "随身携带的床",
+  "advancement.fairplay.bed_to_go.description": "现在你无论在哪里都能安全入睡。",
+
+  "advancement.fairplay.fair_trade.title": "公平交易",
+  "advancement.fairplay.fair_trade.description": "以物易物和贸易——走向进步的诚实之路。",
+
+  "advancement.fairplay.ignition.title": "点火",
+  "advancement.fairplay.ignition.description": "让苦力怕爆炸来清除方块。",
+
+  "advancement.fairplay.first_night.title": "第一个夜晚",
+  "advancement.fairplay.first_night.description": "你熬过了第一个夜晚，世界是你的了。"
+}

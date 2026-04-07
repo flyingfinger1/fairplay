@@ -1,0 +1,85 @@
+{
+  "advancement.fairplay.root.title": "フェアなMinecraft",
+  "advancement.fairplay.root.description": "自分で作ったものだけが本当に自分のものです。",
+
+  "advancement.fairplay.trespassing.title": "不法侵入",
+  "advancement.fairplay.trespassing.description": "自分で設置していないブロックは壊せません。",
+
+  "advancement.fairplay.own_hands.title": "自分の手で",
+  "advancement.fairplay.own_hands.description": "あなたが作ったものはあなたのもの。あなただけのもの。",
+
+  "advancement.fairplay.endless_stone.title": "無限の石",
+  "advancement.fairplay.endless_stone.description": "溶岩＋水＝無限の丸石、そしてそれはあなたのもの。",
+
+  "advancement.fairplay.collector.title": "コレクター",
+  "advancement.fairplay.collector.description": "最初のアイテムがあなたの手に渡りました。",
+
+  "advancement.fairplay.foundation.title": "基盤",
+  "advancement.fairplay.foundation.description": "あなたの最初のブロック。ここから偉大なものが始まります。",
+
+  "advancement.fairplay.chef.title": "料理人",
+  "advancement.fairplay.chef.description": "火と忍耐でリソースを加工しましょう。",
+
+  "advancement.fairplay.endless_iron.title": "無限の鉄？",
+  "advancement.fairplay.endless_iron.description": "アイアンゴーレムが倒れ、鉄を残していきました。",
+
+  "advancement.fairplay.empty_hands.title": "空っぽの手",
+  "advancement.fairplay.empty_hands.description": "チェストは空でした。盗むものは何もありません。",
+
+  "advancement.fairplay.diy.title": "DIY",
+  "advancement.fairplay.diy.description": "あなたが初めてクラフトしたアイテム。すべての始まりです。",
+
+  "advancement.fairplay.green_thumb.title": "緑の親指",
+  "advancement.fairplay.green_thumb.description": "苗木——あなたの森の始まり。",
+
+  "advancement.fairplay.my_forest.title": "私の森",
+  "advancement.fairplay.my_forest.description": "あなたの苗木が大きな木になりました。それはあなたのものです。",
+
+  "advancement.fairplay.sowing.title": "種まき",
+  "advancement.fairplay.sowing.description": "土地の準備ができました。あなた自身の食料が育っています。",
+
+  "advancement.fairplay.harvest.title": "収穫",
+  "advancement.fairplay.harvest.description": "まいた種を刈り取ります。",
+
+  "advancement.fairplay.dripstone_trick.title": "鍾乳石のトリック",
+  "advancement.fairplay.dripstone_trick.description": "あなたの鍾乳石が大地の恵みを集めています。",
+
+  "advancement.fairplay.water_management.title": "水の管理",
+  "advancement.fairplay.water_management.description": "あなた自身の水源——新鮮で正当にあなたのもの。",
+
+  "advancement.fairplay.infinite.title": "無限",
+  "advancement.fairplay.infinite.description": "2つの水源で無限の水。賢いですね。",
+
+  "advancement.fairplay.hot_lava.title": "熱い溶岩",
+  "advancement.fairplay.hot_lava.description": "溶岩——地下世界の液体の黄金。",
+
+  "advancement.fairplay.no_violence.title": "非暴力",
+  "advancement.fairplay.no_violence.description": "直接攻撃は禁止されています。クリエイティブになりましょう。",
+
+  "advancement.fairplay.resourcefulness.title": "機転",
+  "advancement.fairplay.resourcefulness.description": "時には遠回りが最良の道です。",
+
+  "advancement.fairplay.mans_best_friend.title": "人間の最良の友",
+  "advancement.fairplay.mans_best_friend.description": "永遠に忠実な仲間。",
+
+  "advancement.fairplay.bodyguard.title": "ボディーガード",
+  "advancement.fairplay.bodyguard.description": "あなたのイヌがあなたにできないことをやってくれます。",
+
+  "advancement.fairplay.own_fleet.title": "私の船団",
+  "advancement.fairplay.own_fleet.description": "水上でもレールでも——スタイリッシュに旅します。",
+
+  "advancement.fairplay.good_night.title": "おやすみなさい",
+  "advancement.fairplay.good_night.description": "眠るのは簡単ですが、自分のベッドを持参するのは簡単ではありません。",
+
+  "advancement.fairplay.bed_to_go.title": "持ち歩けるベッド",
+  "advancement.fairplay.bed_to_go.description": "どこにいても安全に眠れるようになりました。",
+
+  "advancement.fairplay.fair_trade.title": "フェアトレード",
+  "advancement.fairplay.fair_trade.description": "物々交換と取引——進歩への誠実な道。",
+
+  "advancement.fairplay.ignition.title": "点火",
+  "advancement.fairplay.ignition.description": "クリーパーを爆発させてブロックを片付けましょう。",
+
+  "advancement.fairplay.first_night.title": "最初の夜",
+  "advancement.fairplay.first_night.description": "最初の夜を生き延びました。世界はあなたのものです。"
+}

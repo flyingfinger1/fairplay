@@ -1,0 +1,85 @@
+{
+  "advancement.fairplay.root.title": "Minecraft justo",
+  "advancement.fairplay.root.description": "Solo lo que construyes tú mismo te pertenece de verdad.",
+
+  "advancement.fairplay.trespassing.title": "Intrusión",
+  "advancement.fairplay.trespassing.description": "No puedes romper bloques que no colocaste tú mismo.",
+
+  "advancement.fairplay.own_hands.title": "Tus propias manos",
+  "advancement.fairplay.own_hands.description": "Lo que construyes es tuyo. Y solo tuyo.",
+
+  "advancement.fairplay.endless_stone.title": "Piedra sin fin",
+  "advancement.fairplay.endless_stone.description": "Lava + agua = adoquín infinito. Y es tuyo.",
+
+  "advancement.fairplay.collector.title": "Coleccionista",
+  "advancement.fairplay.collector.description": "El primer objeto cae en tus manos.",
+
+  "advancement.fairplay.foundation.title": "Cimientos",
+  "advancement.fairplay.foundation.description": "Tu primer bloque. Algo grande empieza aquí.",
+
+  "advancement.fairplay.chef.title": "Chef",
+  "advancement.fairplay.chef.description": "Con fuego y paciencia procesas tus recursos.",
+
+  "advancement.fairplay.endless_iron.title": "¿Hierro sin fin?",
+  "advancement.fairplay.endless_iron.description": "Un gólem de hierro ha caído y dejó hierro atrás.",
+
+  "advancement.fairplay.empty_hands.title": "Manos vacías",
+  "advancement.fairplay.empty_hands.description": "El cofre estaba vacío. Nada que robar aquí.",
+
+  "advancement.fairplay.diy.title": "Hágalo usted mismo",
+  "advancement.fairplay.diy.description": "Tu primer objeto fabricado. El comienzo de todo.",
+
+  "advancement.fairplay.green_thumb.title": "Mano verde",
+  "advancement.fairplay.green_thumb.description": "Un plantón – el comienzo de tu bosque.",
+
+  "advancement.fairplay.my_forest.title": "Mi bosque",
+  "advancement.fairplay.my_forest.description": "Tu plantón se convirtió en un árbol entero. Te pertenece.",
+
+  "advancement.fairplay.sowing.title": "Siembra",
+  "advancement.fairplay.sowing.description": "La tierra está lista. Tu propia comida está creciendo.",
+
+  "advancement.fairplay.harvest.title": "Cosecha",
+  "advancement.fairplay.harvest.description": "Recoges lo que siembras.",
+
+  "advancement.fairplay.dripstone_trick.title": "Truco de estalactita",
+  "advancement.fairplay.dripstone_trick.description": "Tu estalactita recoge lo que la tierra provee.",
+
+  "advancement.fairplay.water_management.title": "Gestión del agua",
+  "advancement.fairplay.water_management.description": "Tu propia fuente de agua – fresca y legítimamente tuya.",
+
+  "advancement.fairplay.infinite.title": "Infinito",
+  "advancement.fairplay.infinite.description": "Dos fuentes, agua infinita. Inteligente.",
+
+  "advancement.fairplay.hot_lava.title": "Lava ardiente",
+  "advancement.fairplay.hot_lava.description": "La lava – el oro líquido del inframundo.",
+
+  "advancement.fairplay.no_violence.title": "No violencia",
+  "advancement.fairplay.no_violence.description": "Los ataques directos están prohibidos. Sé creativo.",
+
+  "advancement.fairplay.resourcefulness.title": "Ingenio",
+  "advancement.fairplay.resourcefulness.description": "A veces el camino más largo es el mejor.",
+
+  "advancement.fairplay.mans_best_friend.title": "El mejor amigo del hombre",
+  "advancement.fairplay.mans_best_friend.description": "Un compañero fiel para siempre.",
+
+  "advancement.fairplay.bodyguard.title": "Guardaespaldas",
+  "advancement.fairplay.bodyguard.description": "Tu perro hace lo que tú no puedes hacer.",
+
+  "advancement.fairplay.own_fleet.title": "Mi flota",
+  "advancement.fairplay.own_fleet.description": "Por agua o en rieles – viajas con estilo.",
+
+  "advancement.fairplay.good_night.title": "Buenas noches",
+  "advancement.fairplay.good_night.description": "Dormir es fácil. Traer tu propia cama no lo es.",
+
+  "advancement.fairplay.bed_to_go.title": "Cama portátil",
+  "advancement.fairplay.bed_to_go.description": "Ahora duermes seguro donde sea que estés.",
+
+  "advancement.fairplay.fair_trade.title": "Comercio justo",
+  "advancement.fairplay.fair_trade.description": "Trueque y comercio – el camino honesto hacia el progreso.",
+
+  "advancement.fairplay.ignition.title": "Ignición",
+  "advancement.fairplay.ignition.description": "Deja que un Creeper explote para limpiar bloques.",
+
+  "advancement.fairplay.first_night.title": "Primera noche",
+  "advancement.fairplay.first_night.description": "Sobreviviste tu primera noche. El mundo es tuyo."
+}
