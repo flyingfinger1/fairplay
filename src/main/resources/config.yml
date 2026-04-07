@@ -6,12 +6,21 @@
 game-mode: solo
 
 
-# Embedded HTTP server for the resource pack (translations).
-# Clients automatically download the pack on login.
+# Resource pack (translations).
+# On every start the plugin saves fairplay-resourcepack.zip to plugins/FairPlay/.
+# Upload that file to GitHub Releases (or any public host) and set the URL below.
 #
-# resource-pack-host: Address that clients can reach.
-#   Local server:      localhost
-#   LAN / Dedicated:   e.g. 192.168.1.100 or your-domain.com
+# Option A – External URL (recommended for public servers / GitHub Releases):
+#   resource-pack-url: https://github.com/YOUR_USER/FairPlay/releases/latest/download/fairplay-resourcepack.zip
+#
+# Option B – Embedded HTTP server (local / LAN only, no URL set):
+#   resource-pack-host: Address that clients can reach.
+#     Local server:  localhost
+#     LAN / Public:  e.g. 192.168.1.100 or your-domain.com
+#   resource-pack-port: 8765
+#
+# resource-pack-url is checked first; if set, the embedded server is not started.
+# resource-pack-url: ""
 resource-pack-host: localhost
 resource-pack-port: 8765
 

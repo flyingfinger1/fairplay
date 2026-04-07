@@ -33,6 +33,12 @@ The plugin supports two modes: **solo** (strict ownership, default) and **team**
 - Trees grown from the player's own saplings belong to the planter
 - Sweet berries can only be harvested by the bush owner
 - Farmland cannot be trampled by other players
+- Dripstone tips that grow from an owned stalactite or stalagmite are assigned to the owner
+
+### Mob Ownership
+- Animals bred or tamed by a player are registered in the database
+- Only the owner may shear sheep, milk cows, collect mushroom stew, and brush armadillos
+- Wild animals (not bred/tamed) are blocked for everyone — they cannot be interacted with
 
 ### 28 Custom Advancements
 The plugin ships its own advancement tree explaining and rewarding FairPlay mechanics — from "Foundation" (first own block) to "First Night" (surviving until dawn).
@@ -67,12 +73,6 @@ gradle build
 ```
 The finished JAR is located in `build/libs/FairPlay-1.0.0.jar`.
 
-### Deploy
-```bash
-gradle deploy
-```
-Copies the JAR directly into `server/plugins/` (local development environment).
-
 ### Configuration
 After the first start, `plugins/FairPlay/config.yml` is created:
 
@@ -81,7 +81,13 @@ After the first start, `plugins/FairPlay/config.yml` is created:
 # team  → all players share ownership, no restrictions apply
 game-mode: solo
 
-# Address that clients can reach for the resource pack download
+# Resource pack (translations for advancements).
+# On every start the plugin saves fairplay-resourcepack.zip to plugins/FairPlay/.
+#
+# Option A – External URL (recommended, e.g. GitHub Releases):
+# resource-pack-url: https://github.com/YOUR_USER/FairPlay/releases/latest/download/fairplay-resourcepack.zip
+#
+# Option B – Embedded HTTP server (local/LAN only, no URL set):
 resource-pack-host: localhost   # For a dedicated server: external IP or domain
 resource-pack-port: 8765
 
@@ -90,7 +96,7 @@ resource-pack-port: 8765
 resource-pack-required: false
 ```
 
-> **Note:** The resource pack is automatically sent to players on login and contains the translations for advancement texts. Without the pack, raw translation keys are displayed.
+> **Resource pack hosting:** On every start the plugin writes `plugins/FairPlay/fairplay-resourcepack.zip`. Upload that file to GitHub Releases and set `resource-pack-url` — the embedded HTTP server is then not started. Without the pack, raw translation keys are displayed in advancements.
 
 ---
 
@@ -106,9 +112,10 @@ src/main/
 │   │   └── AdvancementManager.java  # Data pack installation & advancement granting
 │   ├── listeners/
 │   │   ├── BlockOwnershipListener.java  # Core mechanic: block ownership + falling blocks
-│   │   ├── GrowthListener.java          # Growth & spread
+│   │   ├── GrowthListener.java          # Growth & spread (incl. dripstone)
 │   │   ├── CauldronListener.java        # Cauldron ownership
 │   │   ├── CombatListener.java          # Combat rules
+│   │   ├── MobInteractionListener.java  # Mob ownership (breed/tame, shear, milk, brush)
 │   │   ├── LootListener.java            # Loot & items
 │   │   ├── VehicleListener.java         # Boats & minecarts
 │   │   ├── AdvancementListener.java     # Custom advancement triggers

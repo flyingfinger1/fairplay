@@ -34,13 +34,7 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-tasks.register('deploy') {
-    dependsOn build
-    doLast {
-        copy {
-            from jar.archiveFile
-            into 'server/plugins'
-        }
-        println ">> FairPlay-${version}.jar copied to server/plugins."
-    }
+// Local-only tasks (deploy etc.) live in local.gradle — not committed to git
+if (file('local.gradle').exists()) {
+    apply from: 'local.gradle'
 }

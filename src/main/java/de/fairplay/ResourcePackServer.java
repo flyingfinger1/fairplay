@@ -4,9 +4,11 @@ import com.sun.net.httpserver.HttpServer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
@@ -33,12 +35,23 @@ public class ResourcePackServer {
     private String url;
 
     /**
-     * Builds the ZIP, starts the HTTP server and stores the URL and hash.
+     * Builds the ZIP, saves it to the plugin data folder, then either uses the
+     * configured external URL or starts the embedded HTTP server.
      * Must be called before registering the resource pack listener.
      */
     public void start(JavaPlugin plugin) throws IOException {
         packBytes = buildZip(plugin);
         sha1Hex   = computeSha1(packBytes);
+
+        // Always save the ZIP so the server owner can upload it to GitHub Releases
+        saveZip(plugin);
+
+        String externalUrl = plugin.getConfig().getString("resource-pack-url", "");
+        if (externalUrl != null && !externalUrl.isBlank()) {
+            url = externalUrl;
+            plugin.getLogger().info("Resource pack (external): " + url + "  (SHA-1: " + sha1Hex + ")");
+            return; // No embedded HTTP server needed
+        }
 
         int    port = plugin.getConfig().getInt("resource-pack-port", 8765);
         String host = plugin.getConfig().getString("resource-pack-host", "localhost");
@@ -55,7 +68,7 @@ public class ResourcePackServer {
         httpServer.start();
 
         url = "http://" + host + ":" + port + "/fairplay.zip";
-        plugin.getLogger().info("Resource pack available: " + url + "  (SHA-1: " + sha1Hex + ")");
+        plugin.getLogger().info("Resource pack (embedded): " + url + "  (SHA-1: " + sha1Hex + ")");
     }
 
     /** Stops the HTTP server on plugin shutdown. */
@@ -69,6 +82,17 @@ public class ResourcePackServer {
     public String getSha1Hex() { return sha1Hex; }
 
     // ── Internal helpers ─────────────────────────────────────────────────────
+
+    private void saveZip(JavaPlugin plugin) {
+        File out = new File(plugin.getDataFolder(), "fairplay-resourcepack.zip");
+        try {
+            plugin.getDataFolder().mkdirs();
+            Files.write(out.toPath(), packBytes);
+            plugin.getLogger().info("Resource pack saved to: " + out.getPath());
+        } catch (IOException e) {
+            plugin.getLogger().warning("Could not save resource pack ZIP: " + e.getMessage());
+        }
+    }
 
     private byte[] buildZip(JavaPlugin plugin) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

@@ -12,6 +12,9 @@ data/
 # Local Claude Code hooks (personal, not part of the project)
 .claude/
 
+# Local Gradle tasks (e.g. deploy to local server)
+local.gradle
+
 # IDE
 .idea/
 *.iml
