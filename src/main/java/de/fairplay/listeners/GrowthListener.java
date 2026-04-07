@@ -23,6 +23,24 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
 
+/**
+ * Propagates block ownership to newly grown or spread blocks.
+ *
+ * <p>Covered growth types:
+ * <ul>
+ *   <li><b>Trees / mushrooms / bamboo</b> — {@link org.bukkit.event.world.StructureGrowEvent}</li>
+ *   <li><b>Bone meal</b> — {@link org.bukkit.event.block.BlockFertilizeEvent}; also blocks
+ *       fertilising foreign blocks</li>
+ *   <li><b>Upward/downward growth</b> (sugar cane, cactus, vines, kelp) —
+ *       {@link org.bukkit.event.block.BlockGrowEvent}</li>
+ *   <li><b>Spreading organisms</b> (sculk, vines, moss, berry bushes) —
+ *       {@link org.bukkit.event.block.BlockSpreadEvent}</li>
+ *   <li><b>Block formation</b> (cobblestone/stone generators) —
+ *       {@link org.bukkit.event.block.BlockFormEvent}</li>
+ *   <li><b>Dripstone growth</b> — {@link org.bukkit.event.block.BlockPhysicsEvent}
+ *       (BlockGrowEvent/BlockFormEvent do not fire for dripstone in Paper 1.21.8)</li>
+ * </ul>
+ */
 public class GrowthListener implements Listener {
 
     private static final BlockFace[] ALL_FACES = {

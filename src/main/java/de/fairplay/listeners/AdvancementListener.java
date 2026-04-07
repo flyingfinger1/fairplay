@@ -21,6 +21,26 @@ import org.bukkit.inventory.MerchantInventory;
 
 import java.util.Set;
 
+/**
+ * Grants FairPlay advancements in response to various game events.
+ *
+ * <p>Each inner section corresponds to one or more advancements:
+ * <ul>
+ *   <li><b>root</b> — granted to every player on join</li>
+ *   <li><b>collector / foundation / green_thumb / bed_to_go</b> — item pickups</li>
+ *   <li><b>diy</b> — crafting any item</li>
+ *   <li><b>endless_iron / resourcefulness / bodyguard</b> — mob deaths</li>
+ *   <li><b>mans_best_friend</b> — taming a wolf</li>
+ *   <li><b>good_night</b> — entering a bed</li>
+ *   <li><b>fair_trade</b> — trading with a villager</li>
+ *   <li><b>water_management / hot_lava</b> — placing water or lava</li>
+ *   <li><b>ignition</b> — a creeper explodes nearby</li>
+ *   <li><b>first_night</b> — surviving until dawn (time-based, checked every second)</li>
+ * </ul>
+ *
+ * <p>Vanilla advancement announcements are suppressed globally via the
+ * {@code announceAdvancements} game rule set in {@link de.fairplay.FairPlayPlugin}.
+ */
 public class AdvancementListener implements Listener {
 
     // Materials that count as "solid blocks" for the Foundation advancement
@@ -91,6 +111,7 @@ public class AdvancementListener implements Listener {
 
     // ── Root ─────────────────────────────────────────────────────────────────
 
+    /** Grants the hidden root advancement to every player on join. */
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         adv.grant(event.getPlayer(), "root");
@@ -98,6 +119,7 @@ public class AdvancementListener implements Listener {
 
     // ── Collector / Foundation / Green Thumb / Bed To Go ─────────────────────
 
+    /** Checks item type on pickup and grants collector / foundation / green_thumb / bed_to_go. */
     @EventHandler
     public void onPickup(EntityPickupItemEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
@@ -112,6 +134,7 @@ public class AdvancementListener implements Listener {
 
     // ── DIY ──────────────────────────────────────────────────────────────────
 
+    /** Grants "diy" the first time a player crafts anything. */
     @EventHandler
     public void onCraft(CraftItemEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
@@ -120,6 +143,14 @@ public class AdvancementListener implements Listener {
 
     // ── Endless Iron / Resourcefulness / Bodyguard ───────────────────────────
 
+    /**
+     * Handles mob deaths for advancement triggers:
+     * <ul>
+     *   <li><b>endless_iron</b> — a wild iron golem dies near a player</li>
+     *   <li><b>resourcefulness</b> — a hostile mob dies without a direct player kill</li>
+     *   <li><b>bodyguard</b> — a hostile mob is killed by the player's wolf</li>
+     * </ul>
+     */
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
         // Endless Iron: wild iron golem dies near a player
@@ -158,6 +189,7 @@ public class AdvancementListener implements Listener {
 
     // ── Man's Best Friend ────────────────────────────────────────────────────
 
+    /** Grants "mans_best_friend" when a player tames a wolf. */
     @EventHandler
     public void onTame(EntityTameEvent event) {
         if (event.getEntity() instanceof Wolf && event.getOwner() instanceof Player player) {
@@ -167,6 +199,7 @@ public class AdvancementListener implements Listener {
 
     // ── Good Night ───────────────────────────────────────────────────────────
 
+    /** Grants "good_night" when a player successfully enters a bed. */
     @EventHandler
     public void onBedEnter(PlayerBedEnterEvent event) {
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
@@ -176,6 +209,7 @@ public class AdvancementListener implements Listener {
 
     // ── Fair Trade ───────────────────────────────────────────────────────────
 
+    /** Grants "fair_trade" when a player makes a villager trade. */
     @EventHandler
     public void onInventoryClick(org.bukkit.event.inventory.InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
@@ -186,6 +220,7 @@ public class AdvancementListener implements Listener {
 
     // ── Water Management / Hot Lava ──────────────────────────────────────────
 
+    /** Grants "water_management" or "hot_lava" when a player places water or lava. */
     @EventHandler
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
@@ -196,6 +231,7 @@ public class AdvancementListener implements Listener {
 
     // ── Ignition ──────────────────────────────────────────────────────────────
 
+    /** Grants "ignition" to the nearest player (within 20 blocks) when a creeper explodes. */
     @EventHandler
     public void onCreeperExplode(EntityExplodeEvent event) {
         if (!(event.getEntity() instanceof Creeper)) return;

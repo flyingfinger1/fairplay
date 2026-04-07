@@ -33,6 +33,11 @@ public class ResourcePackListener implements Listener {
         this.required   = required;
     }
 
+    /**
+     * Sends the FairPlay resource pack to a player when they join.
+     * Uses the Adventure {@link ResourcePackRequest} API (replaces the deprecated
+     * {@code Player#setResourcePack} method).
+     */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();

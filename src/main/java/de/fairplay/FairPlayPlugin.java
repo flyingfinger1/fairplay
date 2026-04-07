@@ -14,6 +14,11 @@ import de.fairplay.storage.OwnershipStorage;
 import org.bukkit.GameRule;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Main plugin class for FairPlay.
+ * Initialises all subsystems (database, data pack, resource pack server)
+ * and registers all event listeners on enable.
+ */
 public class FairPlayPlugin extends JavaPlugin {
 
     private OwnershipStorage storage;
@@ -77,10 +82,12 @@ public class FairPlayPlugin extends JavaPlugin {
         getLogger().info("FairPlay disabled.");
     }
 
+    /** Returns the SQLite ownership storage shared across all listeners. */
     public OwnershipStorage getStorage() {
         return storage;
     }
 
+    /** Returns the advancement manager used for granting and checking custom advancements. */
     public AdvancementManager getAdvManager() {
         return advManager;
     }

@@ -9,6 +9,11 @@ import org.bukkit.event.world.LootGenerateEvent;
 
 import java.util.Collections;
 
+/**
+ * Clears all naturally generated loot (chests, barrels, end cities, …).
+ * FairPlay is a resource-gathering game — loot containers would bypass ownership.
+ * Opening an empty container for the first time grants the "empty_hands" advancement.
+ */
 public class LootListener implements Listener {
 
     private final AdvancementManager adv;
@@ -17,6 +22,10 @@ public class LootListener implements Listener {
         this.adv = adv;
     }
 
+    /**
+     * Replaces the generated loot list with an empty list, preventing any items from
+     * appearing. Grants "empty_hands" to the player who opened the container.
+     */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onLootGenerate(LootGenerateEvent event) {
         event.setLoot(Collections.emptyList());

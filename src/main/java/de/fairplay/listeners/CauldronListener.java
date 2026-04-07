@@ -15,6 +15,16 @@ import org.bukkit.event.block.CauldronLevelChangeEvent;
 
 import java.util.UUID;
 
+/**
+ * Handles cauldron-related ownership checks.
+ *
+ * <ul>
+ *   <li>Dripstone fill ({@code NATURAL_FILL}): assigns the cauldron to the owner of the
+ *       dripstone block dripping into it.</li>
+ *   <li>Bottle/bucket fill ({@code BOTTLE_FILL}, {@code BUCKET_FILL}): only the cauldron
+ *       owner may extract liquid.</li>
+ * </ul>
+ */
 public class CauldronListener implements Listener {
 
     // Vanilla maximum search depth for dripstone
@@ -32,6 +42,7 @@ public class CauldronListener implements Listener {
         this.teamMode = teamMode;
     }
 
+    /** Routes cauldron level changes to the appropriate ownership handler. */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onCauldronLevelChange(CauldronLevelChangeEvent event) {
         switch (event.getReason()) {

@@ -14,6 +14,13 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.util.UUID;
 
+/**
+ * Blocks all direct player-to-player and player-to-entity combat.
+ *
+ * <p>Players may only destroy their own boats and minecarts. All other direct
+ * attacks (including projectile attacks) are cancelled. Attacking a mob for
+ * the first time grants the "no_violence" advancement.
+ */
 public class CombatListener implements Listener {
 
     private final OwnershipStorage storage;
@@ -24,6 +31,10 @@ public class CombatListener implements Listener {
         this.adv = adv;
     }
 
+    /**
+     * Cancels all player-initiated attacks except destroying owned vehicles.
+     * Resolves projectile shooters to their owning player.
+     */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         Player attacker = resolvePlayerAttacker(event.getDamager());
@@ -48,6 +59,12 @@ public class CombatListener implements Listener {
         }
     }
 
+    /**
+     * Extracts the player responsible for the damage.
+     * Returns the player directly or the shooter behind a projectile.
+     *
+     * @return the attacking {@link Player}, or {@code null} if the attacker is not a player
+     */
     private Player resolvePlayerAttacker(Entity damager) {
         if (damager instanceof Player player) {
             return player;
@@ -59,6 +76,9 @@ public class CombatListener implements Listener {
         return null;
     }
 
+    /**
+     * Returns {@code true} if the entity is a player-placeable vehicle (boat or minecart).
+     */
     private boolean isVehicle(Entity entity) {
         return entity instanceof Boat || entity instanceof Minecart;
     }

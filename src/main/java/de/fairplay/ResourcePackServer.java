@@ -71,14 +71,20 @@ public class ResourcePackServer {
         plugin.getLogger().info("Resource pack (embedded): " + url + "  (SHA-1: " + sha1Hex + ")");
     }
 
-    /** Stops the HTTP server on plugin shutdown. */
+    /**
+     * Stops the embedded HTTP server if one was started.
+     * Safe to call even when an external URL is configured (no-op in that case).
+     */
     public void stop() {
         if (httpServer != null) {
             httpServer.stop(0);
         }
     }
 
+    /** Returns the URL clients use to download the resource pack. */
     public String getUrl()     { return url; }
+
+    /** Returns the SHA-1 hex hash of the resource pack ZIP, used for client-side validation. */
     public String getSha1Hex() { return sha1Hex; }
 
     // ── Internal helpers ─────────────────────────────────────────────────────
@@ -94,6 +100,13 @@ public class ResourcePackServer {
         }
     }
 
+    /**
+     * Assembles the resource pack ZIP in memory from the embedded {@code resourcepack/}
+     * resources. Logs a warning for any file listed in {@link #PACK_FILES} that is missing.
+     *
+     * @return the raw ZIP bytes
+     * @throws IOException if reading a resource or writing the ZIP fails
+     */
     private byte[] buildZip(JavaPlugin plugin) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try (ZipOutputStream zos = new ZipOutputStream(baos)) {
@@ -112,6 +125,13 @@ public class ResourcePackServer {
         return baos.toByteArray();
     }
 
+    /**
+     * Computes the SHA-1 hash of the given data and returns it as a lowercase hex string.
+     *
+     * @param data the bytes to hash
+     * @return 40-character lowercase hex SHA-1 digest
+     * @throws RuntimeException if the JVM does not support SHA-1 (should never happen)
+     */
     private static String computeSha1(byte[] data) {
         try {
             byte[] hash = MessageDigest.getInstance("SHA-1").digest(data);

@@ -14,6 +14,14 @@ import java.util.Arrays;
 import java.util.HexFormat;
 import java.util.List;
 
+/**
+ * Manages the FairPlay data pack and custom advancements.
+ *
+ * <p>On every plugin start, {@link #install()} copies the embedded data pack files
+ * (advancements, {@code pack.mcmeta}) to the primary world's {@code datapacks/fairplay/}
+ * directory and triggers a server data reload if anything changed.
+ * Obsolete advancement files left over from older versions are deleted automatically.
+ */
 public class AdvancementManager {
 
     private static final String NAMESPACE = "fairplay";
@@ -120,6 +128,12 @@ public class AdvancementManager {
         return anyChanged;
     }
 
+    /**
+     * Grants a FairPlay advancement to a player if they have not already earned it.
+     *
+     * @param player the player who should receive the advancement
+     * @param key    the advancement key within the {@code fairplay} namespace (e.g. {@code "foundation"})
+     */
     public void grant(Player player, String key) {
         Advancement adv = plugin.getServer().getAdvancement(new NamespacedKey(NAMESPACE, key));
         if (adv == null) return;
@@ -129,6 +143,13 @@ public class AdvancementManager {
         }
     }
 
+    /**
+     * Returns whether a player has already earned a FairPlay advancement.
+     *
+     * @param player the player to check
+     * @param key    the advancement key within the {@code fairplay} namespace
+     * @return {@code true} if the advancement is complete, {@code false} otherwise
+     */
     public boolean has(Player player, String key) {
         Advancement adv = plugin.getServer().getAdvancement(new NamespacedKey(NAMESPACE, key));
         if (adv == null) return false;

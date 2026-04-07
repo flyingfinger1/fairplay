@@ -36,6 +36,23 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Core listener that enforces block ownership.
+ *
+ * <p>Responsibilities:
+ * <ul>
+ *   <li>Registers ownership when blocks are placed (including two-block structures
+ *       like beds and doors, and water/lava bucket placements).</li>
+ *   <li>Blocks breaking foreign blocks and cancels the event with an action-bar message.</li>
+ *   <li>Handles edge cases: bamboo/dripstone fallback lookup, melon/pumpkin stem lookup,
+ *       ice breaking, seagrass/kelp water retention.</li>
+ *   <li>Tracks falling blocks (sand, gravel, anvils, …) across their flight and
+ *       re-assigns ownership at the landing position.</li>
+ *   <li>Restricts bucket fills, glass bottle fills, sweet berry harvesting, and
+ *       farmland trampling to the respective block owner.</li>
+ *   <li>Detects infinite water source creation and assigns the new source block.</li>
+ * </ul>
+ */
 public class BlockOwnershipListener implements Listener {
 
     private static final Set<Material> CROP_MATERIALS = Set.of(

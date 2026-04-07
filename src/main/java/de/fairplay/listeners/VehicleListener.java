@@ -10,6 +10,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPlaceEvent;
 import org.bukkit.event.vehicle.VehicleDestroyEvent;
 
+/**
+ * Tracks ownership of boats and minecarts.
+ * The player who places a vehicle becomes its owner; the entry is removed when
+ * the vehicle is destroyed. Ownership is used by {@link CombatListener} to allow
+ * players to break only their own vehicles.
+ */
 public class VehicleListener implements Listener {
 
     private final OwnershipStorage storage;
@@ -20,6 +26,7 @@ public class VehicleListener implements Listener {
         this.adv = adv;
     }
 
+    /** Registers ownership when a player places a boat or minecart. */
     @EventHandler
     public void onEntityPlace(EntityPlaceEvent event) {
         Entity entity = event.getEntity();
@@ -29,6 +36,7 @@ public class VehicleListener implements Listener {
         }
     }
 
+    /** Removes the ownership entry when a vehicle is destroyed. */
     @EventHandler
     public void onVehicleDestroy(VehicleDestroyEvent event) {
         storage.removeEntityOwner(event.getVehicle().getUniqueId());
