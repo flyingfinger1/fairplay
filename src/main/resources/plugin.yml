@@ -1,5 +1,5 @@
 name: FairPlay
-version: 1.0.0
+version: 1.0.2
 main: de.fairplay.FairPlayPlugin
 api-version: '1.21.8'
 description: Fair Minecraft – ownership-based gameplay. No stealing, no direct combat.
