@@ -76,6 +76,7 @@ Adding a new language only requires adding a file to `src/main/resources/lang/` 
 ### Requirements
 - Paper 1.21.8
 - Java 21
+- Internet access on first start (Paper downloads `sqlite-jdbc` from Maven Central automatically)
 
 ### Build
 ```bash
