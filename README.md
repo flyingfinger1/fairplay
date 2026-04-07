@@ -154,7 +154,7 @@ src/main/
 | Component | Technology |
 |---|---|
 | Server API | Paper 1.21.8 (`paper-api:1.21.8-R0.1-SNAPSHOT`) |
-| Database | SQLite via `sqlite-jdbc:3.45.1.0` (bundled) |
+| Database | SQLite via `sqlite-jdbc:3.45.1.0` (loaded by Paper on first start) |
 | Build | Gradle (fat JAR) |
 | Java | 21 |
 | Data pack format | 81 |
