@@ -21,12 +21,22 @@ public class VehicleListener implements Listener {
     private final OwnershipStorage storage;
     private final AdvancementManager adv;
 
+    /**
+     * Constructs a new VehicleListener with the given dependencies.
+     *
+     * @param storage the ownership storage used to track vehicle ownership
+     * @param adv     the advancement manager used to grant advancements
+     */
     public VehicleListener(OwnershipStorage storage, AdvancementManager adv) {
         this.storage = storage;
         this.adv = adv;
     }
 
-    /** Registers ownership when a player places a boat or minecart. */
+    /**
+     * Registers ownership when a player places a boat or minecart.
+     *
+     * @param event the event fired by the server
+     */
     @EventHandler
     public void onEntityPlace(EntityPlaceEvent event) {
         Entity entity = event.getEntity();
@@ -36,7 +46,11 @@ public class VehicleListener implements Listener {
         }
     }
 
-    /** Removes the ownership entry when a vehicle is destroyed. */
+    /**
+     * Removes the ownership entry when a vehicle is destroyed.
+     *
+     * @param event the event fired by the server
+     */
     @EventHandler
     public void onVehicleDestroy(VehicleDestroyEvent event) {
         storage.removeEntityOwner(event.getVehicle().getUniqueId());

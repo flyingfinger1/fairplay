@@ -72,6 +72,12 @@ public class AdvancementListener implements Listener {
 
     private final AdvancementManager adv;
 
+    /**
+     * Constructs a new AdvancementListener and starts the dawn-detection background task.
+     *
+     * @param adv    the advancement manager used to grant advancements
+     * @param plugin the owning plugin, used for scheduling the dawn-detection task
+     */
     public AdvancementListener(AdvancementManager adv, JavaPlugin plugin) {
         this.adv = adv;
         startDawnDetector(plugin);
@@ -111,7 +117,11 @@ public class AdvancementListener implements Listener {
 
     // ── Root ─────────────────────────────────────────────────────────────────
 
-    /** Grants the hidden root advancement to every player on join. */
+    /**
+     * Grants the hidden root advancement to every player on join.
+     *
+     * @param event the event fired by the server
+     */
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         adv.grant(event.getPlayer(), "root");
@@ -119,7 +129,11 @@ public class AdvancementListener implements Listener {
 
     // ── Collector / Foundation / Green Thumb / Bed To Go ─────────────────────
 
-    /** Checks item type on pickup and grants collector / foundation / green_thumb / bed_to_go. */
+    /**
+     * Checks item type on pickup and grants collector / foundation / green_thumb / bed_to_go.
+     *
+     * @param event the event fired by the server
+     */
     @EventHandler
     public void onPickup(EntityPickupItemEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
@@ -134,7 +148,11 @@ public class AdvancementListener implements Listener {
 
     // ── DIY ──────────────────────────────────────────────────────────────────
 
-    /** Grants "diy" the first time a player crafts anything. */
+    /**
+     * Grants "diy" the first time a player crafts anything.
+     *
+     * @param event the event fired by the server
+     */
     @EventHandler
     public void onCraft(CraftItemEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
@@ -150,6 +168,8 @@ public class AdvancementListener implements Listener {
      *   <li><b>resourcefulness</b> — a hostile mob dies without a direct player kill</li>
      *   <li><b>bodyguard</b> — a hostile mob is killed by the player's wolf</li>
      * </ul>
+     *
+     * @param event the event fired by the server
      */
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
@@ -189,7 +209,11 @@ public class AdvancementListener implements Listener {
 
     // ── Man's Best Friend ────────────────────────────────────────────────────
 
-    /** Grants "mans_best_friend" when a player tames a wolf. */
+    /**
+     * Grants "mans_best_friend" when a player tames a wolf.
+     *
+     * @param event the event fired by the server
+     */
     @EventHandler
     public void onTame(EntityTameEvent event) {
         if (event.getEntity() instanceof Wolf && event.getOwner() instanceof Player player) {
@@ -199,7 +223,11 @@ public class AdvancementListener implements Listener {
 
     // ── Good Night ───────────────────────────────────────────────────────────
 
-    /** Grants "good_night" when a player successfully enters a bed. */
+    /**
+     * Grants "good_night" when a player successfully enters a bed.
+     *
+     * @param event the event fired by the server
+     */
     @EventHandler
     public void onBedEnter(PlayerBedEnterEvent event) {
         if (event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK) {
@@ -209,7 +237,11 @@ public class AdvancementListener implements Listener {
 
     // ── Fair Trade ───────────────────────────────────────────────────────────
 
-    /** Grants "fair_trade" when a player makes a villager trade. */
+    /**
+     * Grants "fair_trade" when a player makes a villager trade.
+     *
+     * @param event the event fired by the server
+     */
     @EventHandler
     public void onInventoryClick(org.bukkit.event.inventory.InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
@@ -220,7 +252,11 @@ public class AdvancementListener implements Listener {
 
     // ── Water Management / Hot Lava ──────────────────────────────────────────
 
-    /** Grants "water_management" or "hot_lava" when a player places water or lava. */
+    /**
+     * Grants "water_management" or "hot_lava" when a player places water or lava.
+     *
+     * @param event the event fired by the server
+     */
     @EventHandler
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
@@ -231,7 +267,11 @@ public class AdvancementListener implements Listener {
 
     // ── Ignition ──────────────────────────────────────────────────────────────
 
-    /** Grants "ignition" to the nearest player (within 20 blocks) when a creeper explodes. */
+    /**
+     * Grants "ignition" to the nearest player (within 20 blocks) when a creeper explodes.
+     *
+     * @param event the event fired by the server
+     */
     @EventHandler
     public void onCreeperExplode(EntityExplodeEvent event) {
         if (!(event.getEntity() instanceof Creeper)) return;

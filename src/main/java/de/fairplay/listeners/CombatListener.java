@@ -26,6 +26,12 @@ public class CombatListener implements Listener {
     private final OwnershipStorage storage;
     private final AdvancementManager adv;
 
+    /**
+     * Constructs a new CombatListener with the given dependencies.
+     *
+     * @param storage the ownership storage used to check vehicle ownership
+     * @param adv     the advancement manager used to grant advancements
+     */
     public CombatListener(OwnershipStorage storage, AdvancementManager adv) {
         this.storage = storage;
         this.adv = adv;
@@ -34,6 +40,8 @@ public class CombatListener implements Listener {
     /**
      * Cancels all player-initiated attacks except destroying owned vehicles.
      * Resolves projectile shooters to their owning player.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event) {

@@ -54,6 +54,14 @@ public class GrowthListener implements Listener {
     private final AdvancementManager adv;
     private final boolean teamMode;
 
+    /**
+     * Constructs a new GrowthListener with the given dependencies.
+     *
+     * @param plugin   the owning plugin, used for scheduling delayed tasks
+     * @param storage  the ownership storage used to read and write block owners
+     * @param adv      the advancement manager used to grant advancements
+     * @param teamMode {@code true} if team mode is active (ownership checks are relaxed)
+     */
     public GrowthListener(JavaPlugin plugin, OwnershipStorage storage, AdvancementManager adv, boolean teamMode) {
         this.plugin = plugin;
         this.storage = storage;
@@ -64,6 +72,8 @@ public class GrowthListener implements Listener {
     /**
      * Tree, mushroom, bamboo etc. grows from a placed sapling/spore.
      * All newly generated blocks receive the ownership of the sapling.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler
     public void onStructureGrow(StructureGrowEvent event) {
@@ -84,6 +94,8 @@ public class GrowthListener implements Listener {
      *  - Not owned block → action is blocked
      *  - Owned block → all generated blocks are assigned to the player
      * Applies to moss, pale moss, grass, crops, lily pad etc.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler
     public void onBlockFertilize(BlockFertilizeEvent event) {
@@ -121,6 +133,8 @@ public class GrowthListener implements Listener {
      * Bamboo/kelp special case: BlockGrowEvent fires on the existing tip (age change)
      * before the new block appears above.
      * Fix: wait 1 tick, then register the block above.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler
     public void onBlockGrow(BlockGrowEvent event) {
@@ -176,6 +190,8 @@ public class GrowthListener implements Listener {
      * Ownership is only transferred for plants/organisms where it makes sense.
      * Grass/mycelium are intentionally excluded (the player already owns the target
      * dirt block if they placed it).
+     *
+     * @param event the event fired by the server
      */
     @EventHandler
     public void onBlockSpread(BlockSpreadEvent event) {
@@ -192,6 +208,8 @@ public class GrowthListener implements Listener {
     /**
      * Cobblestone/obsidian/stone generator: at least one of the involved
      * sources (lava or water) must have been placed by the player.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler
     public void onBlockForm(BlockFormEvent event) {
@@ -232,6 +250,8 @@ public class GrowthListener implements Listener {
      * BlockGrowEvent and BlockFormEvent do not fire for dripstone growth in Paper 1.21.8.
      * BlockPhysicsEvent fires on every block update – including when a new dripstone tip
      * appears. We filter aggressively (type + already-owned check) so the cost is minimal.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDripstonePhysics(BlockPhysicsEvent event) {

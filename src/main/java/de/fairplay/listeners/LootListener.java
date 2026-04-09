@@ -18,6 +18,11 @@ public class LootListener implements Listener {
 
     private final AdvancementManager adv;
 
+    /**
+     * Constructs a new LootListener with the given advancement manager.
+     *
+     * @param adv the advancement manager used to grant advancements
+     */
     public LootListener(AdvancementManager adv) {
         this.adv = adv;
     }
@@ -25,6 +30,8 @@ public class LootListener implements Listener {
     /**
      * Replaces the generated loot list with an empty list, preventing any items from
      * appearing. Grants "empty_hands" to the player who opened the container.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onLootGenerate(LootGenerateEvent event) {

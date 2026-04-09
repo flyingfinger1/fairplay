@@ -22,6 +22,12 @@ import java.util.zip.ZipOutputStream;
  */
 public class ResourcePackServer {
 
+    /**
+     * Constructs a new ResourcePackServer.
+     * Call {@link #start(JavaPlugin)} before using any other methods.
+     */
+    public ResourcePackServer() {}
+
     /** All files to be included in the resource pack ZIP. */
     private static final String[] PACK_FILES = {
         "pack.mcmeta",
@@ -48,6 +54,9 @@ public class ResourcePackServer {
      * Builds the ZIP, saves it to the plugin data folder, then either uses the
      * configured external URL or starts the embedded HTTP server.
      * Must be called before registering the resource pack listener.
+     *
+     * @param plugin the owning plugin, used for config access and resource loading
+     * @throws IOException if building or saving the resource pack ZIP fails
      */
     public void start(JavaPlugin plugin) throws IOException {
         packBytes = buildZip(plugin);
@@ -91,10 +100,18 @@ public class ResourcePackServer {
         }
     }
 
-    /** Returns the URL clients use to download the resource pack. */
+    /**
+     * Returns the URL clients use to download the resource pack.
+     *
+     * @return the resource pack download URL
+     */
     public String getUrl()     { return url; }
 
-    /** Returns the SHA-1 hex hash of the resource pack ZIP, used for client-side validation. */
+    /**
+     * Returns the SHA-1 hex hash of the resource pack ZIP, used for client-side validation.
+     *
+     * @return 40-character lowercase hex SHA-1 digest of the pack ZIP
+     */
     public String getSha1Hex() { return sha1Hex; }
 
     // ── Internal helpers ─────────────────────────────────────────────────────

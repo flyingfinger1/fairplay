@@ -59,6 +59,11 @@ public class AdvancementManager {
 
     private final FairPlayPlugin plugin;
 
+    /**
+     * Constructs a new AdvancementManager with the given plugin instance.
+     *
+     * @param plugin the owning {@link FairPlayPlugin}, used for server access and logging
+     */
     public AdvancementManager(FairPlayPlugin plugin) {
         this.plugin = plugin;
     }
@@ -67,6 +72,9 @@ public class AdvancementManager {
      * Installs the data pack and returns whether any files changed.
      * If files changed, the caller must trigger server.reloadData() so the new files
      * take effect in the same server session.
+     *
+     * @return {@code true} if any data pack files were added, updated, or removed;
+     *         {@code false} if everything was already up to date or installation failed
      */
     public boolean install() {
         File worldFolder = plugin.getServer().getWorlds().get(0).getWorldFolder();

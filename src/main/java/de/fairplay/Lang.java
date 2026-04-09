@@ -29,6 +29,10 @@ public class Lang {
     /**
      * Returns a translated message as a red Component.
      * Automatically falls back to en_us if the language is not available.
+     *
+     * @param player the player whose locale determines the language
+     * @param key    the message key to look up
+     * @return the translated message wrapped in a red {@link Component}
      */
     public static Component get(Player player, String key) {
         return Component.text(getString(player, key), NamedTextColor.RED);
@@ -36,6 +40,10 @@ public class Lang {
 
     /**
      * Returns the raw translated string (without a Component wrapper).
+     *
+     * @param player the player whose locale determines the language
+     * @param key    the message key to look up
+     * @return the translated string, falling back to en_us or the key itself if not found
      */
     public static String getString(Player player, String key) {
         Locale locale = player.locale();

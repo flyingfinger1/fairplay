@@ -23,6 +23,11 @@ public class OwnershipStorage {
     private final FairPlayPlugin plugin;
     private Connection connection;
 
+    /**
+     * Constructs a new OwnershipStorage with the given plugin instance.
+     *
+     * @param plugin the owning {@link FairPlayPlugin}, used for data folder access and logging
+     */
     public OwnershipStorage(FairPlayPlugin plugin) {
         this.plugin = plugin;
     }
@@ -145,6 +150,11 @@ public class OwnershipStorage {
     /**
      * Removes the ownership entry for a block identified by coordinates.
      * No-op if the block was not owned.
+     *
+     * @param world world name
+     * @param x     block X coordinate
+     * @param y     block Y coordinate
+     * @param z     block Z coordinate
      */
     public void removeBlockOwner(String world, int x, int y, int z) {
         try (PreparedStatement stmt = connection.prepareStatement(

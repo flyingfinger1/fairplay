@@ -35,6 +35,14 @@ public class CauldronListener implements Listener {
     private final AdvancementManager adv;
     private final boolean teamMode;
 
+    /**
+     * Constructs a new CauldronListener with the given dependencies.
+     *
+     * @param storage  the ownership storage used to read and write block owners
+     * @param plugin   the owning plugin, used for server access
+     * @param adv      the advancement manager used to grant advancements
+     * @param teamMode {@code true} if team mode is active (ownership checks are relaxed)
+     */
     public CauldronListener(OwnershipStorage storage, FairPlayPlugin plugin, AdvancementManager adv, boolean teamMode) {
         this.storage = storage;
         this.plugin = plugin;
@@ -42,7 +50,11 @@ public class CauldronListener implements Listener {
         this.teamMode = teamMode;
     }
 
-    /** Routes cauldron level changes to the appropriate ownership handler. */
+    /**
+     * Routes cauldron level changes to the appropriate ownership handler.
+     *
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onCauldronLevelChange(CauldronLevelChangeEvent event) {
         switch (event.getReason()) {

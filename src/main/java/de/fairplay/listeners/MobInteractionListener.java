@@ -28,6 +28,13 @@ public class MobInteractionListener implements Listener {
     private final AdvancementManager adv;
     private final boolean teamMode;
 
+    /**
+     * Constructs a new MobInteractionListener with the given dependencies.
+     *
+     * @param storage  the ownership storage used to read and write entity owners
+     * @param adv      the advancement manager used to grant advancements
+     * @param teamMode {@code true} if team mode is active (ownership checks are relaxed)
+     */
     public MobInteractionListener(OwnershipStorage storage, AdvancementManager adv, boolean teamMode) {
         this.storage = storage;
         this.adv = adv;
@@ -38,6 +45,8 @@ public class MobInteractionListener implements Listener {
 
     /**
      * When two animals breed, the offspring belongs to the player who initiated it.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityBreed(EntityBreedEvent event) {
@@ -47,6 +56,8 @@ public class MobInteractionListener implements Listener {
 
     /**
      * When a player tames an animal (wolf, cat, horse, …) it belongs to them.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityTame(EntityTameEvent event) {
@@ -56,6 +67,8 @@ public class MobInteractionListener implements Listener {
 
     /**
      * Clean up the DB entry when an animal dies.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDeath(EntityDeathEvent event) {
@@ -67,6 +80,8 @@ public class MobInteractionListener implements Listener {
     /**
      * Shearing sheep, snow golems, mushroom cows:
      * only allowed if the entity is unowned OR owned by the player.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onShear(PlayerShearEntityEvent event) {
@@ -84,6 +99,8 @@ public class MobInteractionListener implements Listener {
      *  - Collecting mushroom stew from mooshrooms (BOWL in hand)
      *
      * Only the main hand is checked to avoid double-firing.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInteractEntity(PlayerInteractEntityEvent event) {

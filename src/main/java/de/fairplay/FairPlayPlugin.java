@@ -21,6 +21,12 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class FairPlayPlugin extends JavaPlugin {
 
+    /**
+     * Constructs a new FairPlayPlugin instance.
+     * Called by the Paper plugin loader; do not invoke manually.
+     */
+    public FairPlayPlugin() {}
+
     private OwnershipStorage storage;
     private AdvancementManager advManager;
     private ResourcePackServer resourcePackServer;
@@ -82,12 +88,20 @@ public class FairPlayPlugin extends JavaPlugin {
         getLogger().info("FairPlay disabled.");
     }
 
-    /** Returns the SQLite ownership storage shared across all listeners. */
+    /**
+     * Returns the SQLite ownership storage shared across all listeners.
+     *
+     * @return the {@link OwnershipStorage} instance
+     */
     public OwnershipStorage getStorage() {
         return storage;
     }
 
-    /** Returns the advancement manager used for granting and checking custom advancements. */
+    /**
+     * Returns the advancement manager used for granting and checking custom advancements.
+     *
+     * @return the {@link AdvancementManager} instance
+     */
     public AdvancementManager getAdvManager() {
         return advManager;
     }

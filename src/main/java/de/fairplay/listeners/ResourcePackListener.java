@@ -28,6 +28,12 @@ public class ResourcePackListener implements Listener {
     private final ResourcePackServer packServer;
     private final boolean required;
 
+    /**
+     * Constructs a new ResourcePackListener with the given pack server and requirement flag.
+     *
+     * @param packServer the server providing the resource pack URL and SHA-1 hash
+     * @param required   {@code true} if the client must accept the pack to join
+     */
     public ResourcePackListener(ResourcePackServer packServer, boolean required) {
         this.packServer = packServer;
         this.required   = required;
@@ -37,6 +43,8 @@ public class ResourcePackListener implements Listener {
      * Sends the FairPlay resource pack to a player when they join.
      * Uses the Adventure {@link ResourcePackRequest} API (replaces the deprecated
      * {@code Player#setResourcePack} method).
+     *
+     * @param event the event fired by the server
      */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {

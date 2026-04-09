@@ -68,6 +68,14 @@ public class BlockOwnershipListener implements Listener {
     /** Tracks ownership of in-flight FallingBlock entities (entityUUID → ownerUUID). */
     private final Map<UUID, UUID> fallingOwners = new HashMap<>();
 
+    /**
+     * Constructs a new BlockOwnershipListener with the given dependencies.
+     *
+     * @param storage  the ownership storage used to read and write block owners
+     * @param adv      the advancement manager used to grant advancements
+     * @param teamMode {@code true} if team mode is active (ownership checks are relaxed)
+     * @param plugin   the owning plugin, used for scheduling delayed tasks
+     */
     public BlockOwnershipListener(OwnershipStorage storage, AdvancementManager adv, boolean teamMode, JavaPlugin plugin) {
         this.storage = storage;
         this.adv = adv;
@@ -75,6 +83,12 @@ public class BlockOwnershipListener implements Listener {
         this.plugin = plugin;
     }
 
+    /**
+     * Registers block ownership when a player places a block.
+     * Also handles two-block structures (beds, doors) and grants related advancements.
+     *
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockPlace(BlockPlaceEvent event) {
         Block placed = event.getBlock();
@@ -105,6 +119,12 @@ public class BlockOwnershipListener implements Listener {
         }
     }
 
+    /**
+     * Enforces block ownership on break. Cancels the event and sends an action-bar
+     * message if the player does not own the block being broken.
+     *
+     * @param event the event fired by the server
+     */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
@@ -258,6 +278,8 @@ public class BlockOwnershipListener implements Listener {
      * BlockPlaceEvent does not fire reliably for bucket placements, so ownership
      * is registered explicitly here when the bucket is emptied.
      * NORMAL priority so we can cancel before the bucket is consumed.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
@@ -346,6 +368,8 @@ public class BlockOwnershipListener implements Listener {
      * Water and lava buckets may only be filled from the player's own sources.
      * Applies to both pure water/lava blocks and waterlogged blocks
      * (e.g. fence in water): checks whether an adjacent owned water source exists.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBucketFill(PlayerBucketFillEvent event) {
@@ -385,6 +409,8 @@ public class BlockOwnershipListener implements Listener {
      * Glass bottles may only be filled from the player's own water source blocks.
      * The cauldron case (BOTTLE_FILL) is already handled in CauldronListener.
      * Off-hand events are ignored to prevent double-processing.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBottleFill(PlayerInteractEvent event) {
@@ -411,6 +437,8 @@ public class BlockOwnershipListener implements Listener {
     /**
      * Sweet berry harvest: block right-clicking on another player's berry bush.
      * The bush stays, but the berries belong to the owner.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBerryPick(PlayerInteractEvent event) {
@@ -437,6 +465,8 @@ public class BlockOwnershipListener implements Listener {
     /**
      * Farmland trampling: EntityChangeBlockEvent fires when FARMLAND → DIRT.
      * Only players are checked; other entities (animals etc.) are ignored.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onFarmlandTrample(EntityChangeBlockEvent event) {
@@ -458,6 +488,8 @@ public class BlockOwnershipListener implements Listener {
      * By the time EntitySpawnEvent fires, the source block is already AIR – but the
      * DB entry is still there (we only remove it in onBlockBreak). Read the owner,
      * store it keyed by entity UUID, and clean up the now-stale DB entry.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onFallingBlockSpawn(EntitySpawnEvent event) {
@@ -474,6 +506,8 @@ public class BlockOwnershipListener implements Listener {
     /**
      * Gravity block lands and becomes a solid block again.
      * Transfer the stored ownership to the landing position.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onFallingBlockLand(EntityChangeBlockEvent event) {
@@ -488,6 +522,8 @@ public class BlockOwnershipListener implements Listener {
     /**
      * Falling block is removed without landing (void, lava, /kill, …).
      * Clean up the map to avoid a memory leak.
+     *
+     * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onFallingBlockRemove(EntityRemoveEvent event) {
