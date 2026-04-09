@@ -1,5 +1,11 @@
 # FairPlay – Fair Minecraft
 
+[![Release](https://img.shields.io/github/v/release/flyingfinger1/fairplay?label=release&color=brightgreen)](https://github.com/flyingfinger1/fairplay/releases/latest)
+[![Paper](https://img.shields.io/badge/Paper-1.21.8-f96854)](https://papermc.io)
+[![Java](https://img.shields.io/badge/Java-21-blue)](https://adoptium.net)
+[![License](https://img.shields.io/github/license/flyingfinger1/fairplay)](LICENSE)
+[![JavaDoc](https://img.shields.io/badge/JavaDoc-online-blue)](https://flyingfinger1.github.io/fairplay/)
+
 A Paper plugin for Minecraft 1.21.8 that enforces one simple rule:
 
 > **You may only break blocks that you placed yourself.**
