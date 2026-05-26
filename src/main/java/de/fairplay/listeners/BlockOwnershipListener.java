@@ -429,9 +429,17 @@ public class BlockOwnershipListener implements Listener {
         }
 
         // Waterlogged block (e.g. fence, stair, slab in water):
-        // Allowed if at least one adjacent owned water source exists.
+        // Allowed if the block itself is owned by the player (happens when the player
+        // directly waterlogged it with a bucket — onBucketEmpty registers ownership on
+        // the target block). Falling back to an adjacent-owned-water-source check covers
+        // cases where water flowed into a block the player already owned.
         if (block.getBlockData() instanceof Waterlogged wl && wl.isWaterlogged()) {
             UUID playerId = player.getUniqueId();
+            // Primary check: the waterlogged block itself was registered under this player
+            if (playerId.equals(storage.getBlockOwner(block))) {
+                return; // player owns the block → allowed
+            }
+            // Fallback: an adjacent owned water source feeds the waterlogging
             for (BlockFace face : WATER_CHECK_FACES) {
                 Block neighbor = block.getRelative(face);
                 if (neighbor.getType() == Material.WATER
