@@ -4,13 +4,16 @@ import de.fairplay.Lang;
 import de.fairplay.advancements.AdvancementManager;
 import de.fairplay.storage.OwnershipStorage;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityEnterLoveModeEvent;
 import org.bukkit.event.entity.EntityTameEvent;
+import org.bukkit.event.entity.EntityTransformEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -44,6 +47,69 @@ public class MobInteractionListener implements Listener {
     // ── Ownership assignment ──────────────────────────────────────────────────
 
     /**
+     * Tracks who fed a turtle or frog to initiate breeding.
+     *
+     * <p>Turtles and frogs do not produce a baby entity on breeding — they lay a block
+     * instead (turtle egg / frogspawn). {@link EntityBreedEvent} therefore never fires
+     * for them. We use {@link EntityEnterLoveModeEvent} to record the feeding player on
+     * the entity's {@code entity_fedby} entry. {@link GrowthListener} reads this entry
+     * when the entity later lays its eggs/frogspawn and assigns the block-level
+     * {@code block_fedby} (and, if the entity is already owned, also {@code block_ownership}).
+     *
+     * <p>The entry persists on the entity until it is fed again (overwritten) or dies
+     * (cleaned up by {@link #onEntityDeath}). A dispenser-fed entity (humanEntity == null)
+     * gets no entry so its eggs / frogspawn remain unowned.
+     *
+     * @param event the event fired by the server
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onEggLayerFed(EntityEnterLoveModeEvent event) {
+        if (!(event.getEntity() instanceof Turtle) && !(event.getEntity() instanceof Frog)) return;
+        if (event.getHumanEntity() == null) return; // fed by dispenser – no marker
+        storage.setEntityFedBy(event.getEntity().getUniqueId(),
+                event.getHumanEntity().getUniqueId());
+    }
+
+    /**
+     * When a tadpole grows into a frog, promote its ownership to the new frog entity.
+     * The tadpole entity is replaced (not killed), so {@link #onEntityDeath} does not
+     * fire — we clean up the old entries here manually.
+     *
+     * <p>Two cases:
+     * <ul>
+     *   <li><b>Cycle 2 tadpole</b> (already had {@code entity_ownership}): ownership is
+     *       transferred directly to the frog.</li>
+     *   <li><b>Cycle 1 tadpole</b> (only had {@code entity_fedby}): the frog receives
+     *       {@code entity_ownership} derived from that fed-by entry. This is the moment
+     *       the player's investment in cycle 1 pays off — the frog is now owned and its
+     *       future frogspawn will be cycle-2 (tadpoles immediately bucketable).</li>
+     * </ul>
+     *
+     * @param event the event fired by the server
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onTadpoleGrow(EntityTransformEvent event) {
+        if (!(event.getEntity() instanceof Tadpole)) return;
+        UUID tadpoleId = event.getEntity().getUniqueId();
+        UUID frogId    = event.getTransformedEntity().getUniqueId();
+
+        // Cycle 2: tadpole was directly owned (bucketable) → transfer to frog.
+        UUID owner = storage.getEntityOwner(tadpoleId);
+        if (owner != null) {
+            storage.setEntityOwner(frogId, owner);
+        } else {
+            // Cycle 1: tadpole only had entity_fedby → frog becomes owned by that player.
+            UUID fedBy = storage.getEntityFedBy(tadpoleId);
+            if (fedBy != null) {
+                storage.setEntityOwner(frogId, fedBy);
+            }
+        }
+        // Tadpole transformation is not a death event — clean up manually.
+        storage.removeEntityOwner(tadpoleId);
+        storage.removeEntityFedBy(tadpoleId);
+    }
+
+    /**
      * When two animals breed, the offspring belongs to the player who initiated it.
      *
      * @param event the event fired by the server
@@ -66,13 +132,16 @@ public class MobInteractionListener implements Listener {
     }
 
     /**
-     * Clean up the DB entry when an animal dies.
+     * Clean up the DB entries when an animal dies.
+     * Removes both the ownership entry and the "fed by" marker (used for turtles).
      *
      * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDeath(EntityDeathEvent event) {
-        storage.removeEntityOwner(event.getEntity().getUniqueId());
+        UUID uuid = event.getEntity().getUniqueId();
+        storage.removeEntityOwner(uuid);
+        storage.removeEntityFedBy(uuid);
     }
 
     // ── Interaction restrictions ──────────────────────────────────────────────
@@ -111,6 +180,32 @@ public class MobInteractionListener implements Listener {
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
         Material held = item.getType();
+
+        // Bucketing fish (Cod, Salmon, TropicalFish, PufferFish):
+        // Fish cannot be bred, so they can never be entity-owned. Instead, a player may
+        // only bucket a fish if it is swimming inside a water block they own.
+        // This encourages building fish farms while keeping wild ocean fish untouchable.
+        if ((entity instanceof Cod || entity instanceof Salmon
+                || entity instanceof TropicalFish || entity instanceof PufferFish)
+                && held == Material.WATER_BUCKET) {
+            Block waterBlock = entity.getLocation().getBlock();
+            UUID blockOwner = storage.getBlockOwner(waterBlock);
+            if (blockOwner == null || !blockOwner.equals(player.getUniqueId())) {
+                event.setCancelled(true);
+                player.sendActionBar(Lang.get(player, "msg.mob_interact"));
+            }
+            return;
+        }
+
+        // Bucketing tadpoles (only cycle-2 tadpoles have entity_ownership and are bucketable)
+        // Bucketing axolotls (owned via EntityBreedEvent, same check applies)
+        if ((entity instanceof Tadpole || entity instanceof Axolotl) && held == Material.WATER_BUCKET) {
+            if (!checkOwnership(player, entity)) {
+                event.setCancelled(true);
+                player.sendActionBar(Lang.get(player, "msg.mob_interact"));
+            }
+            return;
+        }
 
         // Armadillo brushing
         if (entity instanceof Armadillo && held == Material.BRUSH) {

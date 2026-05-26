@@ -9,12 +9,17 @@ import org.bukkit.block.BlockFace;
 import java.util.Set;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Directional;
+import org.bukkit.entity.Frog;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tadpole;
+import org.bukkit.entity.Turtle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFertilizeEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.block.BlockFormEvent;
+import org.bukkit.event.block.EntityBlockFormEvent;
 import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
@@ -209,12 +214,46 @@ public class GrowthListener implements Listener {
      * Cobblestone/obsidian/stone generator: at least one of the involved
      * sources (lava or water) must have been placed by the player.
      *
+     * <p>Also handles turtle egg laying via {@link EntityBlockFormEvent}:
+     * if the laying turtle is owned (i.e. bred by a player), the egg block
+     * is registered under the same owner. Wild turtles leave eggs unowned.
+     * All other entity-formed blocks (frosted ice, silverfish stone, …) are
+     * left unowned — they must not inherit ownership via neighbour scan.
+     *
      * @param event the event fired by the server
      */
     @EventHandler
     public void onBlockForm(BlockFormEvent event) {
         Block formed = event.getBlock();
         String world = formed.getWorld().getName();
+
+        // EntityBlockFormEvent: entity-caused block formation.
+        // Turtle lays eggs / Frog lays frogspawn → two-cycle ownership logic:
+        //   - If the layer has a "fed by" marker → record it on the block (block_fedby).
+        //     Cycle 1: player feeds wild animals → their eggs/frogspawn carry a fedBy tag.
+        //   - If the layer ALSO has a player owner (entity_ownership) → the block is fully
+        //     owned (block_ownership). Cycle 2: hatchlings/tadpoles that grew from owned
+        //     animals are themselves player-owned; when re-fed they produce harvestable eggs.
+        // All other EntityBlockFormEvents (frost walker, silverfish) are left unowned and skip
+        // the neighbour scan below.
+        if (event instanceof EntityBlockFormEvent entityEvent) {
+            boolean isTurtleEgg  = entityEvent.getEntity() instanceof Turtle
+                                   && event.getNewState().getType() == Material.TURTLE_EGG;
+            boolean isFrogspawn  = entityEvent.getEntity() instanceof Frog
+                                   && event.getNewState().getType() == Material.FROGSPAWN;
+            if (isTurtleEgg || isFrogspawn) {
+                UUID layerUUID = entityEvent.getEntity().getUniqueId();
+                UUID fedBy = storage.getEntityFedBy(layerUUID);
+                if (fedBy != null) {
+                    storage.setBlockFedBy(formed, fedBy);
+                }
+                UUID owner = storage.getEntityOwner(layerUUID);
+                if (owner != null) {
+                    storage.setBlockOwner(formed, owner);
+                }
+            }
+            return;
+        }
 
         // Dripstone is handled via BlockPhysicsEvent (BlockGrowEvent/BlockFormEvent do not
         // fire for pointed dripstone growth in Paper 1.21.8).
@@ -293,6 +332,75 @@ public class GrowthListener implements Listener {
             }
             scan = scan.getRelative(BlockFace.DOWN);
         }
+    }
+
+    /**
+     * Assigns ownership to a newly hatched turtle or tadpole (if its source block carried
+     * a "fed by" entry) and cleans up block-level DB entries when the source block is gone.
+     *
+     * <p>There is no dedicated hatch event in Bukkit for either species. Instead, we listen
+     * for {@link CreatureSpawnEvent} and schedule a 1-tick delayed check so Minecraft has
+     * time to update the block type after the hatch.
+     *
+     * <p><b>Per-hatchling ownership:</b> Every entity that spawns reads the
+     * {@code block_fedby} entry of the source block and writes it into its own
+     * {@code entity_ownership} entry immediately (before the 1-tick delay), so all
+     * siblings from a multi-egg turtle block each get the entry.
+     *
+     * <p><b>Frogspawn:</b> All tadpoles hatch at once (the whole block disappears together),
+     * so the multi-hatch subtlety is less critical — but the same code path handles it.
+     *
+     * <p><b>Cleanup:</b> Once the source block is gone, both {@code block_ownership} and
+     * {@code block_fedby} entries are removed. Turtle-egg blocks with multiple eggs keep
+     * their entries until the very last egg hatches.
+     *
+     * <p>Wild / untracked spawns are filtered out implicitly: their source block has no
+     * {@code block_fedby} entry, so {@code getBlockFedBy} returns {@code null}.
+     *
+     * @param event the event fired by the server
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onEggHatch(CreatureSpawnEvent event) {
+        boolean isTurtle  = event.getEntity() instanceof Turtle;
+        boolean isTadpole = event.getEntity() instanceof Tadpole;
+        if (!isTurtle && !isTadpole) return;
+
+        Block block = event.getLocation().getBlock();
+        UUID entityId = event.getEntity().getUniqueId();
+
+        if (isTurtle) {
+            // Turtles: block_fedby → entity_ownership directly.
+            // Baby turtles are immediately interactable (shearing etc. once grown),
+            // so they get entity_ownership right away.
+            UUID fedBy = storage.getBlockFedBy(block);
+            if (fedBy != null) {
+                storage.setEntityOwner(entityId, fedBy);
+            }
+        } else {
+            // Tadpoles — two-stage cycle:
+            //   Cycle 1 (frogspawn has block_fedby only): tadpole gets entity_fedby.
+            //     It is NOT yet bucketable. When it grows into a frog, onTadpoleGrow
+            //     converts entity_fedby → entity_ownership on the adult frog.
+            //   Cycle 2 (frogspawn also has block_ownership, from an owned parent frog):
+            //     tadpole ALSO gets entity_ownership and is immediately bucketable.
+            UUID fedBy = storage.getBlockFedBy(block);
+            if (fedBy != null) {
+                storage.setEntityFedBy(entityId, fedBy);
+            }
+            UUID blockOwner = storage.getBlockOwner(block);
+            if (blockOwner != null) {
+                storage.setEntityOwner(entityId, blockOwner);
+            }
+        }
+
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            // Source block still present → siblings may still hatch; keep entries.
+            if (isTurtle  && block.getType() == Material.TURTLE_EGG)  return;
+            if (isTadpole && block.getType() == Material.FROGSPAWN)   return;
+            // Block is gone → remove both block-level entries.
+            storage.removeBlockOwner(block);
+            storage.removeBlockFedBy(block);
+        }, 1L);
     }
 
     /**

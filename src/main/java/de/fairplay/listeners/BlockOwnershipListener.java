@@ -13,6 +13,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Levelled;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Bed;
+import org.bukkit.block.data.type.Beehive;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -59,6 +60,44 @@ public class BlockOwnershipListener implements Listener {
         Material.WHEAT, Material.CARROTS, Material.POTATOES, Material.BEETROOTS,
         Material.NETHER_WART, Material.MELON_STEM, Material.PUMPKIN_STEM
     );
+
+    /** Blocks a shovel converts to DIRT_PATH on right-click. */
+    private static final Set<Material> SHOVEL_PATH_MATERIALS = Set.of(
+        Material.GRASS_BLOCK, Material.DIRT, Material.COARSE_DIRT,
+        Material.ROOTED_DIRT, Material.PODZOL, Material.MYCELIUM
+    );
+
+    /** Blocks a hoe tills (DIRT/GRASS → FARMLAND, COARSE_DIRT/ROOTED_DIRT → DIRT). */
+    private static final Set<Material> HOE_TILL_MATERIALS = Set.of(
+        Material.DIRT, Material.GRASS_BLOCK, Material.COARSE_DIRT, Material.ROOTED_DIRT
+    );
+
+    /**
+     * Blocks an axe strips or scrapes on right-click.
+     * Built at class-load time from all non-stripped log/wood/stem/hyphae materials
+     * and all waxed or oxidised/weathered/exposed copper variants.
+     */
+    private static final Set<Material> AXE_STRIP_MATERIALS;
+    static {
+        var s = new HashSet<Material>();
+        for (Material m : Material.values()) {
+            String n = m.name();
+            // Non-stripped logs, wood, nether stems/hyphae, bamboo block
+            if (!n.startsWith("STRIPPED_")
+                    && (n.endsWith("_LOG") || n.endsWith("_WOOD")
+                        || n.endsWith("_STEM") || n.endsWith("_HYPHAE")
+                        || n.equals("BAMBOO_BLOCK"))) {
+                s.add(m);
+            }
+            // Waxed or oxidised/weathered/exposed copper (dewaxable / scrapable)
+            if (n.contains("COPPER") && !n.contains("ORE") && !n.contains("RAW")
+                    && (n.startsWith("WAXED_") || n.startsWith("OXIDIZED_")
+                        || n.startsWith("WEATHERED_") || n.startsWith("EXPOSED_"))) {
+                s.add(m);
+            }
+        }
+        AXE_STRIP_MATERIALS = Set.copyOf(s);
+    }
 
     private final OwnershipStorage storage;
     private final AdvancementManager adv;
@@ -463,19 +502,101 @@ public class BlockOwnershipListener implements Listener {
     }
 
     /**
-     * Farmland trampling: EntityChangeBlockEvent fires when FARMLAND → DIRT.
-     * Only players are checked; other entities (animals etc.) are ignored.
+     * Player trampling: EntityChangeBlockEvent fires when a player steps on
+     * FARMLAND (→ DIRT) or a TURTLE_EGG (→ destroyed).
+     * Only player entities are checked; mobs and other entities are ignored.
+     *
+     * <p>Turtle eggs inherit ownership from the laying turtle's owner
+     * (set in {@link GrowthListener#onBlockForm}), so the same ownership
+     * logic applies to both trampling and breaking.
      *
      * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.NORMAL)
     public void onFarmlandTrample(EntityChangeBlockEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (event.getBlock().getType() != Material.FARMLAND) return;
+        Material blockType = event.getBlock().getType();
+        if (blockType != Material.FARMLAND && blockType != Material.TURTLE_EGG) return;
         if (player.getGameMode() == GameMode.CREATIVE) return;
         if (teamMode) return;
 
         UUID owner = storage.getBlockOwner(event.getBlock());
+        if (owner == null || !owner.equals(player.getUniqueId())) {
+            event.setCancelled(true);
+            player.sendActionBar(Lang.get(player, "msg.break"));
+            adv.grant(player, "trespassing");
+        }
+    }
+
+    /**
+     * Honey harvest: bottle (→ honey bottle) or shears (→ honeycombs) used on a full
+     * beehive or bee nest. The hive stays in place, but its product belongs to the owner.
+     * Only a full hive (honey level = max) actually yields anything, so we skip the
+     * check for non-full hives to avoid blocking harmless interactions.
+     *
+     * @param event the event fired by the server
+     */
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onHiveHarvest(PlayerInteractEvent event) {
+        if (event.getHand() != EquipmentSlot.HAND) return;
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
+        Block block = event.getClickedBlock();
+        if (block == null) return;
+        if (block.getType() != Material.BEEHIVE && block.getType() != Material.BEE_NEST) return;
+
+        var item = event.getItem();
+        if (item == null) return;
+        Material held = item.getType();
+        if (held != Material.GLASS_BOTTLE && held != Material.SHEARS) return;
+
+        // Non-full hives yield nothing – no ownership check needed
+        if (!(block.getBlockData() instanceof Beehive hive)
+                || hive.getHoneyLevel() < hive.getMaximumHoneyLevel()) return;
+
+        if (teamMode) return;
+
+        Player player = event.getPlayer();
+        UUID owner = storage.getBlockOwner(block);
+        if (owner == null || !owner.equals(player.getUniqueId())) {
+            event.setCancelled(true);
+            player.sendActionBar(Lang.get(player, "msg.break"));
+            adv.grant(player, "trespassing");
+        }
+    }
+
+    /**
+     * Shovel (DIRT_PATH creation) and hoe (farmland tilling) transform earth blocks
+     * in-place without firing BlockBreakEvent. Block ownership must be checked here
+     * so a player cannot modify or steal another player's earth blocks via tool use.
+     *
+     * @param event the event fired by the server
+     */
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onToolTransform(PlayerInteractEvent event) {
+        if (event.getHand() != EquipmentSlot.HAND) return;
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
+        var item = event.getItem();
+        if (item == null) return;
+
+        Block block = event.getClickedBlock();
+        if (block == null) return;
+
+        String typeName = item.getType().name();
+        boolean isShovel = typeName.endsWith("_SHOVEL");
+        boolean isHoe    = typeName.endsWith("_HOE");
+        boolean isAxe    = typeName.endsWith("_AXE");
+        if (!isShovel && !isHoe && !isAxe) return;
+
+        if (isShovel && !SHOVEL_PATH_MATERIALS.contains(block.getType())) return;
+        if (isHoe    && !HOE_TILL_MATERIALS.contains(block.getType())) return;
+        if (isAxe    && !AXE_STRIP_MATERIALS.contains(block.getType())) return;
+
+        if (teamMode) return;
+
+        Player player = event.getPlayer();
+        UUID owner = storage.getBlockOwner(block);
         if (owner == null || !owner.equals(player.getUniqueId())) {
             event.setCancelled(true);
             player.sendActionBar(Lang.get(player, "msg.break"));

@@ -8,6 +8,7 @@ import de.fairplay.listeners.CombatListener;
 import de.fairplay.listeners.GrowthListener;
 import de.fairplay.listeners.LootListener;
 import de.fairplay.listeners.MobInteractionListener;
+import de.fairplay.listeners.PistonListener;
 import de.fairplay.listeners.ResourcePackListener;
 import de.fairplay.listeners.VehicleListener;
 import de.fairplay.storage.OwnershipStorage;
@@ -63,6 +64,7 @@ public class FairPlayPlugin extends JavaPlugin {
         getLogger().info("Game mode: " + (teamMode ? "team" : "solo"));
 
         getServer().getPluginManager().registerEvents(new BlockOwnershipListener(storage, advManager, teamMode, this), this);
+        getServer().getPluginManager().registerEvents(new PistonListener(storage, teamMode), this);
         getServer().getPluginManager().registerEvents(new CauldronListener(storage, this, advManager, teamMode), this);
         getServer().getPluginManager().registerEvents(new GrowthListener(this, storage, advManager, teamMode), this);
         getServer().getPluginManager().registerEvents(new CombatListener(storage, advManager), this);
