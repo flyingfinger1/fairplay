@@ -27,3 +27,12 @@ resource-pack-port: 8765
 # true  → Clients MUST accept the pack (otherwise kicked)
 # false → Clients may decline (they will only see raw translation keys)
 resource-pack-required: false
+
+# Pause world simulation when no players are online.
+# When the last player leaves, the following game rules are set to their "paused" values:
+#   doDaylightCycle → false   (time stops)
+#   doWeatherCycle  → false   (weather freezes)
+#   doMobSpawning   → false   (no new mobs)
+#   randomTickSpeed → 0       (crops, fire, leaf decay stop)
+# The original values are restored when the first player joins again.
+pause-when-empty: false

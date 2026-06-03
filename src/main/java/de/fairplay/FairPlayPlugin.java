@@ -10,6 +10,7 @@ import de.fairplay.listeners.LootListener;
 import de.fairplay.listeners.MobInteractionListener;
 import de.fairplay.listeners.PistonListener;
 import de.fairplay.listeners.ResourcePackListener;
+import de.fairplay.listeners.ServerPauseListener;
 import de.fairplay.listeners.VehicleListener;
 import de.fairplay.storage.OwnershipStorage;
 import org.bukkit.GameRule;
@@ -72,6 +73,13 @@ public class FairPlayPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new LootListener(advManager), this);
         getServer().getPluginManager().registerEvents(new VehicleListener(storage, advManager), this);
         getServer().getPluginManager().registerEvents(new AdvancementListener(advManager, this), this);
+
+        // Pause world simulation when no players are online (optional)
+        if (getConfig().getBoolean("pause-when-empty", false)) {
+            ServerPauseListener pauseListener = new ServerPauseListener(this);
+            getServer().getPluginManager().registerEvents(pauseListener, this);
+            pauseListener.initializeState();
+        }
 
         // Disable vanilla advancement announcements globally
         getServer().getWorlds().forEach(w -> w.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false));
