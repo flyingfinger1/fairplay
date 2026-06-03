@@ -36,8 +36,3 @@ resource-pack-required: false
 #   randomTickSpeed → 0       (crops, fire, leaf decay stop)
 # The original values are restored when the first player joins again.
 pause-when-empty: false
-
-# Add a Heart of the Sea trade to every Wandering Trader.
-# Cost: 8 Nautilus Shells + 8 Emeralds → 1 Heart of the Sea (max 1 per trader).
-# Compensates for buried treasure being unreachable in solo mode (unowned ocean floor).
-wandering-trader-heart-of-the-sea: true

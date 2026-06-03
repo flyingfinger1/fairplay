@@ -75,10 +75,8 @@ public class FairPlayPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new VehicleListener(storage, advManager), this);
         getServer().getPluginManager().registerEvents(new AdvancementListener(advManager, this), this);
 
-        // Add Heart of the Sea to Wandering Trader (optional, default on)
-        if (getConfig().getBoolean("wandering-trader-heart-of-the-sea", true)) {
-            getServer().getPluginManager().registerEvents(new TraderListener(), this);
-        }
+        // Add Heart of the Sea to Wandering Trader (buried treasure is unreachable in solo mode)
+        getServer().getPluginManager().registerEvents(new TraderListener(), this);
 
         // Pause world simulation when no players are online (optional)
         if (getConfig().getBoolean("pause-when-empty", false)) {
