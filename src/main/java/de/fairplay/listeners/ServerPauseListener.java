@@ -98,7 +98,7 @@ public class ServerPauseListener implements Listener {
         for (World world : plugin.getServer().getWorlds()) {
             pauseWorld(world);
         }
-        plugin.getLogger().info("[FairPlay] World simulation paused (no players online).");
+        plugin.getLogger().info("World simulation paused (no players online).");
     }
 
     private void pauseWorld(World world) {
@@ -125,7 +125,7 @@ public class ServerPauseListener implements Listener {
             resumeWorld(world);
         }
         if (log) {
-            plugin.getLogger().info("[FairPlay] World simulation resumed.");
+            plugin.getLogger().info("World simulation resumed.");
         }
     }
 
