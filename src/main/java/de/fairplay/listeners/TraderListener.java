@@ -64,7 +64,7 @@ public class TraderListener implements Listener {
         // ── Heart of the Sea ─────────────────────────────────────────────────
         MerchantRecipe heartTrade = new MerchantRecipe(
                 new ItemStack(Material.HEART_OF_THE_SEA), 1);
-        heartTrade.addIngredient(new ItemStack(Material.NAUTILUS_SHELL, EMERALD_COST));
+        heartTrade.addIngredient(new ItemStack(Material.NAUTILUS_SHELL, 8));
         heartTrade.addIngredient(new ItemStack(Material.EMERALD, EMERALD_COST));
         recipes.add(heartTrade);
 
