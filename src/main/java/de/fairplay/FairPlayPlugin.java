@@ -11,6 +11,7 @@ import de.fairplay.listeners.MobInteractionListener;
 import de.fairplay.listeners.PistonListener;
 import de.fairplay.listeners.ResourcePackListener;
 import de.fairplay.listeners.ServerPauseListener;
+import de.fairplay.listeners.TraderListener;
 import de.fairplay.listeners.VehicleListener;
 import de.fairplay.storage.OwnershipStorage;
 import org.bukkit.GameRule;
@@ -73,6 +74,11 @@ public class FairPlayPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new LootListener(advManager), this);
         getServer().getPluginManager().registerEvents(new VehicleListener(storage, advManager), this);
         getServer().getPluginManager().registerEvents(new AdvancementListener(advManager, this), this);
+
+        // Add Heart of the Sea to Wandering Trader (optional, default on)
+        if (getConfig().getBoolean("wandering-trader-heart-of-the-sea", true)) {
+            getServer().getPluginManager().registerEvents(new TraderListener(), this);
+        }
 
         // Pause world simulation when no players are online (optional)
         if (getConfig().getBoolean("pause-when-empty", false)) {
