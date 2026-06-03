@@ -39,7 +39,7 @@ import java.util.Set;
 public class TraderListener implements Listener {
 
     /** Number of FairTrades randomly selected and shown on each Wandering Trader. */
-    private static final int FAIR_TRADES_PER_TRADER = 2;
+    private static final int FAIR_TRADES_PER_TRADER = 4;
 
     /**
      * Holds the parameters for one trade. A new {@link MerchantRecipe} is created
