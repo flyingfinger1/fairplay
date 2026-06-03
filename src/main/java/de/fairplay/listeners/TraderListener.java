@@ -79,8 +79,8 @@ public class TraderListener implements Listener {
         // Nautilus Shells from treasure fishing; Heart normally in buried-treasure chest.
         FAIR_TRADE_POOL.add(new TradeSpec(
                 Material.HEART_OF_THE_SEA,
-                Material.NAUTILUS_SHELL, 8,
-                Material.EMERALD, 8));
+                Material.EMERALD, 8,
+                Material.NAUTILUS_SHELL, 8));
 
         // ── Sniffer Egg ───────────────────────────────────────────────────────
         // Suspicious Sand/Gravel obtained via Soul Sand bubble-column technique:
@@ -88,12 +88,12 @@ public class TraderListener implements Listener {
         // Suspicious block becomes a Falling Block that ages out (~30 s) as an item.
         FAIR_TRADE_POOL.add(new TradeSpec(
                 Material.SNIFFER_EGG,
-                Material.SUSPICIOUS_SAND, 1,
-                Material.EMERALD, 8));
+                Material.EMERALD, 8,
+                Material.SUSPICIOUS_SAND, 1));
         FAIR_TRADE_POOL.add(new TradeSpec(
                 Material.SNIFFER_EGG,
-                Material.SUSPICIOUS_GRAVEL, 1,
-                Material.EMERALD, 8));
+                Material.EMERALD, 8,
+                Material.SUSPICIOUS_GRAVEL, 1));
 
         // ── Ancient Debris ────────────────────────────────────────────────────
         // Unowned Nether block; blast resistance 1200 → explosion workaround impossible.
