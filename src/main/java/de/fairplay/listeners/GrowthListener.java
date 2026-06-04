@@ -85,10 +85,7 @@ public class GrowthListener implements Listener {
         UUID owner = storage.getBlockOwner(event.getLocation().getBlock());
         if (owner == null) return;
 
-        String world = event.getWorld().getName();
-        for (BlockState state : event.getBlocks()) {
-            storage.setBlockOwner(world, state.getX(), state.getY(), state.getZ(), owner);
-        }
+        storage.setBlockOwnerBatch(event.getWorld().getName(), event.getBlocks(), owner);
 
         Player player = plugin.getServer().getPlayer(owner);
         if (player != null) adv.grant(player, "my_forest");
@@ -116,10 +113,7 @@ public class GrowthListener implements Listener {
             return;
         }
 
-        String world = event.getBlock().getWorld().getName();
-        for (BlockState state : event.getBlocks()) {
-            storage.setBlockOwner(world, state.getX(), state.getY(), state.getZ(), owner);
-        }
+        storage.setBlockOwnerBatch(event.getBlock().getWorld().getName(), event.getBlocks(), owner);
     }
 
     // Plants where BlockGrowEvent fires on the existing tip block,

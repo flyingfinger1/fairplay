@@ -2,9 +2,11 @@ package de.fairplay.storage;
 
 import de.fairplay.FairPlayPlugin;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 
 import java.io.File;
 import java.sql.*;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -119,6 +121,44 @@ public class OwnershipStorage {
             stmt.executeUpdate();
         } catch (SQLException e) {
             plugin.getLogger().warning("setBlockOwner failed: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Stores or replaces the owner for every block in {@code states} in a single
+     * database transaction. Dramatically faster than calling
+     * {@link #setBlockOwner(Block, UUID)} per block when dealing with large
+     * collections (e.g. tree growth, bone-meal fertilisation).
+     *
+     * @param world  world name shared by all states
+     * @param states the block states whose positions are registered
+     * @param owner  UUID of the owning player
+     */
+    public void setBlockOwnerBatch(String world, List<BlockState> states, UUID owner) {
+        if (states.isEmpty()) return;
+        String ownerStr = owner.toString();
+        try {
+            connection.setAutoCommit(false);
+            try (PreparedStatement stmt = connection.prepareStatement(
+                    "INSERT OR REPLACE INTO block_ownership (world, x, y, z, owner) VALUES (?, ?, ?, ?, ?)")) {
+                for (BlockState state : states) {
+                    stmt.setString(1, world);
+                    stmt.setInt(2, state.getX());
+                    stmt.setInt(3, state.getY());
+                    stmt.setInt(4, state.getZ());
+                    stmt.setString(5, ownerStr);
+                    stmt.addBatch();
+                }
+                stmt.executeBatch();
+                connection.commit();
+            } catch (SQLException inner) {
+                try { connection.rollback(); } catch (SQLException ignored) {}
+                throw inner;
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().warning("setBlockOwnerBatch failed: " + e.getMessage());
         }
     }
 
