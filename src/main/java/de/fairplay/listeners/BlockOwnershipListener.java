@@ -14,6 +14,7 @@ import org.bukkit.block.data.Levelled;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.Beehive;
+import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -140,8 +141,12 @@ public class BlockOwnershipListener implements Listener {
         if (data instanceof Bed bed && bed.getPart() == Bed.Part.FOOT) {
             storage.setBlockOwner(placed.getRelative(bed.getFacing()), playerUUID);
 
-        // Doors & tall plants (Bisected): also register the upper half
-        } else if (data instanceof Bisected bisected && bisected.getHalf() == Bisected.Half.BOTTOM) {
+        // Doors & tall plants (Bisected): also register the upper half.
+        // TrapDoor is excluded: it implements Bisected for top/bottom placement,
+        // but is a single block — there is no second half to register.
+        } else if (data instanceof Bisected bisected
+                && !(data instanceof TrapDoor)
+                && bisected.getHalf() == Bisected.Half.BOTTOM) {
             storage.setBlockOwner(placed.getRelative(BlockFace.UP), playerUUID);
         }
 
@@ -178,7 +183,8 @@ public class BlockOwnershipListener implements Listener {
                         ? creativeBed.getFacing()
                         : creativeBed.getFacing().getOppositeFace();
                 storage.removeBlockOwner(block.getRelative(other));
-            } else if (creativeData instanceof Bisected creativeBisected) {
+            } else if (creativeData instanceof Bisected creativeBisected
+                    && !(creativeData instanceof TrapDoor)) {
                 BlockFace other = creativeBisected.getHalf() == Bisected.Half.BOTTOM
                         ? BlockFace.UP : BlockFace.DOWN;
                 storage.removeBlockOwner(block.getRelative(other));
@@ -304,7 +310,7 @@ public class BlockOwnershipListener implements Listener {
                     : bed.getFacing().getOppositeFace();
             storage.removeBlockOwner(block.getRelative(other));
 
-        } else if (data instanceof Bisected bisected) {
+        } else if (data instanceof Bisected bisected && !(data instanceof TrapDoor)) {
             BlockFace other = bisected.getHalf() == Bisected.Half.BOTTOM
                     ? BlockFace.UP
                     : BlockFace.DOWN;
