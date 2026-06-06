@@ -123,6 +123,16 @@ public class TraderListener implements Listener {
                 Material.EMERALD, 8,
                 Material.DIAMOND, 1));
 
+        // ── Creaking Heart ────────────────────────────────────────────────────
+        // Only spawns in naturally generated Pale Oak trees (Pale Garden biome).
+        // Player-grown Pale Oak trees do not generate Creaking Hearts.
+        // Pale Oak Logs are obtainable by blowing up natural trees with TNT
+        // (explosions are intentionally allowed in FairPlay).
+        FAIR_TRADE_POOL.add(trade(
+                Material.CREAKING_HEART,
+                Material.EMERALD, 8,
+                Material.PALE_OAK_LOG, 8));
+
         // ── Swift Sneak III ───────────────────────────────────────────────────
         // Exclusively in Ancient City chests (cleared by LootListener).
         // Sculk Catalyst: obtainable from Warden drops or by placing a player-owned
