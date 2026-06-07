@@ -165,6 +165,33 @@ public class GrowthListener implements Listener {
             return;
         }
 
+        // Case B – fruit-side event: the pumpkin/melon block itself appears.
+        // BlockGrowEvent fires separately for the fruit block, but Case A (the stem
+        // event) may not always run before this, or may fail (e.g. if AttachedStem
+        // does not implement Directional). Registering here guarantees the fruit
+        // always has its own direct DB entry — independent of the stem's existence.
+        // Without this, the fruit appears "owned" only via the onBlockBreak fallback
+        // (scanning adjacent stems), which breaks when the stem is later removed
+        // (e.g. farmland below the stem is trampled).
+        if (newType == Material.PUMPKIN || newType == Material.MELON) {
+            if (storage.getBlockOwner(grownBlock) == null) {
+                for (BlockFace face : new BlockFace[]{
+                        BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST}) {
+                    Block stem = grownBlock.getRelative(face);
+                    Material t = stem.getType();
+                    if (t == Material.ATTACHED_PUMPKIN_STEM || t == Material.ATTACHED_MELON_STEM
+                            || t == Material.PUMPKIN_STEM || t == Material.MELON_STEM) {
+                        UUID stemOwner = storage.getBlockOwner(stem);
+                        if (stemOwner != null) {
+                            storage.setBlockOwner(grownBlock, stemOwner);
+                            break;
+                        }
+                    }
+                }
+            }
+            return;
+        }
+
         // Dripstone growth is handled in onBlockForm (BlockGrowEvent does not fire in Paper 1.21.8).
 
         // Bamboo / Kelp: event fires on existing tip → new block appears after the event.
