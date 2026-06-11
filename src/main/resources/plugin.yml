@@ -7,3 +7,8 @@ authors:
   - teign
 libraries:
   - org.xerial:sqlite-jdbc:3.45.1.0
+
+commands:
+  fpdebug:
+    description: Query and edit FairPlay ownership data (OP only).
+    usage: /fpdebug <block|entity> ...

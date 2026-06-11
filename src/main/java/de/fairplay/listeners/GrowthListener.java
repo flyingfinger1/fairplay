@@ -384,12 +384,6 @@ public class GrowthListener implements Listener {
         Block spawnBlock = event.getLocation().getBlock();
         final Material eggMaterial = isTurtle ? Material.TURTLE_EGG : Material.FROGSPAWN;
 
-        plugin.getLogger().info(String.format(
-                "onEggHatch: %s spawned at %d,%d,%d blockType=%s fedBy=%s owner=%s",
-                isTurtle ? "Turtle" : "Tadpole",
-                spawnBlock.getX(), spawnBlock.getY(), spawnBlock.getZ(), spawnBlock.getType(),
-                storage.getBlockFedBy(spawnBlock), storage.getBlockOwner(spawnBlock)));
-
         final Block sourceBlock;
         if (spawnBlock.getType() == eggMaterial
                 || storage.getBlockFedBy(spawnBlock) != null
@@ -400,9 +394,6 @@ public class GrowthListener implements Listener {
             if (below.getType() == eggMaterial
                     || storage.getBlockFedBy(below) != null
                     || storage.getBlockOwner(below) != null) {
-                plugin.getLogger().info(String.format(
-                        "onEggHatch: using block below (%d,%d,%d) – spawn block had no entry (type=%s)",
-                        below.getX(), below.getY(), below.getZ(), spawnBlock.getType()));
                 sourceBlock = below;
             } else {
                 sourceBlock = spawnBlock; // no entry found at either position
@@ -418,9 +409,6 @@ public class GrowthListener implements Listener {
             UUID fedBy = storage.getBlockFedBy(sourceBlock);
             if (fedBy != null) {
                 storage.setEntityOwner(entityId, fedBy);
-                plugin.getLogger().info(String.format(
-                        "onEggHatch: baby turtle %s → entity_ownership=%s (egg at %d,%d,%d)",
-                        entityId, fedBy, sourceBlock.getX(), sourceBlock.getY(), sourceBlock.getZ()));
             }
         } else {
             // Tadpoles — two-stage cycle:
@@ -480,10 +468,6 @@ public class GrowthListener implements Listener {
         if (owner != null) {
             storage.setBlockOwner(formed, owner);
         }
-        plugin.getLogger().info(String.format(
-                "onEggLayerPlacesBlock: %s laid at %d,%d,%d – entity_fedby=%s entity_ownership=%s",
-                isTurtleEgg ? "TURTLE_EGG" : "FROGSPAWN",
-                formed.getX(), formed.getY(), formed.getZ(), fedBy, owner));
     }
 
     /**

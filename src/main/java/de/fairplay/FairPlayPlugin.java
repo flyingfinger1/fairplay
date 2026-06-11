@@ -1,6 +1,7 @@
 package de.fairplay;
 
 import de.fairplay.advancements.AdvancementManager;
+import de.fairplay.commands.DebugCommand;
 import de.fairplay.listeners.AdvancementListener;
 import de.fairplay.listeners.BlockOwnershipListener;
 import de.fairplay.listeners.CauldronListener;
@@ -74,6 +75,14 @@ public class FairPlayPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new LootListener(advManager), this);
         getServer().getPluginManager().registerEvents(new VehicleListener(storage, advManager), this);
         getServer().getPluginManager().registerEvents(new AdvancementListener(advManager, this), this);
+
+        // /fpdebug command
+        DebugCommand debugCmd = new DebugCommand(storage);
+        var fpdebug = getCommand("fpdebug");
+        if (fpdebug != null) {
+            fpdebug.setExecutor(debugCmd);
+            fpdebug.setTabCompleter(debugCmd);
+        }
 
         // Add Heart of the Sea to Wandering Trader (buried treasure is unreachable in solo mode)
         getServer().getPluginManager().registerEvents(new TraderListener(), this);

@@ -69,16 +69,9 @@ public class MobInteractionListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEggLayerFed(EntityEnterLoveModeEvent event) {
         if (!(event.getEntity() instanceof Turtle) && !(event.getEntity() instanceof Frog)) return;
-        if (event.getHumanEntity() == null) {
-            plugin.getLogger().info("onEggLayerFed: " + event.getEntity().getType()
-                    + " entered love mode (no human – dispenser or passive)");
-            return; // fed by dispenser – no marker
-        }
+        if (event.getHumanEntity() == null) return; // fed by dispenser – no marker
         storage.setEntityFedBy(event.getEntity().getUniqueId(),
                 event.getHumanEntity().getUniqueId());
-        plugin.getLogger().info("onEggLayerFed: " + event.getEntity().getType()
-                + " fed by " + event.getHumanEntity().getName()
-                + " → entity_fedby set (" + event.getEntity().getUniqueId() + ")");
     }
 
     /**
