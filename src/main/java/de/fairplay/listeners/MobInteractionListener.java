@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
 
@@ -30,6 +31,7 @@ public class MobInteractionListener implements Listener {
     private final OwnershipStorage storage;
     private final AdvancementManager adv;
     private final boolean teamMode;
+    private final JavaPlugin plugin;
 
     /**
      * Constructs a new MobInteractionListener with the given dependencies.
@@ -37,11 +39,13 @@ public class MobInteractionListener implements Listener {
      * @param storage  the ownership storage used to read and write entity owners
      * @param adv      the advancement manager used to grant advancements
      * @param teamMode {@code true} if team mode is active (ownership checks are relaxed)
+     * @param plugin   the owning plugin, used for logging
      */
-    public MobInteractionListener(OwnershipStorage storage, AdvancementManager adv, boolean teamMode) {
+    public MobInteractionListener(OwnershipStorage storage, AdvancementManager adv, boolean teamMode, JavaPlugin plugin) {
         this.storage = storage;
         this.adv = adv;
         this.teamMode = teamMode;
+        this.plugin = plugin;
     }
 
     // ── Ownership assignment ──────────────────────────────────────────────────
@@ -65,9 +69,16 @@ public class MobInteractionListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEggLayerFed(EntityEnterLoveModeEvent event) {
         if (!(event.getEntity() instanceof Turtle) && !(event.getEntity() instanceof Frog)) return;
-        if (event.getHumanEntity() == null) return; // fed by dispenser – no marker
+        if (event.getHumanEntity() == null) {
+            plugin.getLogger().info("onEggLayerFed: " + event.getEntity().getType()
+                    + " entered love mode (no human – dispenser or passive)");
+            return; // fed by dispenser – no marker
+        }
         storage.setEntityFedBy(event.getEntity().getUniqueId(),
                 event.getHumanEntity().getUniqueId());
+        plugin.getLogger().info("onEggLayerFed: " + event.getEntity().getType()
+                + " fed by " + event.getHumanEntity().getName()
+                + " → entity_fedby set (" + event.getEntity().getUniqueId() + ")");
     }
 
     /**

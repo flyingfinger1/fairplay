@@ -18,6 +18,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFertilizeEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.event.block.EntityBlockFormEvent;
 import org.bukkit.event.block.BlockGrowEvent;
@@ -249,35 +250,11 @@ public class GrowthListener implements Listener {
         String world = formed.getWorld().getName();
 
         // EntityBlockFormEvent: entity-caused block formation.
-        // Turtle lays eggs / Frog lays frogspawn → two-cycle ownership logic:
-        //   - If the layer has a "fed by" marker → record it on the block (block_fedby).
-        //     Cycle 1: player feeds wild animals → their eggs/frogspawn carry a fedBy tag.
-        //   - If the layer ALSO has a player owner (entity_ownership) → the block is fully
-        //     owned (block_ownership). Cycle 2: hatchlings/tadpoles that grew from owned
-        //     animals are themselves player-owned; when re-fed they produce harvestable eggs.
-        // All other EntityBlockFormEvents (frost walker, silverfish) are left unowned and skip
-        // the neighbour scan below.
-        if (event instanceof EntityBlockFormEvent entityEvent) {
-            boolean isTurtleEgg  = entityEvent.getEntity() instanceof Turtle
-                                   && event.getNewState().getType() == Material.TURTLE_EGG;
-            boolean isFrogspawn  = entityEvent.getEntity() instanceof Frog
-                                   && event.getNewState().getType() == Material.FROGSPAWN;
-            if (isTurtleEgg || isFrogspawn) {
-                UUID layerUUID = entityEvent.getEntity().getUniqueId();
-                UUID fedBy = storage.getEntityFedBy(layerUUID);
-                if (fedBy != null) {
-                    storage.setBlockFedBy(formed, fedBy);
-                }
-                UUID owner = storage.getEntityOwner(layerUUID);
-                if (owner != null) {
-                    storage.setBlockOwner(formed, owner);
-                }
-                plugin.getLogger().info(String.format(
-                        "[FairPlay] %s laid at %d,%d,%d – entity_fedby=%s entity_ownership=%s → block_fedby=%s block_ownership=%s",
-                        isTurtleEgg ? "TURTLE_EGG" : "FROGSPAWN",
-                        formed.getX(), formed.getY(), formed.getZ(),
-                        fedBy, owner, fedBy, owner));
-            }
+        // In Paper 1.21.8, turtle/frog egg-laying fires EntityChangeBlockEvent instead of
+        // EntityBlockFormEvent — that case is handled in onEggLayerPlacesBlock() below.
+        // All other EntityBlockFormEvents (frost walker, silverfish) are left unowned and
+        // skip the neighbour scan below.
+        if (event instanceof EntityBlockFormEvent) {
             return;
         }
 
@@ -407,6 +384,12 @@ public class GrowthListener implements Listener {
         Block spawnBlock = event.getLocation().getBlock();
         final Material eggMaterial = isTurtle ? Material.TURTLE_EGG : Material.FROGSPAWN;
 
+        plugin.getLogger().info(String.format(
+                "onEggHatch: %s spawned at %d,%d,%d blockType=%s fedBy=%s owner=%s",
+                isTurtle ? "Turtle" : "Tadpole",
+                spawnBlock.getX(), spawnBlock.getY(), spawnBlock.getZ(), spawnBlock.getType(),
+                storage.getBlockFedBy(spawnBlock), storage.getBlockOwner(spawnBlock)));
+
         final Block sourceBlock;
         if (spawnBlock.getType() == eggMaterial
                 || storage.getBlockFedBy(spawnBlock) != null
@@ -417,9 +400,9 @@ public class GrowthListener implements Listener {
             if (below.getType() == eggMaterial
                     || storage.getBlockFedBy(below) != null
                     || storage.getBlockOwner(below) != null) {
-                plugin.getLogger().info("[FairPlay] onEggHatch: using block below spawn ("
-                        + below.getX() + "," + below.getY() + "," + below.getZ()
-                        + ") – spawn block had no entry (spawnBlock type=" + spawnBlock.getType() + ")");
+                plugin.getLogger().info(String.format(
+                        "onEggHatch: using block below (%d,%d,%d) – spawn block had no entry (type=%s)",
+                        below.getX(), below.getY(), below.getZ(), spawnBlock.getType()));
                 sourceBlock = below;
             } else {
                 sourceBlock = spawnBlock; // no entry found at either position
@@ -435,9 +418,9 @@ public class GrowthListener implements Listener {
             UUID fedBy = storage.getBlockFedBy(sourceBlock);
             if (fedBy != null) {
                 storage.setEntityOwner(entityId, fedBy);
-                plugin.getLogger().info("[FairPlay] Baby turtle " + entityId
-                        + " assigned entity_ownership=" + fedBy
-                        + " from egg at " + sourceBlock.getX() + "," + sourceBlock.getY() + "," + sourceBlock.getZ());
+                plugin.getLogger().info(String.format(
+                        "onEggHatch: baby turtle %s → entity_ownership=%s (egg at %d,%d,%d)",
+                        entityId, fedBy, sourceBlock.getX(), sourceBlock.getY(), sourceBlock.getZ()));
             }
         } else {
             // Tadpoles — two-stage cycle:
@@ -463,6 +446,44 @@ public class GrowthListener implements Listener {
             storage.removeBlockOwner(sourceBlock);
             storage.removeBlockFedBy(sourceBlock);
         }, 1L);
+    }
+
+    /**
+     * In Paper 1.21.8, turtle/frog egg-laying fires {@link EntityChangeBlockEvent} instead
+     * of {@link EntityBlockFormEvent}.  This handler covers both species:
+     *
+     * <ul>
+     *   <li>Turtle lays a TURTLE_EGG  → AIR becomes TURTLE_EGG</li>
+     *   <li>Frog  lays a FROGSPAWN    → AIR becomes FROGSPAWN</li>
+     * </ul>
+     *
+     * Same two-cycle logic as the original EntityBlockFormEvent handler:
+     * if the layer has an {@code entity_fedby} marker the block gets {@code block_fedby};
+     * if the layer is already owned the block also gets {@code block_ownership}.
+     *
+     * @param event the event fired by the server
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onEggLayerPlacesBlock(EntityChangeBlockEvent event) {
+        boolean isTurtleEgg = event.getEntity() instanceof Turtle && event.getTo() == Material.TURTLE_EGG;
+        boolean isFrogspawn = event.getEntity() instanceof Frog   && event.getTo() == Material.FROGSPAWN;
+        if (!isTurtleEgg && !isFrogspawn) return;
+
+        Block formed = event.getBlock(); // position of the new egg/frogspawn block
+        UUID layerUUID = event.getEntity().getUniqueId();
+
+        UUID fedBy = storage.getEntityFedBy(layerUUID);
+        if (fedBy != null) {
+            storage.setBlockFedBy(formed, fedBy);
+        }
+        UUID owner = storage.getEntityOwner(layerUUID);
+        if (owner != null) {
+            storage.setBlockOwner(formed, owner);
+        }
+        plugin.getLogger().info(String.format(
+                "onEggLayerPlacesBlock: %s laid at %d,%d,%d – entity_fedby=%s entity_ownership=%s",
+                isTurtleEgg ? "TURTLE_EGG" : "FROGSPAWN",
+                formed.getX(), formed.getY(), formed.getZ(), fedBy, owner));
     }
 
     /**

@@ -70,7 +70,7 @@ public class FairPlayPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CauldronListener(storage, this, advManager, teamMode), this);
         getServer().getPluginManager().registerEvents(new GrowthListener(this, storage, advManager, teamMode), this);
         getServer().getPluginManager().registerEvents(new CombatListener(storage, advManager), this);
-        getServer().getPluginManager().registerEvents(new MobInteractionListener(storage, advManager, teamMode), this);
+        getServer().getPluginManager().registerEvents(new MobInteractionListener(storage, advManager, teamMode, this), this);
         getServer().getPluginManager().registerEvents(new LootListener(advManager), this);
         getServer().getPluginManager().registerEvents(new VehicleListener(storage, advManager), this);
         getServer().getPluginManager().registerEvents(new AdvancementListener(advManager, this), this);
