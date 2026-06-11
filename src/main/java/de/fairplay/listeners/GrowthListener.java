@@ -272,6 +272,11 @@ public class GrowthListener implements Listener {
                 if (owner != null) {
                     storage.setBlockOwner(formed, owner);
                 }
+                plugin.getLogger().info(String.format(
+                        "[FairPlay] %s laid at %d,%d,%d – entity_fedby=%s entity_ownership=%s → block_fedby=%s block_ownership=%s",
+                        isTurtleEgg ? "TURTLE_EGG" : "FROGSPAWN",
+                        formed.getX(), formed.getY(), formed.getZ(),
+                        fedBy, owner, fedBy, owner));
             }
             return;
         }
@@ -386,16 +391,53 @@ public class GrowthListener implements Listener {
         boolean isTadpole = event.getEntity() instanceof Tadpole;
         if (!isTurtle && !isTadpole) return;
 
-        Block block = event.getLocation().getBlock();
+        // Locate the source egg block.
+        //
+        // In Paper 1.21.8 the egg block is removed (→ AIR) BEFORE the baby entity is
+        // spawned, so by the time CreatureSpawnEvent fires the block type is already AIR.
+        // Additionally, babies sometimes spawn with a sub-block Y offset that pushes
+        // getBlock() one step above the egg position.
+        //
+        // Strategy: resolve the correct source position by checking two candidates in
+        // order of preference:
+        //   1. The exact spawn-location block   (spawnBlock)
+        //   2. The block one step below          (spawnBlock - 1 Y)
+        // "Has a relevant entry" means block_fedby ≠ null OR block_ownership ≠ null OR
+        // the block still shows the egg material (egg hasn't broken yet).
+        Block spawnBlock = event.getLocation().getBlock();
+        final Material eggMaterial = isTurtle ? Material.TURTLE_EGG : Material.FROGSPAWN;
+
+        final Block sourceBlock;
+        if (spawnBlock.getType() == eggMaterial
+                || storage.getBlockFedBy(spawnBlock) != null
+                || storage.getBlockOwner(spawnBlock) != null) {
+            sourceBlock = spawnBlock;
+        } else {
+            Block below = spawnBlock.getRelative(BlockFace.DOWN);
+            if (below.getType() == eggMaterial
+                    || storage.getBlockFedBy(below) != null
+                    || storage.getBlockOwner(below) != null) {
+                plugin.getLogger().info("[FairPlay] onEggHatch: using block below spawn ("
+                        + below.getX() + "," + below.getY() + "," + below.getZ()
+                        + ") – spawn block had no entry (spawnBlock type=" + spawnBlock.getType() + ")");
+                sourceBlock = below;
+            } else {
+                sourceBlock = spawnBlock; // no entry found at either position
+            }
+        }
+
         UUID entityId = event.getEntity().getUniqueId();
 
         if (isTurtle) {
             // Turtles: block_fedby → entity_ownership directly.
             // Baby turtles are immediately interactable (shearing etc. once grown),
             // so they get entity_ownership right away.
-            UUID fedBy = storage.getBlockFedBy(block);
+            UUID fedBy = storage.getBlockFedBy(sourceBlock);
             if (fedBy != null) {
                 storage.setEntityOwner(entityId, fedBy);
+                plugin.getLogger().info("[FairPlay] Baby turtle " + entityId
+                        + " assigned entity_ownership=" + fedBy
+                        + " from egg at " + sourceBlock.getX() + "," + sourceBlock.getY() + "," + sourceBlock.getZ());
             }
         } else {
             // Tadpoles — two-stage cycle:
@@ -404,11 +446,11 @@ public class GrowthListener implements Listener {
             //     converts entity_fedby → entity_ownership on the adult frog.
             //   Cycle 2 (frogspawn also has block_ownership, from an owned parent frog):
             //     tadpole ALSO gets entity_ownership and is immediately bucketable.
-            UUID fedBy = storage.getBlockFedBy(block);
+            UUID fedBy = storage.getBlockFedBy(sourceBlock);
             if (fedBy != null) {
                 storage.setEntityFedBy(entityId, fedBy);
             }
-            UUID blockOwner = storage.getBlockOwner(block);
+            UUID blockOwner = storage.getBlockOwner(sourceBlock);
             if (blockOwner != null) {
                 storage.setEntityOwner(entityId, blockOwner);
             }
@@ -416,11 +458,10 @@ public class GrowthListener implements Listener {
 
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
             // Source block still present → siblings may still hatch; keep entries.
-            if (isTurtle  && block.getType() == Material.TURTLE_EGG)  return;
-            if (isTadpole && block.getType() == Material.FROGSPAWN)   return;
+            if (sourceBlock.getType() == eggMaterial) return;
             // Block is gone → remove both block-level entries.
-            storage.removeBlockOwner(block);
-            storage.removeBlockFedBy(block);
+            storage.removeBlockOwner(sourceBlock);
+            storage.removeBlockFedBy(sourceBlock);
         }, 1L);
     }
 
