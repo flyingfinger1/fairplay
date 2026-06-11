@@ -15,6 +15,7 @@ import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.Beehive;
 import org.bukkit.block.data.type.TrapDoor;
+import org.bukkit.block.data.type.TurtleEgg;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -297,6 +298,22 @@ public class BlockOwnershipListener implements Listener {
                     storage.removeBlockOwner(iceBlock);
                 }
             }, 1L);
+            return;
+        }
+
+        // Turtle eggs: in Paper 1.21.8, BlockBreakEvent fires once per egg in a multi-egg
+        // block (i.e. a 4-egg block fires 4 separate events before the block disappears).
+        // Removing the ownership entry after the first break would leave the remaining eggs
+        // unowned, making them unbreakable. Keep the entry until only the last egg is broken.
+        // Also clean up block_fedby here since onBlockBreak is responsible for player-
+        // initiated removal (the hatch path has its own cleanup via onEggHatch).
+        if (block.getType() == Material.TURTLE_EGG) {
+            if (block.getBlockData() instanceof TurtleEgg eggData && eggData.getEggs() > 1) {
+                return; // more eggs remain – ownership entry must survive for subsequent breaks
+            }
+            // Last (or only) egg: remove both block-level entries and stop.
+            storage.removeBlockOwner(block);
+            storage.removeBlockFedBy(block);
             return;
         }
 
