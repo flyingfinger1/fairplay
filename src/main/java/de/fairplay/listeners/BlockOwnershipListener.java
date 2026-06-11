@@ -346,7 +346,8 @@ public class BlockOwnershipListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         Material bucket = event.getBucket();
-        if (bucket != Material.WATER_BUCKET && bucket != Material.LAVA_BUCKET) return;
+        if (bucket != Material.WATER_BUCKET && bucket != Material.LAVA_BUCKET
+                && bucket != Material.POWDER_SNOW_BUCKET) return;
 
         Block placed = event.getBlock();
         Player player = event.getPlayer();
@@ -441,8 +442,9 @@ public class BlockOwnershipListener implements Listener {
 
         if (teamMode) return;
 
-        // Direct water or lava source block
-        if (filled == Material.WATER || filled == Material.LAVA) {
+        // Direct water, lava, or powder snow source block
+        if (filled == Material.WATER || filled == Material.LAVA
+                || filled == Material.POWDER_SNOW) {
             UUID owner = storage.getBlockOwner(block);
             if (owner == null || !owner.equals(player.getUniqueId())) {
                 event.setCancelled(true);
