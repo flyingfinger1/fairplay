@@ -1,8 +1,8 @@
 # FairPlay – Fair Minecraft
 
 [![Release](https://img.shields.io/github/v/release/flyingfinger1/fairplay?label=release&color=brightgreen)](https://github.com/flyingfinger1/fairplay/releases/latest)
-[![Paper](https://img.shields.io/badge/Paper-1.21.4%2B-f96854)](https://papermc.io)
-[![Java](https://img.shields.io/badge/Java-21-blue)](https://adoptium.net)
+[![Paper](https://img.shields.io/badge/Paper-1.19–1.20.4-f96854)](https://papermc.io)
+[![Java](https://img.shields.io/badge/Java-17-blue)](https://adoptium.net)
 [![License](https://img.shields.io/github/license/flyingfinger1/fairplay)](LICENSE)
 [![JavaDoc](https://img.shields.io/badge/JavaDoc-online-blue)](https://flyingfinger1.github.io/fairplay/)
 
@@ -93,9 +93,19 @@ Adding a new language only requires adding a file to `src/main/resources/lang/` 
 
 ## Installation
 
+### Version Notes (1.19 – 1.20.4)
+
+The following features from the latest version are not available on this branch:
+
+- **Armadillo brushing** is not tracked (Armadillos were added in 1.20.5)
+- **Sniffer Egg** is not in the Wandering Trader pool (added in 1.20)
+- **Swift Sneak III** is not in the Wandering Trader pool (added in 1.19, but Sculk Catalyst cost material is 1.19 only)
+- **Music Disc Relic** is not in the Wandering Trader pool (added in 1.20)
+- **Cherry Sapling** does not trigger the Green Thumb advancement (added in 1.20)
+
 ### Requirements
-- Paper 1.21.4 or newer
-- Java 21
+- Paper 1.19 – 1.20.4
+- Java 17
 - Internet access on first start (Paper downloads `sqlite-jdbc` from Maven Central automatically)
 
 ### Build
@@ -173,9 +183,9 @@ src/main/
 
 | Component | Technology |
 |---|---|
-| Server API | Paper 1.21.4+ (`paper-api:1.21.4-R0.1-SNAPSHOT`) |
+| Server API | Paper 1.19–1.20.4 (compiled against `paper-api:1.19.4-R0.1-SNAPSHOT`) |
 | Database | SQLite via `sqlite-jdbc:3.45.1.0` (loaded by Paper on first start) |
 | Build | Gradle |
-| Java | 21 |
+| Java | 17 |
 | Data pack format | 81 |
 | Resource pack format | 46 (compatible with 32–9999) |
