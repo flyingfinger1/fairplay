@@ -1,14 +1,27 @@
 # FairPlay – Fair Minecraft
 
 [![Release](https://img.shields.io/github/v/release/flyingfinger1/fairplay?label=release&color=brightgreen)](https://github.com/flyingfinger1/fairplay/releases/latest)
-[![Paper](https://img.shields.io/badge/Paper-1.21.8-f96854)](https://papermc.io)
+[![Paper](https://img.shields.io/badge/Paper-1.21.4%2B-f96854)](https://papermc.io)
 [![Java](https://img.shields.io/badge/Java-21-blue)](https://adoptium.net)
 [![License](https://img.shields.io/github/license/flyingfinger1/fairplay)](LICENSE)
 [![JavaDoc](https://img.shields.io/badge/JavaDoc-online-blue)](https://flyingfinger1.github.io/fairplay/)
 
-A Paper plugin for Minecraft 1.21.8 that enforces one simple rule:
+A Paper plugin that enforces one simple rule:
 
 > **You may only break blocks that you placed yourself.**
+
+---
+
+## Supported Versions
+
+Download the JAR matching your server version from [Releases](https://github.com/flyingfinger1/fairplay/releases/latest):
+
+| JAR | Minecraft | Java |
+|-----|-----------|------|
+| `FairPlay-x.x.x-mc1.21.4+.jar` | 1.21.4 and newer | 21 |
+| `FairPlay-x.x.x-mc1.20.5-1.21.3.jar` | 1.20.5 – 1.21.3 | 21 |
+| `FairPlay-x.x.x-mc1.19-1.20.4.jar` | 1.19 – 1.20.4 | 17 |
+| `FairPlay-x.x.x-mc1.17-1.18.2.jar` | 1.17 – 1.18.2 | 17 |
 
 ---
 
@@ -45,6 +58,7 @@ The plugin supports two modes: **solo** (strict ownership, default) and **team**
 - Animals bred or tamed by a player are registered in the database
 - Only the owner may shear sheep, milk cows, collect mushroom stew, and brush armadillos
 - Wild animals (not bred/tamed) are blocked for everyone — they cannot be interacted with
+- **Turtle & frog egg cycle:** feeding wild turtles/frogs marks their eggs; the hatched babies are owned by the feeder. Feeding owned turtles/frogs produces directly owned (breakable) eggs.
 
 ### 28 Custom Advancements
 The plugin ships its own advancement tree explaining and rewarding FairPlay mechanics — from "Foundation" (first own block) to "First Night" (surviving until dawn).
@@ -80,7 +94,7 @@ Adding a new language only requires adding a file to `src/main/resources/lang/` 
 ## Installation
 
 ### Requirements
-- Paper 1.21.8
+- Paper 1.21.4 or newer
 - Java 21
 - Internet access on first start (Paper downloads `sqlite-jdbc` from Maven Central automatically)
 
@@ -88,7 +102,7 @@ Adding a new language only requires adding a file to `src/main/resources/lang/` 
 ```bash
 gradle build
 ```
-The finished JAR is located in `build/libs/FairPlay-1.0.0.jar`.
+The finished JAR is located in `build/libs/FairPlay-1.0.3.jar`.
 
 ### Configuration
 After the first start, `plugins/FairPlay/config.yml` is created:
@@ -159,9 +173,9 @@ src/main/
 
 | Component | Technology |
 |---|---|
-| Server API | Paper 1.21.8 (`paper-api:1.21.8-R0.1-SNAPSHOT`) |
+| Server API | Paper 1.21.4+ (`paper-api:1.21.4-R0.1-SNAPSHOT`) |
 | Database | SQLite via `sqlite-jdbc:3.45.1.0` (loaded by Paper on first start) |
-| Build | Gradle (fat JAR) |
+| Build | Gradle |
 | Java | 21 |
 | Data pack format | 81 |
 | Resource pack format | 46 (compatible with 32–9999) |
