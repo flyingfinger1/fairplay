@@ -11,7 +11,6 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HexFormat;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -162,7 +161,13 @@ public class ResourcePackServer {
     private static String computeSha1(byte[] data) {
         try {
             byte[] hash = MessageDigest.getInstance("SHA-1").digest(data);
-            return HexFormat.of().formatHex(hash);
+            char[] hex = new char[hash.length * 2];
+            for (int i = 0; i < hash.length; i++) {
+                int v = hash[i] & 0xff;
+                hex[i * 2]     = "0123456789abcdef".charAt(v >>> 4);
+                hex[i * 2 + 1] = "0123456789abcdef".charAt(v & 0x0f);
+            }
+            return new String(hex);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("SHA-1 not available", e);
         }
