@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT'
     // SQLite JDBC is declared in plugin.yml `libraries` — Paper downloads it automatically.
     // Listed as compileOnly here so the IDE and compiler can resolve the classes.
     compileOnly 'org.xerial:sqlite-jdbc:3.45.1.0'
