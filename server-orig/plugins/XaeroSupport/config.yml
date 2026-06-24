@@ -1,0 +1,15 @@
+# Id configurations.
+ids: 
+  # The Server ID.
+  # Use this to allow players to use the same minimap on this server or network.
+  # Set to 0 to regenerate a new ID.
+  server: -7501
+
+# Channel configurations.
+channels: 
+  # The World Map channel.
+  world-map: 
+    # The main channel.
+    main: xaeroworldmap:main
+  minimap: 
+    main: xaerominimap:main

@@ -485,7 +485,7 @@ public class GrowthListener implements Listener {
                  WEEPING_VINES, WEEPING_VINES_PLANT,
                  TWISTING_VINES, TWISTING_VINES_PLANT,
                  // Moss
-                 MOSS_BLOCK, PALE_MOSS_BLOCK,
+                 MOSS_BLOCK,
                  // Berry bushes
                  SWEET_BERRY_BUSH,
                  // Kelp

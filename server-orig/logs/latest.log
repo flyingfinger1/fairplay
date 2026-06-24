@@ -1,0 +1,128 @@
+[17:45:25] [ServerMain/INFO]: [bootstrap] Running Java 25 (Java HotSpot(TM) 64-Bit Server VM 25.0.3+9-LTS-195; Oracle Corporation null) on Windows 11 10.0 (amd64)
+[17:45:25] [ServerMain/INFO]: [bootstrap] Loading Paper 1.21.8-60-main@29c8822 (2025-09-06T21:49:13Z) for Minecraft 1.21.8
+[17:45:25] [ServerMain/INFO]: [PluginInitializerManager] Initializing plugins...
+[17:45:26] [ServerMain/INFO]: [PluginInitializerManager] Initialized 3 plugins
+[17:45:26] [ServerMain/INFO]: [PluginInitializerManager] Bukkit plugins (3):
+ - BukkitOfUtils (1.18.0), FairPlay (1.0.2), XaeroSupport (0.0.1)
+[17:45:28] [ServerMain/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[17:45:29] [ServerMain/INFO]: Loaded 1407 recipes
+[17:45:29] [ServerMain/INFO]: Loaded 1548 advancements
+[17:45:29] [ServerMain/INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Initialising converters for DataConverter...
+[17:45:29] [ServerMain/INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Finished initialising converters for DataConverter in 166,9ms
+[17:45:29] [Server thread/INFO]: Starting minecraft server version 1.21.8
+[17:45:29] [Server thread/INFO]: Loading properties
+[17:45:29] [Server thread/INFO]: This server is running Paper version 1.21.8-60-main@29c8822 (2025-09-06T21:49:13Z) (Implementing API version 1.21.8-R0.1-SNAPSHOT)
+[17:45:29] [Server thread/INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
+[17:45:29] [Server thread/INFO]: Server Ping Player Sample Count: 12
+[17:45:29] [Server thread/INFO]: Using 4 threads for Netty based IO
+[17:45:29] [Server thread/INFO]: [MoonriseCommon] Paper is using 4 worker threads, 1 I/O threads
+[17:45:29] [Server thread/INFO]: [ChunkTaskScheduler] Chunk system is using population gen parallelism: true
+[17:45:29] [Server thread/INFO]: Default game type: SURVIVAL
+[17:45:29] [Server thread/INFO]: Generating keypair
+[17:45:29] [Server thread/INFO]: Starting Minecraft server on *:25565
+[17:45:29] [Server thread/INFO]: Using default channel type
+[17:45:29] [Server thread/INFO]: Paper: Using Java compression from Velocity.
+[17:45:29] [Server thread/INFO]: Paper: Using Java cipher from Velocity.
+[17:45:29] [Server thread/WARN]: [org.bukkit.craftbukkit.legacy.CraftLegacy] Initializing Legacy Material Support. Unless you have legacy plugins and/or data this is a bug!
+[17:45:33] [Server thread/WARN]: Legacy plugin BukkitOfUtils v1.18.0 does not specify an api-version.
+[17:45:34] [Server thread/WARN]: Legacy plugin XaeroSupport v0.0.1 does not specify an api-version.
+[17:45:34] [Server thread/INFO]: [SpigotLibraryLoader] [FairPlay] Loading 1 libraries... please wait
+[17:45:34] [Server thread/INFO]: [SpigotLibraryLoader] [FairPlay] Loaded library C:\Users\teign\WebLerning\FairPlay\server\libraries\org\xerial\sqlite-jdbc\3.45.1.0\sqlite-jdbc-3.45.1.0.jar
+[17:45:34] [Server thread/INFO]: [SpigotLibraryLoader] [FairPlay] Loaded library C:\Users\teign\WebLerning\FairPlay\server\libraries\org\slf4j\slf4j-api\1.7.36\slf4j-api-1.7.36.jar
+[17:45:34] [Server thread/INFO]: [BukkitOfUtils] Loading server plugin BukkitOfUtils v1.18.0
+[17:45:34] [Server thread/INFO]: [BukkitOfUtils] [INFO] Callback Listener has been registered!
+[17:45:34] [Server thread/INFO]: [XaeroSupport] Loading server plugin XaeroSupport v0.0.1
+[17:45:34] [Server thread/INFO]: [FairPlay] Loading server plugin FairPlay v1.0.2
+[17:45:34] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
+[17:45:34] [Server thread/INFO]: Preparing level "world"
+[17:45:34] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[17:45:34] [Server thread/INFO]: Preparing spawn area: 0%
+[17:45:35] [Server thread/INFO]: Time elapsed: 469 ms
+[17:45:35] [Server thread/INFO]: Preparing start region for dimension minecraft:the_nether
+[17:45:35] [Server thread/INFO]: Preparing spawn area: 0%
+[17:45:35] [Server thread/INFO]: Time elapsed: 89 ms
+[17:45:35] [Server thread/INFO]: Preparing start region for dimension minecraft:the_end
+[17:45:35] [Server thread/INFO]: Preparing spawn area: 0%
+[17:45:35] [Server thread/INFO]: Time elapsed: 40 ms
+[17:45:35] [Server thread/INFO]: [BukkitOfUtils] Enabling BukkitOfUtils v1.18.0*
+[17:45:35] [Server thread/INFO]: [BukkitOfUtils] [INFO] Registered BOUListener: MainListener
+[17:45:35] [Server thread/INFO]: [BukkitOfUtils] [INFO] TaskManager is now initialized!
+[17:45:35] [Server thread/INFO]: [BukkitOfUtils] [INFO] > (console) FireString Registered!
+[17:45:35] [Server thread/INFO]: [BukkitOfUtils] [INFO] > (player) FireString Registered!
+[17:45:35] [Server thread/INFO]: [BukkitOfUtils] [INFO] > (consolechat) FireString Registered!
+[17:45:35] [Server thread/INFO]: [BukkitOfUtils] [INFO] > (playerchat) FireString Registered!
+[17:45:35] [Server thread/INFO]: [BukkitOfUtils] [INFO] > (message) FireString Registered!
+[17:45:35] [Server thread/INFO]: [BukkitOfUtils] [INFO] > (title) FireString Registered!
+[17:45:35] [Server thread/INFO]: [BukkitOfUtils] [INFO] > (broadcast) FireString Registered!
+[17:45:35] [Server thread/INFO]: [BukkitOfUtils] [INFO] > (broadcasttitle) FireString Registered!
+[17:45:35] [Server thread/INFO]: [BukkitOfUtils] [INFO] Initialized FireStringManager with 8 FireStrings
+[17:45:35] [Server thread/INFO]: [BukkitOfUtils] [INFO] PlaceholderAPI not found, skipping...
+[17:45:35] [Server thread/INFO]: [BukkitOfUtils] [INFO] LuckPerms not found, skipping...
+[17:45:35] [Server thread/INFO]: [XaeroSupport] Enabling XaeroSupport v0.0.1*
+[17:45:35] [Server thread/INFO]: [XaeroSupport] [INFO] Registered listeners for: MainListener
+[17:45:35] [Server thread/INFO]: [XaeroSupport] [INFO] Registering channels...
+[17:45:35] [Server thread/INFO]: [XaeroSupport] [INFO] Registered channel: xaeroworldmap:main
+[17:45:35] [Server thread/INFO]: [XaeroSupport] [INFO] Registered channel: xaerominimap:main
+[17:45:35] [Server thread/INFO]: [FairPlay] Enabling FairPlay v1.0.2
+[17:45:35] [Server thread/INFO]: [FairPlay] Resource pack saved to: plugins\FairPlay\fairplay-resourcepack.zip
+[17:45:35] [Server thread/INFO]: [FairPlay] Resource pack (embedded): http://localhost:8765/fairplay.zip  (SHA-1: 2de7586acded394294917f9fe3127734f77008a9)
+[17:45:35] [Server thread/INFO]: [FairPlay] Game mode: solo
+[17:45:35] [Server thread/INFO]: [FairPlay] World simulation paused (no players online).
+[17:45:35] [Server thread/INFO]: [FairPlay] FairPlay enabled.
+[17:45:35] [Server thread/INFO]: [spark] Starting background profiler...
+[17:45:35] [Server thread/INFO]: [spark] The async-profiler engine is not supported for your os/arch (windows11/amd64), so the built-in Java engine will be used instead.
+[17:45:35] [Server thread/INFO]: Done preparing level "world" (1.147s)
+[17:45:35] [Server thread/INFO]: Running delayed init tasks
+[17:45:35] [Server thread/INFO]: Done (10.553s)! For help, type "help"
+[17:45:43] [User Authenticator #0/INFO]: UUID of player FlyingFinger is a1a5a028-85d6-49fa-8e20-c318769b0f8c
+[17:45:44] [Server thread/INFO]: [FairPlay] World simulation resumed.
+[17:45:44] [Server thread/INFO]: FlyingFinger joined the game
+[17:45:44] [Server thread/INFO]: FlyingFinger[/127.0.0.1:59849] logged in with entity id 39 at ([world]-369.2365717813344, 115.14649061603906, 312.16571503931254)
+[17:52:27] [Server thread/INFO]: FlyingFinger lost connection: Disconnected
+[17:52:27] [Server thread/INFO]: [FairPlay] World simulation paused (no players online).
+[17:52:27] [Server thread/INFO]: FlyingFinger left the game
+[17:52:34] [User Authenticator #1/INFO]: UUID of player FlyingFinger is a1a5a028-85d6-49fa-8e20-c318769b0f8c
+[17:52:34] [Server thread/INFO]: [FairPlay] World simulation resumed.
+[17:52:34] [Server thread/INFO]: FlyingFinger joined the game
+[17:52:34] [Server thread/INFO]: FlyingFinger[/127.0.0.1:60859] logged in with entity id 1829 at ([world]-247.1147051706452, 82.68412897634614, -329.3020694951509)
+[18:04:46] [Server thread/INFO]: FlyingFinger lost connection: Disconnected
+[18:04:46] [Server thread/INFO]: [FairPlay] World simulation paused (no players online).
+[18:04:46] [Server thread/INFO]: FlyingFinger left the game
+[18:40:20] [Server thread/INFO]: Stopping the server
+[18:40:20] [Server thread/INFO]: Stopping server
+[18:40:20] [Server thread/INFO]: [FairPlay] Disabling FairPlay v1.0.2
+[18:40:20] [Server thread/INFO]: [FairPlay] FairPlay disabled.
+[18:40:20] [Server thread/INFO]: [XaeroSupport] Disabling XaeroSupport v0.0.1
+[18:40:20] [Server thread/INFO]: [BukkitOfUtils] Disabling BukkitOfUtils v1.18.0
+[18:40:20] [Server thread/INFO]: [BukkitOfUtils] [INFO] TaskManager is now stopped!
+[18:40:20] [Server thread/INFO]: Saving players
+[18:40:20] [Server thread/INFO]: Saving worlds
+[18:40:20] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world'
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world'
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world'
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Saved 1 block chunks, 156 entity chunks, 0 poi chunks in world 'world' in 0,05s
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world'
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world'
+[18:40:20] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world_nether]'/minecraft:the_nether
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_nether'
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world_nether'
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_nether'
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Saved 1 block chunks, 17 entity chunks, 0 poi chunks in world 'world_nether' in 0,02s
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world_nether'
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world_nether'
+[18:40:20] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world_the_end]'/minecraft:the_end
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_the_end'
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world_the_end'
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_the_end'
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Saved 0 block chunks, 10 entity chunks, 0 poi chunks in world 'world_the_end' in 0,02s
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'world_the_end'
+[18:40:20] [Server thread/INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'world_the_end'
+[18:40:20] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[18:40:20] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[18:40:20] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[18:40:20] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[18:40:20] [Server thread/INFO]: Waiting for all RegionFile I/O tasks to complete...
+[18:40:20] [Server thread/INFO]: All RegionFile I/O tasks to complete
+[18:40:20] [Server thread/INFO]: [MoonriseCommon] Awaiting termination of worker pool for up to 60s...
+[18:40:20] [Server thread/INFO]: [MoonriseCommon] Awaiting termination of I/O pool for up to 60s...

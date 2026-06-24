@@ -1,0 +1,31 @@
+# FairPlay Plugin Configuration
+
+# Game mode
+# team  → All players share ownership; everyone can use each other's blocks.
+# solo  → Each player only owns what they placed themselves (default).
+game-mode: solo
+
+
+# Resource pack (translations).
+# On every start the plugin saves fairplay-resourcepack.zip to plugins/FairPlay/.
+# Upload that file to GitHub Releases (or any public host) and set the URL below.
+#
+# Option A – External URL (recommended for public servers / GitHub Releases):
+#   resource-pack-url: https://github.com/YOUR_USER/FairPlay/releases/latest/download/fairplay-resourcepack.zip
+#
+# Option B – Embedded HTTP server (local / LAN only, no URL set):
+#   resource-pack-host: Address that clients can reach.
+#     Local server:  localhost
+#     LAN / Public:  e.g. 192.168.1.100 or your-domain.com
+#   resource-pack-port: 8765
+#
+# resource-pack-url is checked first; if set, the embedded server is not started.
+# resource-pack-url: ""
+resource-pack-host: localhost
+resource-pack-port: 8765
+
+# true  → Clients MUST accept the pack (otherwise kicked)
+# false → Clients may decline (they will only see raw translation keys)
+resource-pack-required: false
+
+pause-when-empty: true

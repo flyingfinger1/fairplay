@@ -87,10 +87,7 @@ public class TraderListener implements Listener {
             Material.MUSIC_DISC_PIGSTEP,
             Material.MUSIC_DISC_OTHERSIDE,
             Material.MUSIC_DISC_RELIC,
-            Material.MUSIC_DISC_5,
-            Material.MUSIC_DISC_CREATOR,
-            Material.MUSIC_DISC_CREATOR_MUSIC_BOX,
-            Material.MUSIC_DISC_PRECIPICE
+            Material.MUSIC_DISC_5
     );
 
     private static final List<TradeSpec> FAIR_TRADE_POOL = new ArrayList<>();
@@ -122,16 +119,6 @@ public class TraderListener implements Listener {
                 Material.ANCIENT_DEBRIS,
                 Material.EMERALD, 8,
                 Material.DIAMOND, 1));
-
-        // ── Creaking Heart ────────────────────────────────────────────────────
-        // Only spawns in naturally generated Pale Oak trees (Pale Garden biome).
-        // Player-grown Pale Oak trees do not generate Creaking Hearts.
-        // Pale Oak Logs are obtainable by blowing up natural trees with TNT
-        // (explosions are intentionally allowed in FairPlay).
-        FAIR_TRADE_POOL.add(trade(
-                Material.CREAKING_HEART,
-                Material.EMERALD, 8,
-                Material.PALE_OAK_LOG, 8));
 
         // ── Swift Sneak III ───────────────────────────────────────────────────
         // Exclusively in Ancient City chests (cleared by LootListener).
