@@ -1,8 +1,8 @@
 # FairPlay – Fair Minecraft
 
 [![Release](https://img.shields.io/github/v/release/flyingfinger1/fairplay?label=release&color=brightgreen)](https://github.com/flyingfinger1/fairplay/releases/latest)
-[![Paper](https://img.shields.io/badge/Paper-1.21.4%2B-f96854)](https://papermc.io)
-[![Java](https://img.shields.io/badge/Java-21-blue)](https://adoptium.net)
+[![Paper](https://img.shields.io/badge/Paper-1.17–1.18.2-f96854)](https://papermc.io)
+[![Java](https://img.shields.io/badge/Java-17-blue)](https://adoptium.net)
 [![License](https://img.shields.io/github/license/flyingfinger1/fairplay)](LICENSE)
 [![JavaDoc](https://img.shields.io/badge/JavaDoc-online-blue)](https://flyingfinger1.github.io/fairplay/)
 
@@ -56,9 +56,9 @@ The plugin supports two modes: **solo** (strict ownership, default) and **team**
 
 ### Mob Ownership
 - Animals bred or tamed by a player are registered in the database
-- Only the owner may shear sheep, milk cows, collect mushroom stew, and brush armadillos
+- Only the owner may shear sheep, milk cows, and collect mushroom stew
 - Wild animals (not bred/tamed) are blocked for everyone — they cannot be interacted with
-- **Turtle & frog egg cycle:** feeding wild turtles/frogs marks their eggs; the hatched babies are owned by the feeder. Feeding owned turtles/frogs produces directly owned (breakable) eggs.
+- **Turtle egg cycle:** feeding a wild turtle marks its eggs; the hatched babies are owned by the feeder. Feeding an owned turtle produces directly owned (breakable) eggs.
 
 ### 28 Custom Advancements
 The plugin ships its own advancement tree explaining and rewarding FairPlay mechanics — from "Foundation" (first own block) to "First Night" (surviving until dawn).
@@ -93,9 +93,22 @@ Adding a new language only requires adding a file to `src/main/resources/lang/` 
 
 ## Installation
 
+### Version Notes (1.17 – 1.18.2)
+
+The following features from the latest version are not available on this branch:
+
+- **Frog/tadpole egg cycle** is not tracked (Frogs were added in 1.19 — only the turtle egg cycle is supported)
+- **Armadillo brushing** is not tracked (Armadillos were added in 1.20.5)
+- **`resource-pack-required: true`** has no effect — Paper 1.17–1.18 does not have a kick-on-decline API. The resource pack is always sent, but players can decline it without consequence
+- **Sniffer Egg** is not in the Wandering Trader pool (added in 1.20)
+- **Swift Sneak III** is not in the Wandering Trader pool (added in 1.19)
+- **Music Disc 5, Otherside, and Relic** are not in the Wandering Trader pool (added in 1.19/1.20)
+- **Mangrove Propagule and Cherry Sapling** do not trigger the Green Thumb advancement (added in 1.19/1.20)
+- **Sculk blocks** are not tracked for ownership transfer on spread (Sculk was added in 1.19)
+
 ### Requirements
-- Paper 1.21.4 or newer
-- Java 21
+- Paper 1.17 – 1.18.2
+- Java 17 (compiles to Java 16 bytecode for compatibility)
 - Internet access on first start (Paper downloads `sqlite-jdbc` from Maven Central automatically)
 
 ### Build
@@ -173,9 +186,9 @@ src/main/
 
 | Component | Technology |
 |---|---|
-| Server API | Paper 1.21.4+ (`paper-api:1.21.4-R0.1-SNAPSHOT`) |
+| Server API | Paper 1.17–1.18.2 (compiled against `paper-api:1.17.1-R0.1-SNAPSHOT`) |
 | Database | SQLite via `sqlite-jdbc:3.45.1.0` (loaded by Paper on first start) |
 | Build | Gradle |
-| Java | 21 |
+| Java | 16 bytecode (runs on Java 17) |
 | Data pack format | 81 |
 | Resource pack format | 46 (compatible with 32–9999) |
