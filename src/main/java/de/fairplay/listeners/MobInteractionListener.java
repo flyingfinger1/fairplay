@@ -211,14 +211,6 @@ public class MobInteractionListener implements Listener {
             return;
         }
 
-        // Armadillo brushing
-        if (entity instanceof Armadillo && held == Material.BRUSH) {
-            if (!checkOwnership(player, entity)) {
-                event.setCancelled(true);
-                player.sendActionBar(Lang.get(player, "msg.mob_interact"));
-            }
-            return;
-        }
 
         // Milking cows and mooshrooms
         if ((entity instanceof Cow || entity instanceof MushroomCow) && held == Material.BUCKET) {
