@@ -6,6 +6,7 @@ import de.fairplay.storage.OwnershipStorage;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
+import io.papermc.paper.entity.Shearable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -137,7 +138,7 @@ public class MobInteractionListener implements Listener {
 
     /**
      * Clean up the DB entries when an animal dies.
-     * Removes both the ownership entry and the "fed by" marker (used for turtles).
+     * Removes both the ownership entry and the "fed by" marker (turtles / sulfur cubes).
      *
      * @param event the event fired by the server
      */
@@ -154,19 +155,41 @@ public class MobInteractionListener implements Listener {
      * Shearing sheep, snow golems, mushroom cows:
      * only allowed if the entity is unowned OR owned by the player.
      *
+     * <p>Sulfur Cubes use a different check: shearing removes the absorbed block,
+     * so we check entity_fedby (who fed the block in) instead of entity_owner.
+     * If nobody fed the block (ground auto-pickup, fedby == null), anyone may shear.
+     * On successful shear the fedby marker is cleared.
+     *
      * @param event the event fired by the server
      */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onShear(PlayerShearEntityEvent event) {
         if (teamMode) return;
-        if (!checkOwnership(event.getPlayer(), event.getEntity())) {
+        Entity entity = event.getEntity();
+        Player player = event.getPlayer();
+
+        if (entity instanceof SulfurCube cube) {
+            if (!cube.readyToBeSheared()) return; // nothing inside, nothing to restrict
+            UUID fedBy = storage.getEntityFedBy(cube.getUniqueId());
+            if (fedBy != null && !fedBy.equals(player.getUniqueId())) {
+                event.setCancelled(true);
+                player.sendActionBar(Lang.get(player, "msg.mob_interact"));
+            } else if (fedBy != null) {
+                storage.removeEntityFedBy(cube.getUniqueId());
+            }
+            return;
+        }
+
+        if (!checkOwnership(player, entity)) {
             event.setCancelled(true);
-            event.getPlayer().sendActionBar(Lang.get(event.getPlayer(), "msg.mob_interact"));
+            player.sendActionBar(Lang.get(player, "msg.mob_interact"));
         }
     }
 
     /**
      * PlayerInteractEntityEvent covers:
+     *  - Sulfur Cube block-feeding (any block in hand)
+     *  - Sulfur Cube bucketing (BUCKET in hand)
      *  - Brushing armadillos (BRUSH in hand)
      *  - Milking cows / mooshrooms (BUCKET in hand)
      *  - Collecting mushroom stew from mooshrooms (BOWL in hand)
@@ -184,6 +207,36 @@ public class MobInteractionListener implements Listener {
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
         Material held = item.getType();
+
+        // Sulfur Cube: block feeding and bucketing
+        // entity_fedby tracks whose block is currently inside the cube — same mechanism
+        // as the turtle egg cycle. The feeder may shear the block back out or pocket
+        // the whole cube. Ground auto-absorbed cubes (fedby == null) are unrestricted.
+        if (entity instanceof SulfurCube cube) {
+            if (held.isBlock()) {
+                if (cube.readyToBeSheared()) {
+                    // Cube already holds a block. Feeding a new one drops the old — theft.
+                    UUID fedBy = storage.getEntityFedBy(cube.getUniqueId());
+                    if (fedBy != null && !fedBy.equals(player.getUniqueId())) {
+                        event.setCancelled(true);
+                        player.sendActionBar(Lang.get(player, "msg.mob_interact"));
+                        return;
+                    }
+                }
+                // Empty cube, feeder's own cube, or ground-pickup cube — record feeder.
+                storage.setEntityFedBy(cube.getUniqueId(), player.getUniqueId());
+                return;
+            }
+            if (held == Material.BUCKET && cube.readyToBeSheared()) {
+                // Pocketing a cube with a block inside — only the feeder may do so.
+                UUID fedBy = storage.getEntityFedBy(cube.getUniqueId());
+                if (fedBy != null && !fedBy.equals(player.getUniqueId())) {
+                    event.setCancelled(true);
+                    player.sendActionBar(Lang.get(player, "msg.mob_interact"));
+                }
+            }
+            return;
+        }
 
         // Bucketing fish (Cod, Salmon, TropicalFish, PufferFish):
         // Fish cannot be bred, so they can never be entity-owned. Instead, a player may
