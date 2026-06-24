@@ -26,7 +26,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
-import org.bukkit.event.entity.EntityRemoveEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
@@ -671,18 +670,6 @@ public class BlockOwnershipListener implements Listener {
         if (owner != null) {
             storage.setBlockOwner(event.getBlock(), owner);
         }
-    }
-
-    /**
-     * Falling block is removed without landing (void, lava, /kill, …).
-     * Clean up the map to avoid a memory leak.
-     *
-     * @param event the event fired by the server
-     */
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onFallingBlockRemove(EntityRemoveEvent event) {
-        if (!(event.getEntity() instanceof FallingBlock)) return;
-        fallingOwners.remove(event.getEntity().getUniqueId());
     }
 
     private boolean isCropMaterial(Material m) {

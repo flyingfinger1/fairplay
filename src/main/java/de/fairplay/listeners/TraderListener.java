@@ -86,7 +86,6 @@ public class TraderListener implements Listener {
     private static final Set<Material> NEWER_MUSIC_DISCS = Set.of(
             Material.MUSIC_DISC_PIGSTEP,
             Material.MUSIC_DISC_OTHERSIDE,
-            Material.MUSIC_DISC_RELIC,
             Material.MUSIC_DISC_5
     );
 
@@ -99,19 +98,6 @@ public class TraderListener implements Listener {
                 Material.HEART_OF_THE_SEA,
                 Material.EMERALD, 8,
                 Material.NAUTILUS_SHELL, 8));
-
-        // ── Sniffer Egg ───────────────────────────────────────────────────────
-        // Suspicious Sand/Gravel obtained via Soul Sand bubble-column technique:
-        // undermine the block (Moss-converted neighbours), place a bubble column,
-        // Suspicious block becomes a Falling Block that ages out (~30 s) as an item.
-        FAIR_TRADE_POOL.add(trade(
-                Material.SNIFFER_EGG,
-                Material.EMERALD, 8,
-                Material.SUSPICIOUS_SAND, 1));
-        FAIR_TRADE_POOL.add(trade(
-                Material.SNIFFER_EGG,
-                Material.EMERALD, 8,
-                Material.SUSPICIOUS_GRAVEL, 1));
 
         // ── Ancient Debris ────────────────────────────────────────────────────
         // Unowned Nether block; blast resistance 1200 → explosion workaround impossible.
