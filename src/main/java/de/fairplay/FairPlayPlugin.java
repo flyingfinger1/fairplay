@@ -56,9 +56,8 @@ public class FairPlayPlugin extends JavaPlugin {
         resourcePackServer = new ResourcePackServer();
         try {
             resourcePackServer.start(this);
-            boolean required = getConfig().getBoolean("resource-pack-required", false);
             getServer().getPluginManager().registerEvents(
-                new ResourcePackListener(resourcePackServer, required), this);
+                new ResourcePackListener(resourcePackServer), this);
         } catch (Exception e) {
             getLogger().warning("Failed to start resource pack server: " + e.getMessage());
         }
