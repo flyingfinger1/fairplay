@@ -84,9 +84,7 @@ public class TraderListener implements Listener {
      * The classic discs (13, cat, blocks, …) are still obtainable via Skeleton-kills-Creeper.
      */
     private static final Set<Material> NEWER_MUSIC_DISCS = Set.of(
-            Material.MUSIC_DISC_PIGSTEP,
-            Material.MUSIC_DISC_OTHERSIDE,
-            Material.MUSIC_DISC_5
+            Material.MUSIC_DISC_PIGSTEP
     );
 
     private static final List<TradeSpec> FAIR_TRADE_POOL = new ArrayList<>();
@@ -105,15 +103,6 @@ public class TraderListener implements Listener {
                 Material.ANCIENT_DEBRIS,
                 Material.EMERALD, 8,
                 Material.DIAMOND, 1));
-
-        // ── Swift Sneak III ───────────────────────────────────────────────────
-        // Exclusively in Ancient City chests (cleared by LootListener).
-        // Sculk Catalyst: obtainable from Warden drops or by placing a player-owned
-        // Catalyst and letting mobs die nearby (XP converts to Sculk growth).
-        FAIR_TRADE_POOL.add(new TradeSpec(
-                enchantedBook(Enchantment.SWIFT_SNEAK, 3),
-                Material.EMERALD, 8,
-                Material.SCULK_CATALYST, 1));
 
         // ── Smithing Templates (all) ──────────────────────────────────────────
         // Found only in structure chests, which are cleared by LootListener.
@@ -148,7 +137,7 @@ public class TraderListener implements Listener {
             FAIR_TRADE_POOL.add(trade(
                     m,
                     Material.EMERALD, 8,
-                    Material.SCULK, 8));
+                    Material.GLOWSTONE_DUST, 8));
         }
     }
 

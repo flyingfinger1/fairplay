@@ -9,9 +9,7 @@ import org.bukkit.block.BlockFace;
 import java.util.Set;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Directional;
-import org.bukkit.entity.Frog;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Tadpole;
 import org.bukkit.entity.Turtle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -364,73 +362,38 @@ public class GrowthListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEggHatch(CreatureSpawnEvent event) {
-        boolean isTurtle  = event.getEntity() instanceof Turtle;
-        boolean isTadpole = event.getEntity() instanceof Tadpole;
-        if (!isTurtle && !isTadpole) return;
+        if (!(event.getEntity() instanceof Turtle)) return;
 
         // Locate the source egg block.
         //
-        // In Paper 1.21.8 the egg block is removed (→ AIR) BEFORE the baby entity is
-        // spawned, so by the time CreatureSpawnEvent fires the block type is already AIR.
-        // Additionally, babies sometimes spawn with a sub-block Y offset that pushes
-        // getBlock() one step above the egg position.
-        //
-        // Strategy: resolve the correct source position by checking two candidates in
-        // order of preference:
-        //   1. The exact spawn-location block   (spawnBlock)
-        //   2. The block one step below          (spawnBlock - 1 Y)
-        // "Has a relevant entry" means block_fedby ≠ null OR block_ownership ≠ null OR
-        // the block still shows the egg material (egg hasn't broken yet).
+        // The egg block may be removed (→ AIR) before the baby entity spawns,
+        // so we check two candidates: the exact spawn location and one step below.
         Block spawnBlock = event.getLocation().getBlock();
-        final Material eggMaterial = isTurtle ? Material.TURTLE_EGG : Material.FROGSPAWN;
 
         final Block sourceBlock;
-        if (spawnBlock.getType() == eggMaterial
+        if (spawnBlock.getType() == Material.TURTLE_EGG
                 || storage.getBlockFedBy(spawnBlock) != null
                 || storage.getBlockOwner(spawnBlock) != null) {
             sourceBlock = spawnBlock;
         } else {
             Block below = spawnBlock.getRelative(BlockFace.DOWN);
-            if (below.getType() == eggMaterial
+            if (below.getType() == Material.TURTLE_EGG
                     || storage.getBlockFedBy(below) != null
                     || storage.getBlockOwner(below) != null) {
                 sourceBlock = below;
             } else {
-                sourceBlock = spawnBlock; // no entry found at either position
+                sourceBlock = spawnBlock;
             }
         }
 
         UUID entityId = event.getEntity().getUniqueId();
-
-        if (isTurtle) {
-            // Turtles: block_fedby → entity_ownership directly.
-            // Baby turtles are immediately interactable (shearing etc. once grown),
-            // so they get entity_ownership right away.
-            UUID fedBy = storage.getBlockFedBy(sourceBlock);
-            if (fedBy != null) {
-                storage.setEntityOwner(entityId, fedBy);
-            }
-        } else {
-            // Tadpoles — two-stage cycle:
-            //   Cycle 1 (frogspawn has block_fedby only): tadpole gets entity_fedby.
-            //     It is NOT yet bucketable. When it grows into a frog, onTadpoleGrow
-            //     converts entity_fedby → entity_ownership on the adult frog.
-            //   Cycle 2 (frogspawn also has block_ownership, from an owned parent frog):
-            //     tadpole ALSO gets entity_ownership and is immediately bucketable.
-            UUID fedBy = storage.getBlockFedBy(sourceBlock);
-            if (fedBy != null) {
-                storage.setEntityFedBy(entityId, fedBy);
-            }
-            UUID blockOwner = storage.getBlockOwner(sourceBlock);
-            if (blockOwner != null) {
-                storage.setEntityOwner(entityId, blockOwner);
-            }
+        UUID fedBy = storage.getBlockFedBy(sourceBlock);
+        if (fedBy != null) {
+            storage.setEntityOwner(entityId, fedBy);
         }
 
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-            // Source block still present → siblings may still hatch; keep entries.
-            if (sourceBlock.getType() == eggMaterial) return;
-            // Block is gone → remove both block-level entries.
+            if (sourceBlock.getType() == Material.TURTLE_EGG) return;
             storage.removeBlockOwner(sourceBlock);
             storage.removeBlockFedBy(sourceBlock);
         }, 1L);
@@ -453,9 +416,7 @@ public class GrowthListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEggLayerPlacesBlock(EntityChangeBlockEvent event) {
-        boolean isTurtleEgg = event.getEntity() instanceof Turtle && event.getTo() == Material.TURTLE_EGG;
-        boolean isFrogspawn = event.getEntity() instanceof Frog   && event.getTo() == Material.FROGSPAWN;
-        if (!isTurtleEgg && !isFrogspawn) return;
+        if (!(event.getEntity() instanceof Turtle && event.getTo() == Material.TURTLE_EGG)) return;
 
         Block formed = event.getBlock(); // position of the new egg/frogspawn block
         UUID layerUUID = event.getEntity().getUniqueId();
@@ -477,8 +438,6 @@ public class GrowthListener implements Listener {
         return switch (material) {
             case PUMPKIN_STEM, ATTACHED_PUMPKIN_STEM,
                  MELON_STEM, ATTACHED_MELON_STEM,
-                 // Sculk
-                 SCULK, SCULK_CATALYST, SCULK_SENSOR, SCULK_SHRIEKER, SCULK_VEIN,
                  // Vines
                  VINE,
                  CAVE_VINES, CAVE_VINES_PLANT,

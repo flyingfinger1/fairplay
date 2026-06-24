@@ -13,7 +13,6 @@ import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityEnterLoveModeEvent;
 import org.bukkit.event.entity.EntityTameEvent;
-import org.bukkit.event.entity.EntityTransformEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -68,49 +67,10 @@ public class MobInteractionListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEggLayerFed(EntityEnterLoveModeEvent event) {
-        if (!(event.getEntity() instanceof Turtle) && !(event.getEntity() instanceof Frog)) return;
+        if (!(event.getEntity() instanceof Turtle)) return;
         if (event.getHumanEntity() == null) return; // fed by dispenser – no marker
         storage.setEntityFedBy(event.getEntity().getUniqueId(),
                 event.getHumanEntity().getUniqueId());
-    }
-
-    /**
-     * When a tadpole grows into a frog, promote its ownership to the new frog entity.
-     * The tadpole entity is replaced (not killed), so {@link #onEntityDeath} does not
-     * fire — we clean up the old entries here manually.
-     *
-     * <p>Two cases:
-     * <ul>
-     *   <li><b>Cycle 2 tadpole</b> (already had {@code entity_ownership}): ownership is
-     *       transferred directly to the frog.</li>
-     *   <li><b>Cycle 1 tadpole</b> (only had {@code entity_fedby}): the frog receives
-     *       {@code entity_ownership} derived from that fed-by entry. This is the moment
-     *       the player's investment in cycle 1 pays off — the frog is now owned and its
-     *       future frogspawn will be cycle-2 (tadpoles immediately bucketable).</li>
-     * </ul>
-     *
-     * @param event the event fired by the server
-     */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onTadpoleGrow(EntityTransformEvent event) {
-        if (!(event.getEntity() instanceof Tadpole)) return;
-        UUID tadpoleId = event.getEntity().getUniqueId();
-        UUID frogId    = event.getTransformedEntity().getUniqueId();
-
-        // Cycle 2: tadpole was directly owned (bucketable) → transfer to frog.
-        UUID owner = storage.getEntityOwner(tadpoleId);
-        if (owner != null) {
-            storage.setEntityOwner(frogId, owner);
-        } else {
-            // Cycle 1: tadpole only had entity_fedby → frog becomes owned by that player.
-            UUID fedBy = storage.getEntityFedBy(tadpoleId);
-            if (fedBy != null) {
-                storage.setEntityOwner(frogId, fedBy);
-            }
-        }
-        // Tadpole transformation is not a death event — clean up manually.
-        storage.removeEntityOwner(tadpoleId);
-        storage.removeEntityFedBy(tadpoleId);
     }
 
     /**
@@ -203,7 +163,7 @@ public class MobInteractionListener implements Listener {
 
         // Bucketing tadpoles (only cycle-2 tadpoles have entity_ownership and are bucketable)
         // Bucketing axolotls (owned via EntityBreedEvent, same check applies)
-        if ((entity instanceof Tadpole || entity instanceof Axolotl) && held == Material.WATER_BUCKET) {
+        if (entity instanceof Axolotl && held == Material.WATER_BUCKET) {
             if (!checkOwnership(player, entity)) {
                 event.setCancelled(true);
                 player.sendActionBar(Lang.get(player, "msg.mob_interact"));

@@ -57,7 +57,7 @@ public class AdvancementListener implements Listener {
     private static final Set<Material> SAPLINGS = Set.of(
         Material.OAK_SAPLING, Material.SPRUCE_SAPLING, Material.BIRCH_SAPLING,
         Material.JUNGLE_SAPLING, Material.ACACIA_SAPLING, Material.DARK_OAK_SAPLING,
-        Material.MANGROVE_PROPAGULE, Material.AZALEA,
+        Material.AZALEA,
         Material.FLOWERING_AZALEA
     );
 
