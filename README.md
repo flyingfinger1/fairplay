@@ -1,7 +1,7 @@
 # FairPlay – Fair Minecraft
 
 [![Release](https://img.shields.io/github/v/release/flyingfinger1/fairplay?label=release&color=brightgreen)](https://github.com/flyingfinger1/fairplay/releases/latest)
-[![Paper](https://img.shields.io/badge/Paper-1.21.4%2B-f96854)](https://papermc.io)
+[![Paper](https://img.shields.io/badge/Paper-1.20.5–1.21.3-f96854)](https://papermc.io)
 [![Java](https://img.shields.io/badge/Java-21-blue)](https://adoptium.net)
 [![License](https://img.shields.io/github/license/flyingfinger1/fairplay)](LICENSE)
 [![JavaDoc](https://img.shields.io/badge/JavaDoc-online-blue)](https://flyingfinger1.github.io/fairplay/)
@@ -93,8 +93,17 @@ Adding a new language only requires adding a file to `src/main/resources/lang/` 
 
 ## Installation
 
+### Version Notes (1.20.5 – 1.21.3)
+
+The following features from the latest version are not available on this branch because they require 1.21.4+ API:
+
+- Pale Moss Block does not count as a moss block for the Moss spread ownership transfer
+- Pale Oak Sapling does not trigger the Green Thumb advancement
+- Music discs Creator, Creator Music Box, and Precipice are not in the Wandering Trader pool
+- Creaking Heart is not in the Wandering Trader pool
+
 ### Requirements
-- Paper 1.21.4 or newer
+- Paper 1.20.5 – 1.21.3
 - Java 21
 - Internet access on first start (Paper downloads `sqlite-jdbc` from Maven Central automatically)
 
@@ -173,7 +182,7 @@ src/main/
 
 | Component | Technology |
 |---|---|
-| Server API | Paper 1.21.4+ (`paper-api:1.21.4-R0.1-SNAPSHOT`) |
+| Server API | Paper 1.20.5–1.21.3 (compiled against `paper-api:1.20.6-R0.1-SNAPSHOT`) |
 | Database | SQLite via `sqlite-jdbc:3.45.1.0` (loaded by Paper on first start) |
 | Build | Gradle |
 | Java | 21 |
