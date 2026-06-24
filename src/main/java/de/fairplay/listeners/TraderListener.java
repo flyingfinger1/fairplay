@@ -90,7 +90,8 @@ public class TraderListener implements Listener {
             Material.MUSIC_DISC_5,
             Material.MUSIC_DISC_CREATOR,
             Material.MUSIC_DISC_CREATOR_MUSIC_BOX,
-            Material.MUSIC_DISC_PRECIPICE
+            Material.MUSIC_DISC_PRECIPICE,
+            Material.MUSIC_DISC_BOUNCE
     );
 
     private static final List<TradeSpec> FAIR_TRADE_POOL = new ArrayList<>();
@@ -168,7 +169,7 @@ public class TraderListener implements Listener {
         }
 
         // ── Newer Music Discs ─────────────────────────────────────────────────
-        // Pigstep/Otherside/Relic/5/Creator/Precipice are chest-loot or archaeology only.
+        // Pigstep/Otherside/Relic/5/Creator/Precipice/Bounce are chest-loot or archaeology only.
         // Classic discs (13, cat, …) remain obtainable via Skeleton-kills-Creeper.
         // Cost: Sculk (from player-placed Sculk Catalyst + mob death, or Warden drops).
         for (Material m : NEWER_MUSIC_DISCS) {

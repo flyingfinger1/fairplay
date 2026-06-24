@@ -1,8 +1,8 @@
 # FairPlay – Fair Minecraft
 
 [![Release](https://img.shields.io/github/v/release/flyingfinger1/fairplay?label=release&color=brightgreen)](https://github.com/flyingfinger1/fairplay/releases/latest)
-[![Paper](https://img.shields.io/badge/Paper-1.21.4%2B-f96854)](https://papermc.io)
-[![Java](https://img.shields.io/badge/Java-21-blue)](https://adoptium.net)
+[![Paper](https://img.shields.io/badge/Paper-26.2%2B-f96854)](https://papermc.io)
+[![Java](https://img.shields.io/badge/Java-25-blue)](https://adoptium.net)
 [![License](https://img.shields.io/github/license/flyingfinger1/fairplay)](LICENSE)
 [![JavaDoc](https://img.shields.io/badge/JavaDoc-online-blue)](https://flyingfinger1.github.io/fairplay/)
 
@@ -18,7 +18,8 @@ Download the JAR matching your server version from [Releases](https://github.com
 
 | JAR | Minecraft | Java |
 |-----|-----------|------|
-| `FairPlay-x.x.x-mc1.21.4+.jar` | 1.21.4 and newer | 21 |
+| `FairPlay-x.x.x-mc26.2+.jar` | 26.2 and newer | 25 |
+| `FairPlay-x.x.x-mc1.21.4-26.1.jar` | 1.21.4 – 26.1 | 21 |
 | `FairPlay-x.x.x-mc1.20.5-1.21.3.jar` | 1.20.5 – 1.21.3 | 21 |
 | `FairPlay-x.x.x-mc1.19-1.20.4.jar` | 1.19 – 1.20.4 | 17 |
 | `FairPlay-x.x.x-mc1.17-1.18.2.jar` | 1.17 – 1.18.2 | 17 |
@@ -94,8 +95,8 @@ Adding a new language only requires adding a file to `src/main/resources/lang/` 
 ## Installation
 
 ### Requirements
-- Paper 1.21.4 or newer
-- Java 21
+- Paper 26.2 or newer
+- Java 25
 - Internet access on first start (Paper downloads `sqlite-jdbc` from Maven Central automatically)
 
 ### Build
@@ -173,9 +174,9 @@ src/main/
 
 | Component | Technology |
 |---|---|
-| Server API | Paper 1.21.4+ (`paper-api:1.21.4-R0.1-SNAPSHOT`) |
+| Server API | Paper 26.2+ (`paper-api:26.2-R0.1-SNAPSHOT`) |
 | Database | SQLite via `sqlite-jdbc:3.45.1.0` (loaded by Paper on first start) |
 | Build | Gradle |
-| Java | 21 |
+| Java | 25 |
 | Data pack format | 81 |
 | Resource pack format | 46 (compatible with 32–9999) |
