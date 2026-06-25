@@ -102,7 +102,7 @@ Adding a new language only requires adding a file to `src/main/resources/lang/` 
 ```bash
 gradle build
 ```
-The finished JAR is located in `build/libs/FairPlay-1.0.3.jar`.
+The finished JAR is located in `build/libs/FairPlay-1.1.0.jar`.
 
 ### Configuration
 After the first start, `plugins/FairPlay/config.yml` is created:
