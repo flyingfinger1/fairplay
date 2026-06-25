@@ -112,7 +112,7 @@ The following features from the latest version are not available on this branch:
 ```bash
 gradle build
 ```
-The finished JAR is located in `build/libs/FairPlay-1.0.3.jar`.
+The finished JAR is located in `build/libs/FairPlay-1.1.0.jar`.
 
 ### Configuration
 After the first start, `plugins/FairPlay/config.yml` is created:
