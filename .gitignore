@@ -23,3 +23,6 @@ local.gradle
 # OS
 .DS_Store
 Thumbs.db
+
+# Release output (local builds)
+releases/
