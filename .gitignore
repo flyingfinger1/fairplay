@@ -26,3 +26,6 @@ Thumbs.db
 
 # Release output (local builds)
 releases/
+
+# Local secrets
+.modrinth-token
