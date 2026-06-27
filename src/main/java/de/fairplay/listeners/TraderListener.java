@@ -26,6 +26,7 @@ import java.util.Set;
  *
  * <h2>Pool contents and costs</h2>
  * <table>
+ *   <caption>FairPlay trade pool</caption>
  *   <tr><th>Item</th><th>Cost</th><th>Why unreachable</th></tr>
  *   <tr><td>Heart of the Sea</td><td>8 Emerald + 8 Nautilus Shell</td><td>Buried treasure chest</td></tr>
  *   <tr><td>Sniffer Egg</td><td>8 Emerald + 1 Suspicious Sand/Gravel</td><td>Archaeology only</td></tr>
