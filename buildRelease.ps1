@@ -107,7 +107,7 @@ if ($failed.Count -gt 0) {
 
 if (-not $Upload) {
     $rv = if ($Version) { $Version } else { "see above" }
-    Write-Host "`nAll JARs in releases/$rv/ — run with -Upload to publish to Modrinth + CurseForge." -ForegroundColor Green
+    Write-Host "`nAll JARs in releases/$rv/ - run with -Upload to publish to Modrinth + CurseForge." -ForegroundColor Green
     exit 0
 }
 
@@ -115,7 +115,7 @@ Add-Type -AssemblyName System.Net.Http
 
 # ── Modrinth upload ───────────────────────────────────────────────────────────
 if (-not (Test-Path $MODRINTH_TOKEN_FILE)) {
-    Write-Host "`nMissing $MODRINTH_TOKEN_FILE — skipping Modrinth." -ForegroundColor Yellow
+    Write-Host "`nMissing $MODRINTH_TOKEN_FILE - skipping Modrinth." -ForegroundColor Yellow
 } else {
     $mrToken = (Get-Content $MODRINTH_TOKEN_FILE -Raw).Trim()
     Write-Host "`n=== Uploading to Modrinth ===" -ForegroundColor Cyan
@@ -164,7 +164,7 @@ if (-not (Test-Path $MODRINTH_TOKEN_FILE)) {
 
 # ── CurseForge upload ─────────────────────────────────────────────────────────
 if (-not (Test-Path $CF_TOKEN_FILE)) {
-    Write-Host "`nMissing $CF_TOKEN_FILE — skipping CurseForge." -ForegroundColor Yellow
+    Write-Host "`nMissing $CF_TOKEN_FILE - skipping CurseForge." -ForegroundColor Yellow
 } else {
     $cfToken = (Get-Content $CF_TOKEN_FILE -Raw).Trim()
     Write-Host "`n=== Uploading to CurseForge ===" -ForegroundColor Cyan
