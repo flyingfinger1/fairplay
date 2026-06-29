@@ -172,8 +172,9 @@ if (-not (Test-Path $CF_TOKEN_FILE)) {
     foreach ($j in $builtJars) {
         Write-Host "  $($j.Name) ..." -NoNewline
 
+        $cfChangelog = if ($Changelog) { $Changelog } else { "" }
         $metadata = @{
-            changelog     = if ($Changelog) { $Changelog } else { "" }
+            changelog     = $cfChangelog
             changelogType = "markdown"
             displayName   = "FairPlay $($j.Version) ($($j.Suffix))"
             gameVersions  = $j.CFVersionIds
