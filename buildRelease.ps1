@@ -28,8 +28,8 @@ $branches = @(
     [pscustomobject]@{
         Branch           = "master"
         Suffix           = "mc26.2+"
-        ModrinthVersions = @("26.2")
-        CFVersionIds     = @(16500)          # 26.2 (type=1)
+        ModrinthVersions = @("26.2","26.3")
+        CFVersionIds     = @(16500)          # 26.2 (type=1); TODO: add 26.3 CF id
     },
     [pscustomobject]@{
         Branch           = "v1214"
