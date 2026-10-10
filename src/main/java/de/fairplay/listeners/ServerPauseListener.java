@@ -1,6 +1,6 @@
 package de.fairplay.listeners;
 
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,9 +18,9 @@ import org.bukkit.plugin.java.JavaPlugin;
  * the following game rules are set on the last player leaving and restored
  * to their running defaults when a player connects again:
  * <ul>
- *   <li>{@code doDaylightCycle} → {@code false} (running: {@code true})</li>
- *   <li>{@code doWeatherCycle}  → {@code false} (running: {@code true})</li>
- *   <li>{@code doMobSpawning}   → {@code false} (running: {@code true})</li>
+ *   <li>{@code advanceTime}      → {@code false} (running: {@code true})</li>
+ *   <li>{@code advanceWeather}  → {@code false} (running: {@code true})</li>
+ *   <li>{@code spawnMobs}       → {@code false} (running: {@code true})</li>
  *   <li>{@code randomTickSpeed} → {@code 0}     (running: {@code 3})</li>
  * </ul>
  *
@@ -116,16 +116,16 @@ public class ServerPauseListener implements Listener {
     // ── Gamerule helpers ──────────────────────────────────────────────────────
 
     private static void applyPaused(World world) {
-        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-        world.setGameRule(GameRule.DO_WEATHER_CYCLE,  false);
-        world.setGameRule(GameRule.DO_MOB_SPAWNING,   false);
-        world.setGameRule(GameRule.RANDOM_TICK_SPEED, 0);
+        world.setGameRule(GameRules.ADVANCE_TIME,     false);
+        world.setGameRule(GameRules.ADVANCE_WEATHER,  false);
+        world.setGameRule(GameRules.SPAWN_MOBS,       false);
+        world.setGameRule(GameRules.RANDOM_TICK_SPEED, 0);
     }
 
     private static void applyRunning(World world) {
-        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
-        world.setGameRule(GameRule.DO_WEATHER_CYCLE,  true);
-        world.setGameRule(GameRule.DO_MOB_SPAWNING,   true);
-        world.setGameRule(GameRule.RANDOM_TICK_SPEED, 3);
+        world.setGameRule(GameRules.ADVANCE_TIME,     true);
+        world.setGameRule(GameRules.ADVANCE_WEATHER,  true);
+        world.setGameRule(GameRules.SPAWN_MOBS,       true);
+        world.setGameRule(GameRules.RANDOM_TICK_SPEED, 3);
     }
 }

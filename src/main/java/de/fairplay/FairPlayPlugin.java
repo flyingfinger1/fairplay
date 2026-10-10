@@ -15,7 +15,7 @@ import de.fairplay.listeners.ServerPauseListener;
 import de.fairplay.listeners.TraderListener;
 import de.fairplay.listeners.VehicleListener;
 import de.fairplay.storage.OwnershipStorage;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -95,7 +95,7 @@ public class FairPlayPlugin extends JavaPlugin {
         }
 
         // Disable vanilla advancement announcements globally
-        getServer().getWorlds().forEach(w -> w.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false));
+        getServer().getWorlds().forEach(w -> w.setGameRule(GameRules.SHOW_ADVANCEMENT_MESSAGES, false));
 
         getLogger().info("FairPlay enabled.");
     }
